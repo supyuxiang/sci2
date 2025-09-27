@@ -1,0 +1,30 @@
+dataset:
+  excel_path: "/home/yxfeng/project2/sci925/data/正确的二维（无裂解,3MPa).xlsx"  # 输入数据路径（Excel）
+  format: "auto"                 # auto|excel|csv （强制解析格式）
+  sheet: 0                       # Excel工作表索引或名称（仅excel）
+  csv_sep: null                  # CSV分隔符（如 "," 或 "\t"），留空自动猜测
+  csv_encoding: null             # CSV编码（如 "gbk"、"utf-8-sig"），留空自动猜测
+  index_phase1_end: 382         # 前382行为阶段1
+  features: ["x", "y"]         # 特征列
+  phase1_targets: ["T"]        # 阶段1目标
+  phase2_targets: ["T", "u", "v", "p"]  # 阶段2目标
+
+training:
+  output_dir: "/home/yxfeng/project2/sci925/outputs"      # 结果输出目录（绝对路径）
+  test_ratio: 0.2               # 在各自阶段上的验证/测试占比
+  random_state: 42
+
+models:
+  phase1:                       # 预测T
+    type: "random_forest"
+    params:
+      n_estimators: 200
+      max_depth: null
+      n_jobs: -1
+  phase2:                       # 预测T,u,v,p（多输出）
+    type: "random_forest"
+    params:
+      n_estimators: 300
+      max_depth: null
+      n_jobs: -1
+
