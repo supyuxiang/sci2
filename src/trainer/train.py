@@ -1,5 +1,4 @@
 import os
-from tensorflow.python.ops.array_ops import batch_matrix_diag_eager_fallback
 import yaml
 import torch
 import numpy as np
@@ -166,7 +165,9 @@ class Trainer:
             self.logger.info(f"Epoch {epoch} completed, loss: {loss.item()}, Time: {time.time() - start_time}")
         self.logger.info(f"Training completed, epochs: {self.config.get('epochs',None)}")
         self._save_model(self.config['epochs'])
-        return self.metrics_manager.metrics
+        # expose metrics snapshot for external access
+        self.metrics = self.metrics_manager.metrics
+        return self.metrics
 
     def _validate(self,dataloader_val):
         '''
@@ -191,6 +192,13 @@ class Trainer:
                 total_dict['total_loss'].append(loss)
         self.logger.info(f"Validating completed, total_loss: {total_dict['total_loss']}")
         return total_dict
+
+    # public validation API for external callers (e.g., scripts/test.py)
+    def validate(self, dataloader_val):
+        results = self._validate(dataloader_val)
+        # keep latest validation results under a common attribute
+        self.metrics = results
+        return self
 
                 
     def load_checkpoint(self, checkpoint_path: str):

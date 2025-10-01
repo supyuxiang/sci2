@@ -18,14 +18,9 @@ from src.data.data_manager import DataManager
 from src.utils.logger import Logger
 from src.models.models import ModelFactory
 from src.trainer.train import Trainer
-from src.utils.logger import Logger
 from src.utils.timer import Timer
+from src.utils.set_seed import set_seed
 
-
-def set_deterministic(seed=42):  
-    torch.manual_seed(seed)  
-    np.random.seed(seed)  
-    random.seed(seed)
 
 def set_logger(config):
     logger = Logger(name='main',config=config)
@@ -76,11 +71,17 @@ def create_dataloaders(config: Dict[str, Any]):
         (训练加载器, 测试加载器)
     """
     data_manager = DataManager(config)
-    return data_manager.dataloader_train_phase1, data_manager.dataloader_test_phase1, data_manager.dataloader_train_phase2, data_manager.dataloader_test_phase2
+    # align with DataManager attributes
+    return (
+        data_manager.dataloader_phase1_train,
+        data_manager.dataloader_phase1_test,
+        data_manager.dataloader_phase2_train,
+        data_manager.dataloader_phase2_test,
+    )
 
 
 
-def train_model(model, train_loader, test_loader, device, config,logger,phase:int):
+def train_model(model, train_loader, device, config, logger):
     """
     model.train()
     
@@ -93,8 +94,7 @@ def train_model(model, train_loader, test_loader, device, config,logger,phase:in
         logger: 日志记录器
         experiment_dir: 实验目录
     """
-    trainer = Trainer(config, model, train_loader, test_loader, device, logger=logger)
-    trainer.train()
+    trainer = Trainer(config=config, model=model, dataloader_train=train_loader, logger=logger)
     return trainer
 
 
@@ -109,33 +109,32 @@ def test_model(model, test_loader, device, config, logger):
         config: 配置字典
         logger: 日志记录器
     """
-    trainer = Trainer(config, model,test_loader, device, logger=logger)
+    trainer = Trainer(config=config, model=model, dataloader_train=test_loader, logger=logger)
     trainer.validate(test_loader)
     return trainer
 
-def phase1_process(model, train_loader, test_loader, device, config,logger,is_val=True):
-    trainer = Trainer(config, model, train_loader, test_loader, device, logger=logger)
-    trainer.train()
+def phase1_process(model, train_loader, test_loader, device, config, logger, is_val=True):
+    trainer = Trainer(config=config, model=model, dataloader_train=train_loader, logger=logger)
     if is_val:
-        trainer.validate(test_loader) 
+        trainer.validate(test_loader)
     return trainer
     
-def phase2_process(model, train_loader, test_loader, device, config,logger,is_val=True):
-    trainer = Trainer(config, model, train_loader, test_loader, device, logger=logger)
+def phase2_process(model, train_loader, test_loader, device, config, logger, is_val=True):
+    trainer = Trainer(config=config, model=model, dataloader_train=train_loader, logger=logger)
     if is_val:
-        trainer.validate(test_loader) 
+        trainer.validate(test_loader)
     return trainer
 
 
 @Timer
 def main():
     start_time = time.time()
-    set_deterministic()
+    set_seed()
     args = set_args()
     config = load_config(args)
     logger = set_logger(config)
     phase_ls = config.get('Train',{}).get('phase_ls',[1,2])
-    dataloader_train_phase1, dataloader_test_phase1, dataloader_train_phase2, dataloader_test_phase2 = create_dataloaders(config,phase_ls)
+    dataloader_train_phase1, dataloader_test_phase1, dataloader_train_phase2, dataloader_test_phase2 = create_dataloaders(config)
     device = torch.device(f'cuda:{args.device_id}' if torch.cuda.is_available() else 'cpu')
     if 1 in phase_ls:
         model1 = create_model(logger,config.get('Model',{}).get('model_name',{}).get('phase1',{}),1)
