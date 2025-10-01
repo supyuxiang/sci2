@@ -10,6 +10,11 @@ from pathlib import Path
 import torch.nn as nn
 import torch.nn.functional as F
 
+from .mlp import MLP
+from .GatedResMLP import GatedResMLP
+from .lstm import LSTM
+from .AdaptiveGatedTransformerMLP import AdaptiveGatedTransformerMLP
+
 
 class ModelFactory(torch.nn.Module):
     '''
@@ -60,6 +65,32 @@ class ModelFactory(torch.nn.Module):
             self.num_blocks = int(lstm_cfg.get('num_blocks',False))
             self.dropout = float(lstm_cfg.get('dropout',False))
             assert all([self.indim,self.outdim1,self.outdim2,self.hidden_dim,self.num_blocks,self.dropout]),'input_dim, output_dim1, output_dim2, hidden_dim, num_blocks and dropout are not set'
+        
+        elif self.model_name == 'grmlp':
+            grmlp_cfg = self.model_setting.get('grmlp',None)
+            if not grmlp_cfg:
+                raise ValueError('grmlp setting is not set')
+            self.indim = int(self.model_setting.get('input_dim',False))
+            self.outdim1 = int(self.model_setting.get('output_dim1',False))
+            self.outdim2 = int(self.model_setting.get('output_dim2',False))
+            self.hidden_dim = int(grmlp_cfg.get('hidden_dim',False))
+            self.depth = int(grmlp_cfg.get('depth',False))
+            self.dropout = float(grmlp_cfg.get('dropout',False))
+            assert all([self.indim,self.outdim1,self.outdim2,self.hidden_dim,self.depth,self.dropout]),'input_dim, output_dim1, output_dim2, hidden_dim, depth and dropout are not set'
+        
+        elif self.model_name == 'agtmlp':
+            agtmlp_cfg = self.model_setting.get('agtmlp',None)
+            if not agtmlp_cfg:
+                raise ValueError('agtmlp setting is not set')
+            self.indim = int(self.model_setting.get('input_dim',False))
+            self.outdim1 = int(self.model_setting.get('output_dim1',False))
+            self.outdim2 = int(self.model_setting.get('output_dim2',False))
+            self.hidden_dim = int(agtmlp_cfg.get('hidden_dim',False))
+            self.depth = int(agtmlp_cfg.get('depth',False))
+            self.dropout = float(agtmlp_cfg.get('dropout',False))
+            self.num_heads = int(agtmlp_cfg.get('num_heads',8))
+            self.num_experts = int(agtmlp_cfg.get('num_experts',6))
+            assert all([self.indim,self.outdim1,self.outdim2,self.hidden_dim,self.depth,self.dropout]),'input_dim, output_dim1, output_dim2, hidden_dim, depth and dropout are not set'
         else:
             raise ValueError(f"Model name {self.model_name} not supported")
 
@@ -105,6 +136,51 @@ class ModelFactory(torch.nn.Module):
                 )
             else:
                 raise ValueError(f"Phase {self.phase} not supported")
+            
+        elif self.model_name == 'grmlp':
+            if self.phase == 1:
+                self.model = GatedResMLP(
+                    indim = self.indim,
+                    outdim = self.outdim1,
+                    hidden_dim = self.hidden_dim,
+                    depth = self.depth,
+                    dropout = self.dropout
+                )
+
+            elif self.phase == 2:
+                self.model = GatedResMLP(
+                    indim = self.indim,
+                    outdim = self.outdim2,
+                    hidden_dim = self.hidden_dim,
+                    depth = self.depth,
+                    dropout = self.dropout
+                )
+            else:
+                raise ValueError(f"Phase {self.phase} not supported")
+        
+        elif self.model_name == 'agtmlp':
+            if self.phase == 1:
+                self.model = AdaptiveGatedTransformerMLP(
+                    indim = self.indim,
+                    outdim = self.outdim1,
+                    hidden_dim = self.hidden_dim,
+                    depth = self.depth,
+                    num_heads = self.num_heads,
+                    num_experts = self.num_experts,
+                    dropout = self.dropout
+                )
+            elif self.phase == 2:
+                self.model = AdaptiveGatedTransformerMLP(
+                    indim = self.indim,
+                    outdim = self.outdim2,
+                    hidden_dim = self.hidden_dim,
+                    depth = self.depth,
+                    num_heads = self.num_heads,
+                    num_experts = self.num_experts,
+                    dropout = self.dropout
+                )
+            else:
+                raise ValueError(f"Phase {self.phase} not supported")
         
         else:
             self.logger.error(f"Model name {self.model_name} not supported")
@@ -117,90 +193,11 @@ class ModelFactory(torch.nn.Module):
 
     
 
-class MLP(torch.nn.Module):
-    def __init__(self, indim:int,outdim:int,hidden_dim:int,num_blocks:int,dropout:float):
-        super(MLP,self).__init__()
-        self.indim = indim
-        self.outdim = outdim
-        self.hidden_dim = hidden_dim
-        self.num_blocks = num_blocks
-        self.dropout = dropout
-        self.block1 = nn.Sequential(
-            nn.Linear(self.indim,self.hidden_dim),
-            nn.LeakyReLU(0.1),
-            nn.Dropout(self.dropout),
-            nn.Linear(self.hidden_dim,2*self.hidden_dim),
-            nn.LeakyReLU(0.1),
-            nn.Dropout(self.dropout),
-            nn.Linear(2*self.hidden_dim,4*self.hidden_dim),
-            nn.LeakyReLU(0.1),
-            nn.Dropout(self.dropout),
-            nn.Linear(4*self.hidden_dim,2*self.hidden_dim),
-            nn.LeakyReLU(0.1),
-            nn.Dropout(self.dropout),
-            nn.Linear(2*self.hidden_dim,self.outdim)
-        )
-        self.linear1 = nn.Linear(self.outdim,self.indim)
-        self.linear2 = nn.Linear(self.indim,self.outdim)
-        self.initialize_weights()
 
-    def forward(self,x:torch.Tensor) -> torch.Tensor:
-        output = x
-        for _ in range(self.num_blocks):
-            output = self.block1(output)
-            output = self.linear1(output)
-        output = self.linear2(output)
-        return output
-    
-    def initialize_weights(self):
-        for m in self.modules():
-            if isinstance(m,nn.Linear):
-                nn.init.kaiming_normal_(m.weight,mode='fan_out',nonlinearity='leaky_relu')
-                if m.bias is not None:
-                    nn.init.constant_(m.bias,0)
-            elif isinstance(m,nn.BatchNorm1d):
-                nn.init.constant_(m.weight,1)
-                nn.init.constant_(m.bias,0)
-            elif isinstance(m,nn.LeakyReLU):
-                m.negative_slope = 0.1
-            elif isinstance(m,nn.Dropout):
-                m.p = self.dropout
         
         
 
 
 
-class LSTM(torch.nn.Module):
-    def __init__(self, indim:int,outdim:int,hidden_dim:int,num_blocks:int,dropout:float):
-        super(LSTM,self).__init__()
-        self.indim = indim
-        self.outdim = outdim
-        self.hidden_dim = hidden_dim
-        self.num_blocks = num_blocks
-        self.dropout = dropout
-        self.lstm = nn.LSTM(self.indim,self.hidden_dim,self.num_blocks,self.dropout,batch_first=True)
-        self.linear = nn.Linear(self.hidden_dim,self.outdim)
-        self.linear1 = nn.Linear(self.outdim,self.indim)
-        self.linear2 = nn.Linear(self.indim,self.outdim)
-        self.initialize_weights()
 
-    def forward(self,x:torch.Tensor) -> torch.Tensor:
-        output, _ = self.lstm(x.unsqueeze(1))
-        output = self.linear(output)
-        output = self.linear1(output)
-        output = self.linear2(output)
-        return output
-    
-    def initialize_weights(self):
-        for m in self.modules():
-            if isinstance(m,nn.Linear):
-                nn.init.kaiming_normal_(m.weight,mode='fan_out',nonlinearity='leaky_relu')
-                if m.bias is not None:
-                    nn.init.constant_(m.bias,0)
-            elif isinstance(m,nn.BatchNorm1d):
-                nn.init.constant_(m.weight,1)
-                nn.init.constant_(m.bias,0)
-            elif isinstance(m,nn.LeakyReLU):
-                m.negative_slope = 0.1
-            elif isinstance(m,nn.Dropout):
-                m.p = self.dropout
+

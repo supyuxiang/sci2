@@ -90,24 +90,35 @@ Model:
   name_list: 
     - 'mlp'
     - 'lstm'
-    
+    - 'grmlp'
+    - 'agtmlp'
+    - 'agtmlp'
+
   input_dim: 3
   dropout: 0.2
   output_dim1: 1
   output_dim2: 5
 
   model_name:
-    phase1: 'mlp'
-    phase2: 'mlp'
+    phase1: 'grmlp'
+    phase2: 'grmlp'
 
   mlp:
     hidden_dim: 128
-    num_blocks: 5
-    dropout: 0.1
+    num_blocks: 8
+    dropout: 0.2
     
   lstm:
     hidden_dim: 128
-    num_blocks: 5
-    dropout: 0.1
+    num_blocks: 8
+    dropout: 0.2
   
-
+  grmlp:
+    hidden_dim: 128
+    depth: 8
+    dropout: 0.2
+  
+  agtmlp:
+    hidden_dim: 128
+    depth: 8
+    dropout: 0.2

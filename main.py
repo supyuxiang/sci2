@@ -38,6 +38,8 @@ def set_args():
     args.add_argument('--config_path', type=str, default='src/config.yaml', help='config file path')
     args.add_argument('--device_id', type=int, default=0, help='device id')
     args.add_argument('--seed', type=int, default=42, help='seed')
+    args.add_argument('--model_name', type=str, default='mlp', help='model name')
+    args.add_argument('--epochs', type=int, default=100, help='epochs')
     return args.parse_args()
 
 def load_config(args):
@@ -45,6 +47,10 @@ def load_config(args):
     with open(config_path, 'r') as f:
         assert f is not None, f"config file {config_path} not found"
         config = yaml.safe_load(f)
+    if args.model_name:
+        config['Model']['model_name'] = args.model_name
+    if args.epochs:
+        config['Train']['epochs'] = args.epochs
     return config
     
 
@@ -139,12 +145,12 @@ def main():
     dataloader_train_phase1, dataloader_test_phase1, dataloader_train_phase2, dataloader_test_phase2 = create_dataloaders(config)
     if 1 in phase_ls:
         print(f"Training phase 1")
-        model1 = create_model(logger,config.get('Model',{}).get('model_name',{}).get('phase1',{}),1)
+        model1 = create_model(logger,config.get('Model',{}).get('model_name',{}),1)
         phase1_pipline(model1,dataloader_train_phase1,dataloader_test_phase1,config.get('Train',{}).get('save_model_path1',{}),config,logger,is_val=True)
         print(f"Training phase 1 completed")
     if 2 in phase_ls:
         print(f"Training phase 2")
-        model2 = create_model(logger,config.get('Model',{}).get('model_name',{}).get('phase2',{}),2)
+        model2 = create_model(logger,config.get('Model',{}).get('model_name',{}),2)
         phase2_pipline(model2,dataloader_train_phase2,dataloader_test_phase2,config.get('Train',{}).get('save_model_path2',{}),config,logger,is_val=True)
         print(f"Training phase 2 completed")
     else:
