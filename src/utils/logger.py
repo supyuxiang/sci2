@@ -7,8 +7,7 @@ class Logger:
         self.logger.setLevel(logging.INFO)
         self.logger.addHandler(logging.StreamHandler())
         
-        # 尝试从不同位置获取log_dir
-        log_dir = self.config.get('log_dir') or config.get('Data', {}).get('log_dir') or config.get('log_dir')
+        log_dir = self.config.get('log_dir',None)
         if log_dir:
             import os
             os.makedirs(log_dir, exist_ok=True)

@@ -39,10 +39,11 @@ class Trainer:
         device: torch.device
     '''
 
-    def __init__(self,config:Dict,model,dataloader_train,logger:Logger):
+    def __init__(self,config:Dict,model,dataloader_train,logger:Logger,save_model_dir:str):
+        self.save_model_dir = save_model_dir
+        self.config = config.get('Train',{})
         self.dataloader_train = dataloader_train
         self.model = model
-        self.config = config.get('Train',{})
         self.logger = logger
         self.config_check()
         self._set_device()
@@ -61,9 +62,7 @@ class Trainer:
         assert self.config.get('optimizer',None) is not None,'optimizer is not set'
         assert self.config.get('loss_function',None) is not None,'loss_function is not set'
         assert self.config.get('scheduler',None) is not None,'scheduler is not set'
-        assert self.config.get('save_model_path',None) is not None,'save_model_path is not set'
-        assert self.config.get('save_best_model_only_path',None) is not None,'save_best_model_only_path is not set'
-        assert self.config.get('load_model_path',None) is not None,'load_model_path is not set'
+        assert self.save_model_dir is not None,'save_model_dir is not set'
         assert self.config.get('log_interval',None) is not None,'log_interval is not set'
         assert self.config.get('is_log',None) is not None,'is_log is not set'
         assert self.config.get('is_save',None) is not None,'is_save is not set'
@@ -112,7 +111,8 @@ class Trainer:
     def train(self):
         '''
         train
-
+        Args:
+            dataloader_train: DataLoader
         '''
         self.logger.info(f"Training started, epochs: {self.config.get('epochs',None)}")
         for epoch in tqdm(range(self.config.get('epochs',None))):
@@ -138,7 +138,7 @@ class Trainer:
                     self.logger.info(f"Epoch {epoch}, Batch {idx}, Loss: {loss.item()}, Time: {time.time() - start_time}")
 
             if self.config.get('is_save',True) and self.config.get('save_freq',False) and epoch % self.config['save_freq'] == 0:
-                    if self.config.get('save_best_only',True) and self.config.get('save_best_only_path',None):
+                    if self.config.get('save_best_only',True) and self.save_model_dir is not None:
                         if self.metrics_manager.metrics['loss'][-1] < min(self.metrics_manager.metrics['loss']):
                             self._save_model(epoch)
                             self._save_metrics(epoch)
@@ -172,9 +172,11 @@ class Trainer:
     def _validate(self,dataloader_val):
         '''
         validate
+        Args:
+            dataloader_val: DataLoader
         '''
         self.model.eval()
-        total_dict = {
+        val_dict = {
             'total_pred':[],
             'total_loss':[],
             'total_r2':0,
@@ -188,10 +190,10 @@ class Trainer:
                 batch_out = batch_out.to(self.device)
                 output = self.model(batch_in)
                 loss = self.loss_function(output,batch_out)
-                total_dict['total_pred'].append(output)
-                total_dict['total_loss'].append(loss)
-        self.logger.info(f"Validating completed, total_loss: {total_dict['total_loss']}")
-        return total_dict
+                val_dict['total_pred'].append(output)
+                val_dict['total_loss'].append(loss)
+        self.logger.info(f"Validating completed, total_loss: {val_dict['total_loss']}")
+        return val_dict
 
     # public validation API for external callers (e.g., scripts/test.py)
     def validate(self, dataloader_val):
@@ -245,16 +247,16 @@ class Trainer:
         #     self.logger.info(f"Model saved, save_path: {save_best_model_only_dir + f'/model_{epoch}.pth'}")
 
         # 新实现：显式创建目标目录本身，再保存
-        save_model_dir = Path(self.config.get('save_model_path', 'models'))
-        save_best_model_only_dir = Path(self.config.get('save_best_model_only_path', 'models/best'))
+        save_model_dir = Path(self.save_model_dir)
+        save_best_model_only_dir = Path(self.save_model_dir + '/best')
         if not save_best_only:
             save_model_dir.mkdir(parents=True, exist_ok=True)
-            save_path = save_model_dir / f"{self.model.phase}_{self.model.name}_model_{epoch}.pth"
+            save_path = save_model_dir / f"{self.model.name}_model_{epoch}.pth"
             torch.save(self.model.state_dict(), save_path)
             self.logger.info(f"Model saved, save_path: {save_path}")
         else:
             save_best_model_only_dir.mkdir(parents=True, exist_ok=True)
-            save_path = save_best_model_only_dir / f"{self.model.phase}_{self.model.name}_model_{epoch}.pth"
+            save_path = save_best_model_only_dir / f"{self.model.name}_model_{epoch}.pth"
             torch.save(self.model.state_dict(), save_path)
             self.logger.info(f"Model saved, save_path: {save_path}")
     

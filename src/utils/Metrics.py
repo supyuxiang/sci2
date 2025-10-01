@@ -66,5 +66,4 @@ class MetricsManager(nn.Module):
     def update_metrics(self):
         for key,value in self.metrics_current.items():
             self.metrics[key].append(value)
-        return self.metrics
         

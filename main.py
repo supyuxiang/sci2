@@ -6,6 +6,7 @@ from pathlib import Path
 import re
 import os
 import random
+import sys
 import torch
 import numpy as np
 import argparse
@@ -22,38 +23,41 @@ from src.utils.timer import Timer
 from src.utils.set_seed import set_seed
 
 
+
 def set_logger(config):
     logger = Logger(name='main',config=config)
     return logger
 
 
-def set_args(config):
+def set_args():
     """
-    解析命令行参数
+    parse command line arguments
     """
     args = argparse.ArgumentParser()
     args.add_argument('--config_path', type=str, default='src/config.yaml', help='config file path')
-    args.add_argument('--mode', type=str, default='train', help='mode')
-    args.add_argument('--model_name', type=str, default='mlp', help='model name')
-    args.add_argument('--dropout_rate', type=float, default=0.1, help='dropout rate')
     args.add_argument('--device_id', type=int, default=0, help='device id')
     args.add_argument('--seed', type=int, default=42, help='seed')
-    args.add_argument('--save_dir', type=str, default='./logs', help='save dir')
     return args.parse_args()
 
 def load_config(args):
-    config_path = Path('src/config.yaml') if not args.config_path else Path(args.config_path)
+    config_path = str(Path(__file__).parent) + '/src/config.yaml' if not args.config_path else Path(args.config_path)
     with open(config_path, 'r') as f:
+        assert f is not None, f"config file {config_path} not found"
         config = yaml.safe_load(f)
     return config
     
 
 def create_model(logger,model_name:str,phase:int):
     """
-    创建模型
+    create model
     
+    Args:
+        logger: logger
+        model_name: model name
+        phase: phase
+        
     Returns:
-        模型对象
+        model object
     """
     model = ModelFactory(phase=phase,logger=logger,model_name=model_name).model
     return model
@@ -62,16 +66,15 @@ def create_model(logger,model_name:str,phase:int):
 
 def create_dataloaders(config: Dict[str, Any]):
     """
-    创建数据加载器
+    create data loaders
     
     Args:
-        config: 配置字典
+        config: config dictionary
         
     Returns:
-        (训练加载器, 测试加载器)
+        (train loader, test loader)
     """
     data_manager = DataManager(config)
-    # align with DataManager attributes
     return (
         data_manager.dataloader_phase1_train,
         data_manager.dataloader_phase1_test,
@@ -81,46 +84,43 @@ def create_dataloaders(config: Dict[str, Any]):
 
 
 
-def train_model(model, train_loader, device, config, logger):
+def train_model(model, train_loader, save_model_dir, config, logger):
     """
     model.train()
     
     Args:
-        model: 模型
-        train_loader: 训练数据加载器
-        test_loader: 测试数据加载器
-        device: 设备
-        config: 配置字典
-        logger: 日志记录器
-        experiment_dir: 实验目录
+        model: model
+        train_loader: train loader
+        save_model_dir: save model directory
+        config: config dictionary
+        logger: logger
     """
-    trainer = Trainer(config=config, model=model, dataloader_train=train_loader, logger=logger)
+    trainer = Trainer(config=config, model=model, dataloader_train=train_loader, logger=logger, save_model_dir=save_model_dir)
     return trainer
 
 
-def test_model(model, test_loader, device, config, logger):
+def test_model(model, test_loader,config, logger):
     """
     model.eval()
     
     Args:
-        model: 模型
-        test_loader: 测试数据加载器
-        device: 设备
-        config: 配置字典
-        logger: 日志记录器
+        model: model
+        test_loader: test loader
+        config: config dictionary
+        logger: logger
     """
     trainer = Trainer(config=config, model=model, dataloader_train=test_loader, logger=logger)
     trainer.validate(test_loader)
     return trainer
 
-def phase1_process(model, train_loader, test_loader, device, config, logger, is_val=True):
-    trainer = Trainer(config=config, model=model, dataloader_train=train_loader, logger=logger)
+def phase1_pipline(model, train_loader, test_loader, save_model_dir, config, logger, is_val=True):
+    trainer = Trainer(config=config, model=model, dataloader_train=train_loader, logger=logger, save_model_dir=save_model_dir)
     if is_val:
         trainer.validate(test_loader)
     return trainer
     
-def phase2_process(model, train_loader, test_loader, device, config, logger, is_val=True):
-    trainer = Trainer(config=config, model=model, dataloader_train=train_loader, logger=logger)
+def phase2_pipline(model, train_loader, test_loader, save_model_dir, config, logger, is_val=True):
+    trainer = Trainer(config=config, model=model, dataloader_train=train_loader, logger=logger, save_model_dir=save_model_dir)
     if is_val:
         trainer.validate(test_loader)
     return trainer
@@ -133,15 +133,15 @@ def main():
     args = set_args()
     config = load_config(args)
     logger = set_logger(config)
-    phase_ls = config.get('Train',{}).get('phase_ls',[1,2])
+    phase_ls = config.get('Train',{}).get('phase_ls',None)
+    assert phase_ls is not None, f"phase_ls is not set"
     dataloader_train_phase1, dataloader_test_phase1, dataloader_train_phase2, dataloader_test_phase2 = create_dataloaders(config)
-    device = torch.device(f'cuda:{args.device_id}' if torch.cuda.is_available() else 'cpu')
     if 1 in phase_ls:
         model1 = create_model(logger,config.get('Model',{}).get('model_name',{}).get('phase1',{}),1)
-        phase1_process(model1,dataloader_train_phase1,dataloader_test_phase1,device,config,logger,is_val=True)
+        phase1_pipline(model1,dataloader_train_phase1,dataloader_test_phase1,config.get('Train',{}).get('save_model_path1',{}),config,logger,is_val=True)
     if 2 in phase_ls:
         model2 = create_model(logger,config.get('Model',{}).get('model_name',{}).get('phase2',{}),2)
-        phase2_process(model2,dataloader_train_phase2,dataloader_test_phase2,device,config,logger,is_val=True)
+        phase2_pipline(model2,dataloader_train_phase2,dataloader_test_phase2,config.get('Train',{}).get('save_model_path2',{}),config,logger,is_val=True)
     else:
         raise ValueError(f"Invalid phase: {phase_ls}")
     logger.info(f"Main completed, time: {time.time() - start_time:.2f}s")

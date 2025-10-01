@@ -1,6 +1,0 @@
-Train:
-  epochs: 100
-  optimizer: 'adam'
-  loss_function: 'mse'
-  save_path: 'models'
-  

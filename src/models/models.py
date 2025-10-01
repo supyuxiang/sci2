@@ -15,32 +15,25 @@ class ModelFactory(torch.nn.Module):
     '''
     Model Factory: mlp, lstm
     '''
-    def __init__(self,logger,phase:int,model_name:str=None):
+    def __init__(self,logger,phase:int,model_name:str='mlp'):
         super(ModelFactory,self).__init__()
+        self.model_name = model_name
         self.logger = logger
         self.phase = phase
-        self._load_config(model_name)
+        self._load_config()
         self._check_config()
         self.build_model()
         self.logger.info(f"Model {self.model_name} initialized successfully")
 
-    def _load_config(self,model_name:str) -> Dict:
+    def _load_config(self) -> Dict:
         try:
-            setting_path = os.path.join(os.path.dirname(__file__), 'config.yaml')
+            setting_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'config.yaml')
             with open(setting_path, 'r') as f:
                 self.model_setting = yaml.safe_load(f).get('Model',{})
             self.logger.info(f'Model setting loaded successfully!')
         except Exception as e:
             self.logger.error(f"Error loading config: {e}")
             raise ValueError(f"Error loading config: {e}")
-
-        # Use provided model_name or get from config
-        if model_name is not None:
-            self.model_name = model_name
-        else:
-            self.model_name = self.model_setting.get('name', None)
-        
-        assert self.model_name is not None, 'model name is not set'
 
     def _check_config(self):
         if self.model_name == 'mlp':
@@ -50,6 +43,7 @@ class ModelFactory(torch.nn.Module):
             self.indim = int(self.model_setting.get('input_dim',False))
             self.outdim1 = int(self.model_setting.get('output_dim1',False))
             self.outdim2 = int(self.model_setting.get('output_dim2',False))
+            self.logger.info(f'mlp_cfg: {mlp_cfg}')
             self.hidden_dim = int(mlp_cfg.get('hidden_dim',False))
             self.num_blocks = int(mlp_cfg.get('num_blocks',False))
             self.dropout = float(mlp_cfg.get('dropout',False))

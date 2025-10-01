@@ -15,14 +15,18 @@ Data:
   batch_size1: 64
   batch_size2: 64
 
+
 Train:
   epochs: 1000
   optimizer: 'adam'
   loss_function: 'mse'
   scheduler: 'cosine'
-  save_model_path: 'models'
-  save_best_model_only_path: 'models/best'
-  load_model_path: 'models'
+  save_model_path1: '/home/yxfeng/project2/sci925/outputs/model/phase1'
+  save_model_path2: '/home/yxfeng/project2/sci925/outputs/model/phase2'
+  save_best_model_only_path1: '/home/yxfeng/project2/sci925/outputs/model/phase1/best'
+  save_best_model_only_path2: '/home/yxfeng/project2/sci925/outputs/model/phase2/best'
+  load_model_path1: '/home/yxfeng/project2/sci925/outputs/model/phase1/model.pth'
+  load_model_path2: '/home/yxfeng/project2/sci925/outputs/model/phase2/model.pth'
   log_interval: 10
   log_dir: 'logs'
   log_freq: 10
@@ -38,6 +42,7 @@ Train:
   loss_function_config: {}
   scheduler_config: {}
   metrics_dir: '/home/yxfeng/project2/sci925/outputs/metrics'
+  phase_ls: [1,2]
 
 
 Optimizer:
@@ -54,6 +59,7 @@ Optimizer:
   momentum: 0.9
   eps: 1e-8
 
+
 Scheduler:
   name: 'cosine'
   lr_min: 1e-6
@@ -63,8 +69,10 @@ Scheduler:
   last_epoch: -1
   verbose: False
 
+
 LossFunction:
   name: 'mse'
+
 
 logger:
   name: 'logger'
@@ -79,28 +87,27 @@ logger:
 
 
 Model:
-  model_name:
-    phase1: 'mlp'
-    phase2: 'mlp'
-  phase_ls: [1,2]
   name_list: 
     - 'mlp'
     - 'lstm'
+    
   input_dim: 3
   dropout: 0.2
-  
+  output_dim1: 1
+  output_dim2: 5
 
-
- 
+  model_name:
+    phase1: 'mlp'
+    phase2: 'mlp'
 
   mlp:
-    hidden_dim: [128, 64, 32]
-    output_dim1: 1
-    output_dim2: 4
+    hidden_dim: 128
     num_blocks: 5
+    dropout: 0.1
+    
   lstm:
-    hidden_dim: [128, 64, 32]
-    output_dim1: 1
-    output_dim2: 4
+    hidden_dim: 128
     num_blocks: 5
+    dropout: 0.1
+  
 
