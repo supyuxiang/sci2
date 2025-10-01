@@ -1,8 +1,7 @@
 from abc import ABC, abstractmethod
-from typing import Any, Dict
-
-import joblib
+from typing import Any,Dict
 import numpy as np
+
 from utils.logger import Logger
 
 class BaseFactory(ABC):
