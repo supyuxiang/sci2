@@ -1,10 +1,5 @@
 import pandas as pd
-import numpy as np
-import os
-import sys
 from pathlib import Path
-
-from sympy.core.facts import FactRules
 
 current_path = Path(__file__)
 
