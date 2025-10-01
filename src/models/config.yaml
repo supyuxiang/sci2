@@ -1,0 +1,21 @@
+Model:
+  model_name: 'mlp'
+
+  name_list:
+    - 'mlp'
+    - 'lstm'
+
+  input_dim: 3
+  output_dim1: 1
+  output_dim2: 5
+
+  mlp:
+    hidden_dim: 128
+    num_layers: 2
+    dropout: 0.1
+    
+  lstm:
+    hidden_dim: 128
+    num_layers: 2
+    dropout: 0.1
+

@@ -1,0 +1,901 @@
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler
+Build datasets, datasets1: (array([[ 1.1882621 , -0.06491663, -0.14864847],
+       [-1.2703619 , -0.02841047, -1.4300064 ],
+       [ 1.1882621 , -1.2764436 ,  0.9333543 ],
+       ...,
+       [-0.04104985, -0.07588805,  0.54278123],
+       [-1.2703619 ,  1.1996163 , -1.5631222 ],
+       [-1.2703619 , -0.02293269,  0.13136593]], dtype=float32), array([[402.23978],
+       [403.81616],
+       [400.6416 ],
+       ...,
+       [401.2152 ],
+       [404.02615],
+       [401.662  ]], dtype=float32)), datasets2: (array([[-1.4436711 , -0.15348919,  0.99162984],
+       [-0.15779492, -1.4383953 ,  0.8676818 ],
+       [-1.4436711 , -0.15348919, -0.8262734 ],
+       ...,
+       [-1.4436711 , -0.15348919,  0.2754861 ],
+       [-0.15779492, -0.15348919, -1.5882927 ],
+       [ 1.1280812 , -1.4383953 , -0.1789896 ]], dtype=float32), array([[398.41727,       nan,       nan,       nan],
+       [404.64636,       nan,       nan,       nan],
+       [407.56146,       nan,       nan,       nan],
+       ...,
+       [413.37396,       nan,       nan,       nan],
+       [402.62378,       nan,       nan,       nan],
+       [410.27594,       nan,       nan,       nan]], dtype=float32))
+Build sampler, datasets1: (array([[ 1.1882621 , -0.06491663, -0.14864847],
+       [-1.2703619 , -0.02841047, -1.4300064 ],
+       [ 1.1882621 , -1.2764436 ,  0.9333543 ],
+       ...,
+       [-0.04104985, -0.07588805,  0.54278123],
+       [-1.2703619 ,  1.1996163 , -1.5631222 ],
+       [-1.2703619 , -0.02293269,  0.13136593]], dtype=float32), array([[402.23978],
+       [403.81616],
+       [400.6416 ],
+       ...,
+       [401.2152 ],
+       [404.02615],
+       [401.662  ]], dtype=float32)), datasets2: (array([[-1.4436711 , -0.15348919,  0.99162984],
+       [-0.15779492, -1.4383953 ,  0.8676818 ],
+       [-1.4436711 , -0.15348919, -0.8262734 ],
+       ...,
+       [-1.4436711 , -0.15348919,  0.2754861 ],
+       [-0.15779492, -0.15348919, -1.5882927 ],
+       [ 1.1280812 , -1.4383953 , -0.1789896 ]], dtype=float32), array([[398.41727,       nan,       nan,       nan],
+       [404.64636,       nan,       nan,       nan],
+       [407.56146,       nan,       nan,       nan],
+       ...,
+       [413.37396,       nan,       nan,       nan],
+       [402.62378,       nan,       nan,       nan],
+       [410.27594,       nan,       nan,       nan]], dtype=float32))
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fe96c82b940>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fe96c8071f0>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7fe96ba8c820>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7fe96af84700>
+Dataloader built, dataloader_phase1: <torch.utils.data.dataloader.DataLoader object at 0x7fe96ba8c820>, dataloader_phase2: <torch.utils.data.dataloader.DataLoader object at 0x7fe96af84700>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 3.452598810195923
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler
+Build datasets, datasets1: (array([[ 1.1882621 , -0.06491663, -0.14864847],
+       [-1.2703619 , -0.02841047, -1.4300064 ],
+       [ 1.1882621 , -1.2764436 ,  0.9333543 ],
+       ...,
+       [-0.04104985, -0.07588805,  0.54278123],
+       [-1.2703619 ,  1.1996163 , -1.5631222 ],
+       [-1.2703619 , -0.02293269,  0.13136593]], dtype=float32), array([[402.23978],
+       [403.81616],
+       [400.6416 ],
+       ...,
+       [401.2152 ],
+       [404.02615],
+       [401.662  ]], dtype=float32)), datasets2: (array([[-1.4436711 , -0.15348919,  0.99162984],
+       [-0.15779492, -1.4383953 ,  0.8676818 ],
+       [-1.4436711 , -0.15348919, -0.8262734 ],
+       ...,
+       [-1.4436711 , -0.15348919,  0.2754861 ],
+       [-0.15779492, -0.15348919, -1.5882927 ],
+       [ 1.1280812 , -1.4383953 , -0.1789896 ]], dtype=float32), array([[398.41727,       nan,       nan,       nan],
+       [404.64636,       nan,       nan,       nan],
+       [407.56146,       nan,       nan,       nan],
+       ...,
+       [413.37396,       nan,       nan,       nan],
+       [402.62378,       nan,       nan,       nan],
+       [410.27594,       nan,       nan,       nan]], dtype=float32))
+Build sampler, datasets1: (array([[ 1.1882621 , -0.06491663, -0.14864847],
+       [-1.2703619 , -0.02841047, -1.4300064 ],
+       [ 1.1882621 , -1.2764436 ,  0.9333543 ],
+       ...,
+       [-0.04104985, -0.07588805,  0.54278123],
+       [-1.2703619 ,  1.1996163 , -1.5631222 ],
+       [-1.2703619 , -0.02293269,  0.13136593]], dtype=float32), array([[402.23978],
+       [403.81616],
+       [400.6416 ],
+       ...,
+       [401.2152 ],
+       [404.02615],
+       [401.662  ]], dtype=float32)), datasets2: (array([[-1.4436711 , -0.15348919,  0.99162984],
+       [-0.15779492, -1.4383953 ,  0.8676818 ],
+       [-1.4436711 , -0.15348919, -0.8262734 ],
+       ...,
+       [-1.4436711 , -0.15348919,  0.2754861 ],
+       [-0.15779492, -0.15348919, -1.5882927 ],
+       [ 1.1280812 , -1.4383953 , -0.1789896 ]], dtype=float32), array([[398.41727,       nan,       nan,       nan],
+       [404.64636,       nan,       nan,       nan],
+       [407.56146,       nan,       nan,       nan],
+       ...,
+       [413.37396,       nan,       nan,       nan],
+       [402.62378,       nan,       nan,       nan],
+       [410.27594,       nan,       nan,       nan]], dtype=float32))
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f6aa176faf0>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f6aa174b1c0>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7f6aa0a207f0>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7f6a9ff506d0>
+Dataloader built, dataloader_phase1: <torch.utils.data.dataloader.DataLoader object at 0x7f6aa0a207f0>, dataloader_phase2: <torch.utils.data.dataloader.DataLoader object at 0x7f6a9ff506d0>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 3.663261651992798
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler
+Build datasets, datasets1: (array([[ 1.1882621 , -0.06491663, -0.14864847],
+       [-1.2703619 , -0.02841047, -1.4300064 ],
+       [ 1.1882621 , -1.2764436 ,  0.9333543 ],
+       ...,
+       [-0.04104985, -0.07588805,  0.54278123],
+       [-1.2703619 ,  1.1996163 , -1.5631222 ],
+       [-1.2703619 , -0.02293269,  0.13136593]], dtype=float32), array([[402.23978],
+       [403.81616],
+       [400.6416 ],
+       ...,
+       [401.2152 ],
+       [404.02615],
+       [401.662  ]], dtype=float32)), datasets2: (array([[-1.4436711 , -0.15348919,  0.99162984],
+       [-0.15779492, -1.4383953 ,  0.8676818 ],
+       [-1.4436711 , -0.15348919, -0.8262734 ],
+       ...,
+       [-1.4436711 , -0.15348919,  0.2754861 ],
+       [-0.15779492, -0.15348919, -1.5882927 ],
+       [ 1.1280812 , -1.4383953 , -0.1789896 ]], dtype=float32), array([[398.41727,       nan,       nan,       nan],
+       [404.64636,       nan,       nan,       nan],
+       [407.56146,       nan,       nan,       nan],
+       ...,
+       [413.37396,       nan,       nan,       nan],
+       [402.62378,       nan,       nan,       nan],
+       [410.27594,       nan,       nan,       nan]], dtype=float32))
+Build sampler, datasets1: (array([[ 1.1882621 , -0.06491663, -0.14864847],
+       [-1.2703619 , -0.02841047, -1.4300064 ],
+       [ 1.1882621 , -1.2764436 ,  0.9333543 ],
+       ...,
+       [-0.04104985, -0.07588805,  0.54278123],
+       [-1.2703619 ,  1.1996163 , -1.5631222 ],
+       [-1.2703619 , -0.02293269,  0.13136593]], dtype=float32), array([[402.23978],
+       [403.81616],
+       [400.6416 ],
+       ...,
+       [401.2152 ],
+       [404.02615],
+       [401.662  ]], dtype=float32)), datasets2: (array([[-1.4436711 , -0.15348919,  0.99162984],
+       [-0.15779492, -1.4383953 ,  0.8676818 ],
+       [-1.4436711 , -0.15348919, -0.8262734 ],
+       ...,
+       [-1.4436711 , -0.15348919,  0.2754861 ],
+       [-0.15779492, -0.15348919, -1.5882927 ],
+       [ 1.1280812 , -1.4383953 , -0.1789896 ]], dtype=float32), array([[398.41727,       nan,       nan,       nan],
+       [404.64636,       nan,       nan,       nan],
+       [407.56146,       nan,       nan,       nan],
+       ...,
+       [413.37396,       nan,       nan,       nan],
+       [402.62378,       nan,       nan,       nan],
+       [410.27594,       nan,       nan,       nan]], dtype=float32))
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fda23b3f2e0>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fda2491bd90>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7fda23c9b490>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7fda230bcac0>
+Dataloader built, dataloader_phase1: <torch.utils.data.dataloader.DataLoader object at 0x7fda23c9b490>, dataloader_phase2: <torch.utils.data.dataloader.DataLoader object at 0x7fda230bcac0>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 3.557156562805176
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler
+Build datasets, datasets1: (array([[ 1.1882621 , -0.06491663, -0.14864847],
+       [-1.2703619 , -0.02841047, -1.4300064 ],
+       [ 1.1882621 , -1.2764436 ,  0.9333543 ],
+       ...,
+       [-0.04104985, -0.07588805,  0.54278123],
+       [-1.2703619 ,  1.1996163 , -1.5631222 ],
+       [-1.2703619 , -0.02293269,  0.13136593]], dtype=float32), array([[402.23978],
+       [403.81616],
+       [400.6416 ],
+       ...,
+       [401.2152 ],
+       [404.02615],
+       [401.662  ]], dtype=float32)), datasets2: (array([[-1.4436711 , -0.15348919,  0.99162984],
+       [-0.15779492, -1.4383953 ,  0.8676818 ],
+       [-1.4436711 , -0.15348919, -0.8262734 ],
+       ...,
+       [-1.4436711 , -0.15348919,  0.2754861 ],
+       [-0.15779492, -0.15348919, -1.5882927 ],
+       [ 1.1280812 , -1.4383953 , -0.1789896 ]], dtype=float32), array([[398.41727,       nan,       nan,       nan],
+       [404.64636,       nan,       nan,       nan],
+       [407.56146,       nan,       nan,       nan],
+       ...,
+       [413.37396,       nan,       nan,       nan],
+       [402.62378,       nan,       nan,       nan],
+       [410.27594,       nan,       nan,       nan]], dtype=float32))
+Build sampler, datasets1: (array([[ 1.1882621 , -0.06491663, -0.14864847],
+       [-1.2703619 , -0.02841047, -1.4300064 ],
+       [ 1.1882621 , -1.2764436 ,  0.9333543 ],
+       ...,
+       [-0.04104985, -0.07588805,  0.54278123],
+       [-1.2703619 ,  1.1996163 , -1.5631222 ],
+       [-1.2703619 , -0.02293269,  0.13136593]], dtype=float32), array([[402.23978],
+       [403.81616],
+       [400.6416 ],
+       ...,
+       [401.2152 ],
+       [404.02615],
+       [401.662  ]], dtype=float32)), datasets2: (array([[-1.4436711 , -0.15348919,  0.99162984],
+       [-0.15779492, -1.4383953 ,  0.8676818 ],
+       [-1.4436711 , -0.15348919, -0.8262734 ],
+       ...,
+       [-1.4436711 , -0.15348919,  0.2754861 ],
+       [-0.15779492, -0.15348919, -1.5882927 ],
+       [ 1.1280812 , -1.4383953 , -0.1789896 ]], dtype=float32), array([[398.41727,       nan,       nan,       nan],
+       [404.64636,       nan,       nan,       nan],
+       [407.56146,       nan,       nan,       nan],
+       ...,
+       [413.37396,       nan,       nan,       nan],
+       [402.62378,       nan,       nan,       nan],
+       [410.27594,       nan,       nan,       nan]], dtype=float32))
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fb2ab469510>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fb2abea0760>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7fb2ab620d00>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7fb2aa640be0>
+Dataloader built, dataloader_phase1: <torch.utils.data.dataloader.DataLoader object at 0x7fb2ab620d00>, dataloader_phase2: <torch.utils.data.dataloader.DataLoader object at 0x7fb2aa640be0>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 2.591414213180542
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler
+Build datasets, datasets1: (array([[ 1.1882621 , -0.06491663, -0.14864847],
+       [-1.2703619 , -0.02841047, -1.4300064 ],
+       [ 1.1882621 , -1.2764436 ,  0.9333543 ],
+       ...,
+       [-0.04104985, -0.07588805,  0.54278123],
+       [-1.2703619 ,  1.1996163 , -1.5631222 ],
+       [-1.2703619 , -0.02293269,  0.13136593]], dtype=float32), array([[402.23978],
+       [403.81616],
+       [400.6416 ],
+       ...,
+       [401.2152 ],
+       [404.02615],
+       [401.662  ]], dtype=float32)), datasets2: (array([[-1.4436711 , -0.15348919,  0.99162984],
+       [-0.15779492, -1.4383953 ,  0.8676818 ],
+       [-1.4436711 , -0.15348919, -0.8262734 ],
+       ...,
+       [-1.4436711 , -0.15348919,  0.2754861 ],
+       [-0.15779492, -0.15348919, -1.5882927 ],
+       [ 1.1280812 , -1.4383953 , -0.1789896 ]], dtype=float32), array([[398.41727,       nan,       nan,       nan],
+       [404.64636,       nan,       nan,       nan],
+       [407.56146,       nan,       nan,       nan],
+       ...,
+       [413.37396,       nan,       nan,       nan],
+       [402.62378,       nan,       nan,       nan],
+       [410.27594,       nan,       nan,       nan]], dtype=float32))
+Build sampler, datasets1: (array([[ 1.1882621 , -0.06491663, -0.14864847],
+       [-1.2703619 , -0.02841047, -1.4300064 ],
+       [ 1.1882621 , -1.2764436 ,  0.9333543 ],
+       ...,
+       [-0.04104985, -0.07588805,  0.54278123],
+       [-1.2703619 ,  1.1996163 , -1.5631222 ],
+       [-1.2703619 , -0.02293269,  0.13136593]], dtype=float32), array([[402.23978],
+       [403.81616],
+       [400.6416 ],
+       ...,
+       [401.2152 ],
+       [404.02615],
+       [401.662  ]], dtype=float32)), datasets2: (array([[-1.4436711 , -0.15348919,  0.99162984],
+       [-0.15779492, -1.4383953 ,  0.8676818 ],
+       [-1.4436711 , -0.15348919, -0.8262734 ],
+       ...,
+       [-1.4436711 , -0.15348919,  0.2754861 ],
+       [-0.15779492, -0.15348919, -1.5882927 ],
+       [ 1.1280812 , -1.4383953 , -0.1789896 ]], dtype=float32), array([[398.41727,       nan,       nan,       nan],
+       [404.64636,       nan,       nan,       nan],
+       [407.56146,       nan,       nan,       nan],
+       ...,
+       [413.37396,       nan,       nan,       nan],
+       [402.62378,       nan,       nan,       nan],
+       [410.27594,       nan,       nan,       nan]], dtype=float32))
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fa7bbdff5b0>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fa7bc57ebf0>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7fa7bbcf0f40>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7fa7bb1dcbe0>
+Dataloader built, dataloader_phase1: <torch.utils.data.dataloader.DataLoader object at 0x7fa7bbcf0f40>, dataloader_phase2: <torch.utils.data.dataloader.DataLoader object at 0x7fa7bb1dcbe0>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 3.57649564743042
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler
+Build datasets, datasets1: (array([[ 1.1882621 , -0.06491663, -0.14864847],
+       [-1.2703619 , -0.02841047, -1.4300064 ],
+       [ 1.1882621 , -1.2764436 ,  0.9333543 ],
+       ...,
+       [-0.04104985, -0.07588805,  0.54278123],
+       [-1.2703619 ,  1.1996163 , -1.5631222 ],
+       [-1.2703619 , -0.02293269,  0.13136593]], dtype=float32), array([[402.23978],
+       [403.81616],
+       [400.6416 ],
+       ...,
+       [401.2152 ],
+       [404.02615],
+       [401.662  ]], dtype=float32)), datasets2: (array([[-1.4436711 , -0.15348919,  0.99162984],
+       [-0.15779492, -1.4383953 ,  0.8676818 ],
+       [-1.4436711 , -0.15348919, -0.8262734 ],
+       ...,
+       [-1.4436711 , -0.15348919,  0.2754861 ],
+       [-0.15779492, -0.15348919, -1.5882927 ],
+       [ 1.1280812 , -1.4383953 , -0.1789896 ]], dtype=float32), array([[398.41727,       nan,       nan,       nan],
+       [404.64636,       nan,       nan,       nan],
+       [407.56146,       nan,       nan,       nan],
+       ...,
+       [413.37396,       nan,       nan,       nan],
+       [402.62378,       nan,       nan,       nan],
+       [410.27594,       nan,       nan,       nan]], dtype=float32))
+Build sampler, datasets1: (array([[ 1.1882621 , -0.06491663, -0.14864847],
+       [-1.2703619 , -0.02841047, -1.4300064 ],
+       [ 1.1882621 , -1.2764436 ,  0.9333543 ],
+       ...,
+       [-0.04104985, -0.07588805,  0.54278123],
+       [-1.2703619 ,  1.1996163 , -1.5631222 ],
+       [-1.2703619 , -0.02293269,  0.13136593]], dtype=float32), array([[402.23978],
+       [403.81616],
+       [400.6416 ],
+       ...,
+       [401.2152 ],
+       [404.02615],
+       [401.662  ]], dtype=float32)), datasets2: (array([[-1.4436711 , -0.15348919,  0.99162984],
+       [-0.15779492, -1.4383953 ,  0.8676818 ],
+       [-1.4436711 , -0.15348919, -0.8262734 ],
+       ...,
+       [-1.4436711 , -0.15348919,  0.2754861 ],
+       [-0.15779492, -0.15348919, -1.5882927 ],
+       [ 1.1280812 , -1.4383953 , -0.1789896 ]], dtype=float32), array([[398.41727,       nan,       nan,       nan],
+       [404.64636,       nan,       nan,       nan],
+       [407.56146,       nan,       nan,       nan],
+       ...,
+       [413.37396,       nan,       nan,       nan],
+       [402.62378,       nan,       nan,       nan],
+       [410.27594,       nan,       nan,       nan]], dtype=float32))
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fed48ef74c0>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fed49c30160>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7fed49057670>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7fed48498ca0>
+Dataloader built, dataloader_phase1: <torch.utils.data.dataloader.DataLoader object at 0x7fed49057670>, dataloader_phase2: <torch.utils.data.dataloader.DataLoader object at 0x7fed48498ca0>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 3.365463972091675
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler
+Build datasets, datasets1: (array([[ 1.1882621 , -0.06491663, -0.14864847],
+       [-1.2703619 , -0.02841047, -1.4300064 ],
+       [ 1.1882621 , -1.2764436 ,  0.9333543 ],
+       ...,
+       [-0.04104985, -0.07588805,  0.54278123],
+       [-1.2703619 ,  1.1996163 , -1.5631222 ],
+       [-1.2703619 , -0.02293269,  0.13136593]], dtype=float32), array([[402.23978],
+       [403.81616],
+       [400.6416 ],
+       ...,
+       [401.2152 ],
+       [404.02615],
+       [401.662  ]], dtype=float32)), datasets2: (array([[-1.4436711 , -0.15348919,  0.99162984],
+       [-0.15779492, -1.4383953 ,  0.8676818 ],
+       [-1.4436711 , -0.15348919, -0.8262734 ],
+       ...,
+       [-1.4436711 , -0.15348919,  0.2754861 ],
+       [-0.15779492, -0.15348919, -1.5882927 ],
+       [ 1.1280812 , -1.4383953 , -0.1789896 ]], dtype=float32), array([[398.41727,       nan,       nan,       nan],
+       [404.64636,       nan,       nan,       nan],
+       [407.56146,       nan,       nan,       nan],
+       ...,
+       [413.37396,       nan,       nan,       nan],
+       [402.62378,       nan,       nan,       nan],
+       [410.27594,       nan,       nan,       nan]], dtype=float32))
+Build sampler, datasets1: (array([[ 1.1882621 , -0.06491663, -0.14864847],
+       [-1.2703619 , -0.02841047, -1.4300064 ],
+       [ 1.1882621 , -1.2764436 ,  0.9333543 ],
+       ...,
+       [-0.04104985, -0.07588805,  0.54278123],
+       [-1.2703619 ,  1.1996163 , -1.5631222 ],
+       [-1.2703619 , -0.02293269,  0.13136593]], dtype=float32), array([[402.23978],
+       [403.81616],
+       [400.6416 ],
+       ...,
+       [401.2152 ],
+       [404.02615],
+       [401.662  ]], dtype=float32)), datasets2: (array([[-1.4436711 , -0.15348919,  0.99162984],
+       [-0.15779492, -1.4383953 ,  0.8676818 ],
+       [-1.4436711 , -0.15348919, -0.8262734 ],
+       ...,
+       [-1.4436711 , -0.15348919,  0.2754861 ],
+       [-0.15779492, -0.15348919, -1.5882927 ],
+       [ 1.1280812 , -1.4383953 , -0.1789896 ]], dtype=float32), array([[398.41727,       nan,       nan,       nan],
+       [404.64636,       nan,       nan,       nan],
+       [407.56146,       nan,       nan,       nan],
+       ...,
+       [413.37396,       nan,       nan,       nan],
+       [402.62378,       nan,       nan,       nan],
+       [410.27594,       nan,       nan,       nan]], dtype=float32))
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7ff2daa8b4c0>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7ff2db86c3a0>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7ff2db86c490>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7ff2da01cca0>
+Dataloader built, dataloader_phase1: <torch.utils.data.dataloader.DataLoader object at 0x7ff2db86c490>, dataloader_phase2: <torch.utils.data.dataloader.DataLoader object at 0x7ff2da01cca0>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 3.138005256652832
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler
+Build datasets, datasets1: (array([[ 1.1882621 , -0.06491663, -0.14864847],
+       [-1.2703619 , -0.02841047, -1.4300064 ],
+       [ 1.1882621 , -1.2764436 ,  0.9333543 ],
+       ...,
+       [-0.04104985, -0.07588805,  0.54278123],
+       [-1.2703619 ,  1.1996163 , -1.5631222 ],
+       [-1.2703619 , -0.02293269,  0.13136593]], dtype=float32), array([[402.23978],
+       [403.81616],
+       [400.6416 ],
+       ...,
+       [401.2152 ],
+       [404.02615],
+       [401.662  ]], dtype=float32)), datasets2: (array([[-1.4436711 , -0.15348919,  0.99162984],
+       [-0.15779492, -1.4383953 ,  0.8676818 ],
+       [-1.4436711 , -0.15348919, -0.8262734 ],
+       ...,
+       [-1.4436711 , -0.15348919,  0.2754861 ],
+       [-0.15779492, -0.15348919, -1.5882927 ],
+       [ 1.1280812 , -1.4383953 , -0.1789896 ]], dtype=float32), array([[398.41727,       nan,       nan,       nan],
+       [404.64636,       nan,       nan,       nan],
+       [407.56146,       nan,       nan,       nan],
+       ...,
+       [413.37396,       nan,       nan,       nan],
+       [402.62378,       nan,       nan,       nan],
+       [410.27594,       nan,       nan,       nan]], dtype=float32))
+Build sampler, datasets1: (array([[ 1.1882621 , -0.06491663, -0.14864847],
+       [-1.2703619 , -0.02841047, -1.4300064 ],
+       [ 1.1882621 , -1.2764436 ,  0.9333543 ],
+       ...,
+       [-0.04104985, -0.07588805,  0.54278123],
+       [-1.2703619 ,  1.1996163 , -1.5631222 ],
+       [-1.2703619 , -0.02293269,  0.13136593]], dtype=float32), array([[402.23978],
+       [403.81616],
+       [400.6416 ],
+       ...,
+       [401.2152 ],
+       [404.02615],
+       [401.662  ]], dtype=float32)), datasets2: (array([[-1.4436711 , -0.15348919,  0.99162984],
+       [-0.15779492, -1.4383953 ,  0.8676818 ],
+       [-1.4436711 , -0.15348919, -0.8262734 ],
+       ...,
+       [-1.4436711 , -0.15348919,  0.2754861 ],
+       [-0.15779492, -0.15348919, -1.5882927 ],
+       [ 1.1280812 , -1.4383953 , -0.1789896 ]], dtype=float32), array([[398.41727,       nan,       nan,       nan],
+       [404.64636,       nan,       nan,       nan],
+       [407.56146,       nan,       nan,       nan],
+       ...,
+       [413.37396,       nan,       nan,       nan],
+       [402.62378,       nan,       nan,       nan],
+       [410.27594,       nan,       nan,       nan]], dtype=float32))
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fdf2020b4c0>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fdf20f54160>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7fdf2036f670>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7fdf1f750ca0>
+Dataloader built, dataloader_phase1: <torch.utils.data.dataloader.DataLoader object at 0x7fdf2036f670>, dataloader_phase2: <torch.utils.data.dataloader.DataLoader object at 0x7fdf1f750ca0>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 3.520589590072632
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7faa68de2440>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7faa68de00d0>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7faa68de2440>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7faa68de00d0>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7faa68088f70>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7faa67589ed0>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7faa6758a230>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7faa67589ea0>
+Dataloader built, dataloader_phase1: <torch.utils.data.dataloader.DataLoader object at 0x7faa6758a230>, dataloader_phase2: <torch.utils.data.dataloader.DataLoader object at 0x7faa67589ea0>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 3.366767406463623
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f017950d690>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f02286c81f0>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f017950d690>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f02286c81f0>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f017a246b30>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f0178a0dea0>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7f0178a0e200>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7f0178a0de70>
+Dataloader built, dataloader_phase1: <torch.utils.data.dataloader.DataLoader object at 0x7f0178a0e200>, dataloader_phase2: <torch.utils.data.dataloader.DataLoader object at 0x7f0178a0de70>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 3.413395881652832
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f4fe7a17130>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f4fe6cf7460>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f4fe7a17130>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f4fe6cf7460>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f4fe6d912a0>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f4fe6241ea0>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7f4fe6242200>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7f4fe6241e70>
+Dataloader built, dataloader_phase1: <torch.utils.data.dataloader.DataLoader object at 0x7f4fe6242200>, dataloader_phase2: <torch.utils.data.dataloader.DataLoader object at 0x7f4fe6241e70>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 3.3892288208007812
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fea94e40550>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fea94e40280>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fea94e40550>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fea94e40280>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fea940e0100>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fea93591ea0>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7fea93592200>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7fea93591e70>
+Dataloader built, dataloader_phase1: <torch.utils.data.dataloader.DataLoader object at 0x7fea93592200>, dataloader_phase2: <torch.utils.data.dataloader.DataLoader object at 0x7fea93591e70>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 2.5799765586853027
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fb84fdb7a90>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fb8ff014850>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fb84fdb7a90>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fb8ff014850>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fb84f2ad5d0>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fb84ee1a500>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7fb84ee1a860>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7fb84ee1a4d0>
+Dataloader built, dataloader_phase1: <torch.utils.data.dataloader.DataLoader object at 0x7fb84ee1a860>, dataloader_phase2: <torch.utils.data.dataloader.DataLoader object at 0x7fb84ee1a4d0>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 3.4162051677703857
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f88847c8820>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f87d55341f0>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f88847c8820>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f87d55341f0>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f87d4a057e0>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f87d4a9e4d0>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7f87d4a9e830>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7f87d4a9e4a0>
+Dataloader built, dataloader_phase1: <torch.utils.data.dataloader.DataLoader object at 0x7f87d4a9e830>, dataloader_phase2: <torch.utils.data.dataloader.DataLoader object at 0x7f87d4a9e4a0>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 3.4010822772979736
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fc8152c8b80>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fc766073dc0>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fc8152c8b80>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fc766073dc0>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fc765571b40>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fc765bae830>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7fc765baeb90>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7fc765bae800>
+Dataloader built, dataloader_phase1: <torch.utils.data.dataloader.DataLoader object at 0x7fc765baeb90>, dataloader_phase2: <torch.utils.data.dataloader.DataLoader object at 0x7fc765bae800>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 3.40388560295105
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f2a2c8eddb0>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f2a2c8ede10>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f2a2c8eddb0>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f2a2c8ede10>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f2a2d410130>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f2a2c976b00>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7f2a2c976e60>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7f2a2c976dd0>
+Dataloader built, dataloader_phase1: <torch.utils.data.dataloader.DataLoader object at 0x7f2a2c976e60>, dataloader_phase2: <torch.utils.data.dataloader.DataLoader object at 0x7f2a2c976dd0>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 3.393238067626953
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fea5d8a9f00>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fea5d8a9f60>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fea5d8a9f00>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fea5d8a9f60>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fea5e3d0280>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fea5d3c2c50>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7fea5d3c2fb0>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7fea5d3c2c20>
+Dataloader built, dataloader_phase1: <torch.utils.data.dataloader.DataLoader object at 0x7fea5d3c2fb0>, dataloader_phase2: <torch.utils.data.dataloader.DataLoader object at 0x7fea5d3c2c20>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 3.464672803878784
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f9151289f30>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f9151289f90>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f9151289f30>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f9151289f90>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f9151db02b0>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f915130ac80>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7f915130afe0>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7f915130ac50>
+Dataloader built, dataloader_phase1: <torch.utils.data.dataloader.DataLoader object at 0x7f915130afe0>, dataloader_phase2: <torch.utils.data.dataloader.DataLoader object at 0x7f915130ac50>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 3.396071434020996
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f94311c1f30>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f94311c1f90>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f94311c1f30>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f94311c1f90>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f9431ce82b0>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f9431256c80>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7f9431256fe0>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7f9431256c50>
+Dataloader built, dataloader_phase1: <torch.utils.data.dataloader.DataLoader object at 0x7f9431256fe0>, dataloader_phase2: <torch.utils.data.dataloader.DataLoader object at 0x7f9431256c50>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 3.4285426139831543
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f5f484a5f60>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f5f484a5fc0>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f5f484a5f60>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f5f484a5fc0>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f5f48df82e0>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f5f4831acb0>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7f5f4831b010>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7f5f4831ac80>
+Dataloader built, dataloader_phase1: <torch.utils.data.dataloader.DataLoader object at 0x7f5f4831b010>, dataloader_phase2: <torch.utils.data.dataloader.DataLoader object at 0x7f5f4831ac80>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 3.4093258380889893
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fb076981f30>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fb076981f90>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fb076981f30>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fb076981f90>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fb0774a82b0>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fb076a1ec80>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7fb076a1efe0>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7fb076a1ec50>
+Dataloader built, dataloader_phase1: <torch.utils.data.dataloader.DataLoader object at 0x7fb076a1efe0>, dataloader_phase2: <torch.utils.data.dataloader.DataLoader object at 0x7fb076a1ec50>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 3.4090452194213867
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f81620c1f30>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f81620c1f90>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f81620c1f30>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f81620c1f90>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f8162be82b0>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f8161b9ec80>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7f8161b9efe0>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7f8161b9ec50>
+Dataloader built, dataloader_phase1: <torch.utils.data.dataloader.DataLoader object at 0x7f8161b9efe0>, dataloader_phase2: <torch.utils.data.dataloader.DataLoader object at 0x7f8161b9ec50>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 3.6895899772644043
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler, phase1_input_train: (12552, 3), phase1_input_test: (3138, 3), phase2_input_train: (10745, 3), phase2_input_test: (2687, 3)
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7efed20ea6e0>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7efed20ea680>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7efed20ea6e0>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7efed20ea680>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7efed2c10a60>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7efed1bff430>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7efed1bff790>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7efed1bff400>
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7efed1bff970>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7efed1bff640>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7efed1bff970>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7efed1bff640>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7efed1bff670>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7efed1bff580>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7efed1bff520>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7efed1bff550>
+Dataloader built, dataloader_phase1_train: <torch.utils.data.dataloader.DataLoader object at 0x7efed1bff790>, dataloader_phase1_test: <torch.utils.data.dataloader.DataLoader object at 0x7efed1bff400>, dataloader_phase2_train: <torch.utils.data.dataloader.DataLoader object at 0x7efed1bff520>, dataloader_phase2_test: <torch.utils.data.dataloader.DataLoader object at 0x7efed1bff550>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 3.423269033432007
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler, phase1_input_train: (12552, 3), phase1_input_test: (3138, 3), phase2_input_train: (10745, 3), phase2_input_test: (2687, 3)
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f4e92ab26b0>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f4e92ab2710>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f4e92ab26b0>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f4e92ab2710>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f4e935d0a30>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f4e92b33400>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7f4e92b33760>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7f4e92b333d0>
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f4e92b33940>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f4e92b33610>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f4e92b33940>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f4e92b33610>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f4e92b33640>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f4e92b33550>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7f4e92b334f0>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7f4e92b33520>
+Dataloader built, dataloader_phase1_train: <torch.utils.data.dataloader.DataLoader object at 0x7f4e92b33760>, dataloader_phase1_test: <torch.utils.data.dataloader.DataLoader object at 0x7f4e92b333d0>, dataloader_phase2_train: <torch.utils.data.dataloader.DataLoader object at 0x7f4e92b334f0>, dataloader_phase2_test: <torch.utils.data.dataloader.DataLoader object at 0x7f4e92b33520>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 3.3939735889434814
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler, phase1_input_train: (12552, 3), phase1_input_test: (3138, 3), phase2_input_train: (10745, 3), phase2_input_test: (2687, 3)
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fea518de710>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fea518de770>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fea518de710>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fea518de770>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fea523fca90>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fea5196b460>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7fea5196b7c0>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7fea5196b430>
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fea5196b9a0>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fea5196b670>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fea5196b9a0>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fea5196b670>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fea5196b6a0>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fea5196b5b0>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7fea5196b550>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7fea5196b580>
+Dataloader built, dataloader_phase1_train: <torch.utils.data.dataloader.DataLoader object at 0x7fea5196b7c0>, dataloader_phase1_test: <torch.utils.data.dataloader.DataLoader object at 0x7fea5196b430>, dataloader_phase2_train: <torch.utils.data.dataloader.DataLoader object at 0x7fea5196b550>, dataloader_phase2_test: <torch.utils.data.dataloader.DataLoader object at 0x7fea5196b580>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 3.3801562786102295
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler, phase1_input_train: (12552, 3), phase1_input_test: (3138, 3), phase2_input_train: (10745, 3), phase2_input_test: (2687, 3)
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fccacc5e710>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fccacc5e770>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fccacc5e710>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fccacc5e770>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fccad780a90>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fccac773460>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7fccac7737c0>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7fccac773430>
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fccac7739a0>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fccac773700>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fccac7739a0>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fccac773700>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fccac7736a0>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fccac7735b0>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7fccac773550>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7fccac773580>
+Dataloader built, dataloader_phase1_train: <torch.utils.data.dataloader.DataLoader object at 0x7fccac7737c0>, dataloader_phase1_test: <torch.utils.data.dataloader.DataLoader object at 0x7fccac773430>, dataloader_phase2_train: <torch.utils.data.dataloader.DataLoader object at 0x7fccac773550>, dataloader_phase2_test: <torch.utils.data.dataloader.DataLoader object at 0x7fccac773580>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 3.392764091491699
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler, phase1_input_train: (12552, 3), phase1_input_test: (3138, 3), phase2_input_train: (10745, 3), phase2_input_test: (2687, 3)
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f550f54a6e0>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f550f54a740>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f550f54a6e0>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f550f54a740>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f5510094a60>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f550f5c3430>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7f550f5c3790>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7f550f5c3700>
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f550f5c3400>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f550f5c3640>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f550f5c3400>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f550f5c3640>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f550f5c3670>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f550f5c3580>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7f550f5c3520>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7f550f5c3550>
+Dataloader built, dataloader_phase1_train: <torch.utils.data.dataloader.DataLoader object at 0x7f550f5c3790>, dataloader_phase1_test: <torch.utils.data.dataloader.DataLoader object at 0x7f550f5c3700>, dataloader_phase2_train: <torch.utils.data.dataloader.DataLoader object at 0x7f550f5c3520>, dataloader_phase2_test: <torch.utils.data.dataloader.DataLoader object at 0x7f550f5c3550>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 3.421966552734375
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler, phase1_input_train: (12552, 3), phase1_input_test: (3138, 3), phase2_input_train: (10745, 3), phase2_input_test: (2687, 3)
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fd295fe2530>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fd295fe2590>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fd295fe2530>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fd295fe2590>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fd296b008b0>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fd29606b280>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7fd29606b5e0>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7fd29606b250>
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fd29606b7c0>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fd29606b490>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fd29606b7c0>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fd29606b490>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fd29606b4c0>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fd29606b3d0>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7fd29606b370>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7fd29606b3a0>
+Dataloader built, dataloader_phase1_train: <torch.utils.data.dataloader.DataLoader object at 0x7fd29606b5e0>, dataloader_phase1_test: <torch.utils.data.dataloader.DataLoader object at 0x7fd29606b250>, dataloader_phase2_train: <torch.utils.data.dataloader.DataLoader object at 0x7fd29606b370>, dataloader_phase2_test: <torch.utils.data.dataloader.DataLoader object at 0x7fd29606b3a0>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 3.3911166191101074
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler, phase1_input_train: (12552, 3), phase1_input_test: (3138, 3), phase2_input_train: (10745, 3), phase2_input_test: (2687, 3)
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f4b568664d0>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f4b56866530>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f4b568664d0>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f4b56866530>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f4b57384850>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f4b563e3220>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7f4b563e3580>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7f4b563e31f0>
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f4b563e3760>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f4b563e3430>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f4b563e3760>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f4b563e3430>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f4b563e3460>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f4b563e3370>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7f4b563e3310>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7f4b563e3340>
+Dataloader built, dataloader_phase1_train: <torch.utils.data.dataloader.DataLoader object at 0x7f4b563e3580>, dataloader_phase1_test: <torch.utils.data.dataloader.DataLoader object at 0x7f4b563e31f0>, dataloader_phase2_train: <torch.utils.data.dataloader.DataLoader object at 0x7f4b563e3310>, dataloader_phase2_test: <torch.utils.data.dataloader.DataLoader object at 0x7f4b563e3340>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 3.050459623336792
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler, phase1_input_train: (12552, 3), phase1_input_test: (3138, 3), phase2_input_train: (10745, 3), phase2_input_test: (2687, 3)
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f23553da530>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f23553da590>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f23553da530>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f23553da590>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f2355f248b0>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f2355447280>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7f23554475e0>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7f2355447250>
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f23554477c0>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f2355447490>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f23554477c0>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f2355447490>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f23554474c0>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f23554473d0>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7f2355447370>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7f23554473a0>
+Dataloader built, dataloader_phase1_train: <torch.utils.data.dataloader.DataLoader object at 0x7f23554475e0>, dataloader_phase1_test: <torch.utils.data.dataloader.DataLoader object at 0x7f2355447250>, dataloader_phase2_train: <torch.utils.data.dataloader.DataLoader object at 0x7f2355447370>, dataloader_phase2_test: <torch.utils.data.dataloader.DataLoader object at 0x7f23554473a0>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 3.3776543140411377
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler, phase1_input_train: (12552, 3), phase1_input_test: (3138, 3), phase2_input_train: (10745, 3), phase2_input_test: (2687, 3)
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fd7bae86590>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fd7bae865f0>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fd7bae86590>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fd7bae865f0>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fd7bb9a4910>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fd7ba9832e0>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7fd7ba983640>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7fd7ba9832b0>
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fd7ba983820>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fd7ba9834f0>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fd7ba983820>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fd7ba9834f0>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fd7ba983520>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fd7ba983430>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7fd7ba9833d0>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7fd7ba983400>
+Dataloader built, dataloader_phase1_train: <torch.utils.data.dataloader.DataLoader object at 0x7fd7ba983640>, dataloader_phase1_test: <torch.utils.data.dataloader.DataLoader object at 0x7fd7ba9832b0>, dataloader_phase2_train: <torch.utils.data.dataloader.DataLoader object at 0x7fd7ba9833d0>, dataloader_phase2_test: <torch.utils.data.dataloader.DataLoader object at 0x7fd7ba983400>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 2.8626394271850586
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler, phase1_input_train: (12552, 3), phase1_input_test: (3138, 3), phase2_input_train: (10745, 3), phase2_input_test: (2687, 3)
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fa096b56590>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fa096b565f0>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fa096b56590>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fa096b565f0>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fa097674910>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fa096bdf2e0>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7fa096bdf640>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7fa096bdf2b0>
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fa096bdf820>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fa096bdf4f0>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fa096bdf820>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fa096bdf4f0>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fa096bdf520>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fa096bdf430>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7fa096bdf3d0>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7fa096bdf400>
+Dataloader built, dataloader_phase1_train: <torch.utils.data.dataloader.DataLoader object at 0x7fa096bdf640>, dataloader_phase1_test: <torch.utils.data.dataloader.DataLoader object at 0x7fa096bdf2b0>, dataloader_phase2_train: <torch.utils.data.dataloader.DataLoader object at 0x7fa096bdf3d0>, dataloader_phase2_test: <torch.utils.data.dataloader.DataLoader object at 0x7fa096bdf400>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 2.589811086654663
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler, phase1_input_train: (12552, 3), phase1_input_test: (3138, 3), phase2_input_train: (10745, 3), phase2_input_test: (2687, 3)
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f12d3f76590>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f12d3f765f0>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f12d3f76590>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f12d3f765f0>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f12d4a94910>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f12d40032e0>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7f12d4003640>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7f12d40032b0>
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f12d4003820>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f12d40034f0>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f12d4003820>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f12d40034f0>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f12d4003520>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f12d4003430>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7f12d40033d0>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7f12d4003400>
+Dataloader built, dataloader_phase1_train: <torch.utils.data.dataloader.DataLoader object at 0x7f12d4003640>, dataloader_phase1_test: <torch.utils.data.dataloader.DataLoader object at 0x7f12d40032b0>, dataloader_phase2_train: <torch.utils.data.dataloader.DataLoader object at 0x7f12d40033d0>, dataloader_phase2_test: <torch.utils.data.dataloader.DataLoader object at 0x7f12d4003400>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 2.5725603103637695
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler, phase1_input_train: (12552, 3), phase1_input_test: (3138, 3), phase2_input_train: (10745, 3), phase2_input_test: (2687, 3)
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f2aebc62590>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f2aebc625f0>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f2aebc62590>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f2aebc625f0>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f2aec780910>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f2aeb7d72e0>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7f2aeb7d7640>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7f2aeb7d72b0>
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f2aeb7d7820>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f2aeb7d74f0>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f2aeb7d7820>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f2aeb7d74f0>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f2aeb7d7520>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f2aeb7d7430>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7f2aeb7d73d0>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7f2aeb7d7400>
+Dataloader built, dataloader_phase1_train: <torch.utils.data.dataloader.DataLoader object at 0x7f2aeb7d7640>, dataloader_phase1_test: <torch.utils.data.dataloader.DataLoader object at 0x7f2aeb7d72b0>, dataloader_phase2_train: <torch.utils.data.dataloader.DataLoader object at 0x7f2aeb7d73d0>, dataloader_phase2_test: <torch.utils.data.dataloader.DataLoader object at 0x7f2aeb7d7400>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 3.3757944107055664
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler, phase1_input_train: (12552, 3), phase1_input_test: (3138, 3), phase2_input_train: (10745, 3), phase2_input_test: (2687, 3)
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f2d91142590>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f2d911425f0>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f2d91142590>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f2d911425f0>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f2d91c60910>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f2d911c32e0>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7f2d911c3640>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7f2d911c32b0>
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f2d911c3820>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f2d911c34f0>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f2d911c3820>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f2d911c34f0>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f2d911c3520>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f2d911c3430>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7f2d911c33d0>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7f2d911c3400>
+Dataloader built, dataloader_phase1_train: <torch.utils.data.dataloader.DataLoader object at 0x7f2d911c3640>, dataloader_phase1_test: <torch.utils.data.dataloader.DataLoader object at 0x7f2d911c32b0>, dataloader_phase2_train: <torch.utils.data.dataloader.DataLoader object at 0x7f2d911c33d0>, dataloader_phase2_test: <torch.utils.data.dataloader.DataLoader object at 0x7f2d911c3400>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 3.4790120124816895
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler, phase1_input_train: (12552, 3), phase1_input_test: (3138, 3), phase2_input_train: (10745, 3), phase2_input_test: (2687, 3)
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f892994a530>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f892994a590>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f892994a530>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f892994a590>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f892a4688b0>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f89299d7280>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7f89299d75e0>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7f89299d7250>
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f89299d77c0>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f89299d7490>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f89299d77c0>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f89299d7490>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f89299d74c0>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f89299d73d0>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7f89299d7370>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7f89299d73a0>
+Dataloader built, dataloader_phase1_train: <torch.utils.data.dataloader.DataLoader object at 0x7f89299d75e0>, dataloader_phase1_test: <torch.utils.data.dataloader.DataLoader object at 0x7f89299d7250>, dataloader_phase2_train: <torch.utils.data.dataloader.DataLoader object at 0x7f89299d7370>, dataloader_phase2_test: <torch.utils.data.dataloader.DataLoader object at 0x7f89299d73a0>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 3.407771348953247
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler, phase1_input_train: (12552, 3), phase1_input_test: (3138, 3), phase2_input_train: (10745, 3), phase2_input_test: (2687, 3)
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f8e7670f520>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f8e7748af80>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f8e7670f520>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f8e7748af80>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f8e7748ae30>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f8e75c9df30>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7f8e75c9e290>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7f8e75c9df00>
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f8e75c9e470>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f8e75c9e140>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f8e75c9e470>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f8e75c9e140>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f8e75c9e170>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f8e75c9e080>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7f8e75c9e020>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7f8e75c9e050>
+Dataloader built, dataloader_phase1_train: <torch.utils.data.dataloader.DataLoader object at 0x7f8e75c9e290>, dataloader_phase1_test: <torch.utils.data.dataloader.DataLoader object at 0x7f8e75c9df00>, dataloader_phase2_train: <torch.utils.data.dataloader.DataLoader object at 0x7f8e75c9e020>, dataloader_phase2_test: <torch.utils.data.dataloader.DataLoader object at 0x7f8e75c9e050>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 4.3781726360321045
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler, phase1_input_train: (12552, 3), phase1_input_test: (3138, 3), phase2_input_train: (10745, 3), phase2_input_test: (2687, 3)
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fbe37b5cf10>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fbe37acb490>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fbe37b5cf10>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fbe37acb490>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fbe388826b0>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fbe37045ea0>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7fbe37046200>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7fbe37045e70>
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fbe370463e0>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fbe370460b0>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fbe370463e0>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fbe370460b0>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fbe370460e0>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fbe37045ff0>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7fbe37045f90>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7fbe37045fc0>
+Dataloader built, dataloader_phase1_train: <torch.utils.data.dataloader.DataLoader object at 0x7fbe37046200>, dataloader_phase1_test: <torch.utils.data.dataloader.DataLoader object at 0x7fbe37045e70>, dataloader_phase2_train: <torch.utils.data.dataloader.DataLoader object at 0x7fbe37045f90>, dataloader_phase2_test: <torch.utils.data.dataloader.DataLoader object at 0x7fbe37045fc0>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 3.5984060764312744
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler, phase1_input_train: (12552, 3), phase1_input_test: (3138, 3), phase2_input_train: (10745, 3), phase2_input_test: (2687, 3)
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f6889087820>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f67d9e90310>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f6889087820>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f67d9e90310>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f67d9361900>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f67d93fe5f0>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7f67d93fe950>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7f67d93fe5c0>
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f67d93feb30>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f67d93fe800>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7f67d93feb30>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7f67d93fe800>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f67d93fe830>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7f67d93fe740>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7f67d93fe6e0>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7f67d93fe710>
+Dataloader built, dataloader_phase1_train: <torch.utils.data.dataloader.DataLoader object at 0x7f67d93fe950>, dataloader_phase1_test: <torch.utils.data.dataloader.DataLoader object at 0x7f67d93fe5c0>, dataloader_phase2_train: <torch.utils.data.dataloader.DataLoader object at 0x7f67d93fe6e0>, dataloader_phase2_test: <torch.utils.data.dataloader.DataLoader object at 0x7f67d93fe710>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 3.7321970462799072
+Basic config checked completed
+Data loaded completed, data_path: /home/yxfeng/project2/sci925/data/三维双热通量.xlsx
+Data config checked completed, output_cols_phase1: ['T (K)'], output_cols_phase2: ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)']
+Data split based on phase completed, phase1_index_end: 15698, test_ratio: 0.2
+Data preprocessing completed, scaler: standardscaler, phase1_input_train: (12552, 3), phase1_input_test: (3138, 3), phase2_input_train: (10745, 3), phase2_input_test: (2687, 3)
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fc6a6d87850>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fc5f7b04310>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fc6a6d87850>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fc5f7b04310>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fc5f71a9900>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fc5f70125f0>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7fc5f7012950>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7fc5f70125c0>
+Build datasets, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fc5f7012b30>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fc5f7012800>
+Build sampler, datasets1: <torch.utils.data.dataset.TensorDataset object at 0x7fc5f7012b30>, datasets2: <torch.utils.data.dataset.TensorDataset object at 0x7fc5f7012800>
+Build sampler, sampler1: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fc5f7012830>, sampler2: <torch.utils.data.sampler.SubsetRandomSampler object at 0x7fc5f7012740>
+Build dataloader, dataloader1: <torch.utils.data.dataloader.DataLoader object at 0x7fc5f70126e0>, dataloader2: <torch.utils.data.dataloader.DataLoader object at 0x7fc5f7012710>
+Dataloader built, dataloader_phase1_train: <torch.utils.data.dataloader.DataLoader object at 0x7fc5f7012950>, dataloader_phase1_test: <torch.utils.data.dataloader.DataLoader object at 0x7fc5f70125c0>, dataloader_phase2_train: <torch.utils.data.dataloader.DataLoader object at 0x7fc5f70126e0>, dataloader_phase2_test: <torch.utils.data.dataloader.DataLoader object at 0x7fc5f7012710>
+DataManager initialized, config: {'data_path': '/home/yxfeng/project2/sci925/data/三维双热通量.xlsx', 'format': 'auto', 'sheet': 0, 'index_start': 8, 'phase1_index_end': 15698, 'features': ['% x', 'y', 'z'], 'phase1_targets': ['T (K)'], 'phase2_targets': ['T (K)', 'u (m/s)', 'v (m/s)', 'p (Pa)'], 'output_dir': '/home/yxfeng/project2/sci925/outputs', 'log_dir': '/home/yxfeng/project2/sci925/logs', 'test_ratio': 0.2, 'random_state': 42, 'scaler_name': 'standardscaler', 'batch_size1': 64, 'batch_size2': 64}, time: 3.346956729888916
