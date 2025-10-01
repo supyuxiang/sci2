@@ -117,7 +117,7 @@ class Trainer:
         self.logger.info(f"Training started, epochs: {self.config.get('epochs',None)}")
         for epoch in tqdm(range(self.config.get('epochs',None))):
             start_time = time.time()
-            for idx,(batch_data,batch_target) in enumerate(tqdm(self.dataloader_train,desc=f'Epoch {epoch}')):
+            for idx,(batch_data,batch_target) in enumerate(tqdm(self.dataloader_train, desc=f'Epoch {epoch}')):
                 batch_data = batch_data.to(self.device)
                 batch_target = batch_target.to(self.device)
                 self.model.train()
@@ -185,7 +185,7 @@ class Trainer:
             'total_mse':0
         }
         with torch.no_grad():
-            for batch_idx,(batch_in,batch_out) in enumerate(tqdm(dataloader_val),desc=f'Validating'):
+            for batch_idx,(batch_in,batch_out) in enumerate(tqdm(dataloader_val, desc='Validating')):
                 batch_in = batch_in.to(self.device)
                 batch_out = batch_out.to(self.device)
                 output = self.model(batch_in)
@@ -256,7 +256,7 @@ class Trainer:
             self.logger.info(f"Model saved, save_path: {save_path}")
         else:
             save_best_model_only_dir.mkdir(parents=True, exist_ok=True)
-            save_path = save_best_model_only_dir / f"{self.model.name}_model_{epoch}.pth"
+            save_path = save_best_model_only_dir / f"model_{epoch}.pth"
             torch.save(self.model.state_dict(), save_path)
             self.logger.info(f"Model saved, save_path: {save_path}")
     
