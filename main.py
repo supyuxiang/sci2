@@ -137,11 +137,15 @@ def main():
     assert phase_ls is not None, f"phase_ls is not set"
     dataloader_train_phase1, dataloader_test_phase1, dataloader_train_phase2, dataloader_test_phase2 = create_dataloaders(config)
     if 1 in phase_ls:
+        print(f"Training phase 1")
         model1 = create_model(logger,config.get('Model',{}).get('model_name',{}).get('phase1',{}),1)
         phase1_pipline(model1,dataloader_train_phase1,dataloader_test_phase1,config.get('Train',{}).get('save_model_path1',{}),config,logger,is_val=True)
+        print(f"Training phase 1 completed")
     if 2 in phase_ls:
+        print(f"Training phase 2")
         model2 = create_model(logger,config.get('Model',{}).get('model_name',{}).get('phase2',{}),2)
         phase2_pipline(model2,dataloader_train_phase2,dataloader_test_phase2,config.get('Train',{}).get('save_model_path2',{}),config,logger,is_val=True)
+        print(f"Training phase 2 completed")
     else:
         raise ValueError(f"Invalid phase: {phase_ls}")
     logger.info(f"Main completed, time: {time.time() - start_time:.2f}s")
