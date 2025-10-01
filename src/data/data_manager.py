@@ -17,8 +17,6 @@ from utils.scaler import build_scaler
 from utils.logger import Logger
 
 
-
-
 class DataManager:
     """Load excel and produce phase-specific datasets.
 
