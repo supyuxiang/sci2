@@ -18,6 +18,7 @@ from .resmlp import ResMLP
 from .gru import GRURegressor
 from .cnn1d import CNNRegressor1D
 from .transformer import TransformerEncoderRegressor
+from .wide_deep import WideAndDeep
 
 
 class ModelFactory(torch.nn.Module):
@@ -141,6 +142,19 @@ class ModelFactory(torch.nn.Module):
             self.depth = int(tr_cfg.get('depth', 4))
             self.num_heads = int(tr_cfg.get('num_heads', 4))
             self.dropout = float(tr_cfg.get('dropout', 0.1))
+
+    
+
+        elif self.model_name == 'wide_deep':
+            cfg = self.model_setting.get('wide_deep', None)
+            if not cfg:
+                raise ValueError('wide_deep setting is not set')
+            self.indim = int(self.model_setting.get('input_dim', False))
+            self.outdim1 = int(self.model_setting.get('output_dim1', False))
+            self.outdim2 = int(self.model_setting.get('output_dim2', False))
+            self.deep_hidden = int(cfg.get('deep_hidden', 128))
+            self.deep_layers = int(cfg.get('deep_layers', 3))
+            self.dropout = float(cfg.get('dropout', 0.1))
 
         else:
             raise ValueError(f"Model name {self.model_name} not supported")
@@ -314,6 +328,15 @@ class ModelFactory(torch.nn.Module):
                     num_heads=self.num_heads,
                     dropout=self.dropout,
                 )
+            else:
+                raise ValueError(f"Phase {self.phase} not supported")
+
+
+        elif self.model_name == 'wide_deep':
+            if self.phase == 1:
+                self.model = WideAndDeep(self.indim, self.outdim1, self.deep_hidden, self.deep_layers, self.dropout)
+            elif self.phase == 2:
+                self.model = WideAndDeep(self.indim, self.outdim2, self.deep_hidden, self.deep_layers, self.dropout)
             else:
                 raise ValueError(f"Phase {self.phase} not supported")
 

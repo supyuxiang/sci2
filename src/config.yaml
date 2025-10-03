@@ -96,6 +96,7 @@ Model:
     - 'gru'
     - 'cnn1d'
     - 'transformer'
+    - 'wide_deep'
 
   input_dim: 3
   dropout: 0.2
@@ -128,22 +129,27 @@ Model:
 
   resmlp:
     hidden_dim: 128
-    depth: 6
+    depth: 8
     dropout: 0.2
 
   gru:
     hidden_dim: 128
-    num_layers: 2
+    num_layers: 4
     dropout: 0.1
 
   cnn1d:
     channels: 64
-    depth: 3
+    depth: 4
     kernel_size: 3
     dropout: 0.1
 
   transformer:
     hidden_dim: 128
     depth: 4
-    num_heads: 4
+    num_heads: 8
+    dropout: 0.1
+
+  wide_deep:
+    deep_hidden: 128
+    deep_layers: 3
     dropout: 0.1

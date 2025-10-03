@@ -4,5 +4,7 @@ cd /home/yxfeng/project2/sci925
 
 
 echo 'Start running'
-CUDA_VISIBLE_DEVICES=7 python main.py --model_name 'agtmlp' --epochs 500
+CUDA_VISIBLE_DEVICES=7 python main.py --model_name 'resmlp' --epochs 500
 echo 'Running completed'
+
+
