@@ -14,6 +14,10 @@ from .mlp import MLP
 from .GatedResMLP import GatedResMLP
 from .lstm import LSTM
 from .AdaptiveGatedTransformerMLP import AdaptiveGatedTransformerMLP
+from .resmlp import ResMLP
+from .gru import GRURegressor
+from .cnn1d import CNNRegressor1D
+from .transformer import TransformerEncoderRegressor
 
 
 class ModelFactory(torch.nn.Module):
@@ -91,6 +95,53 @@ class ModelFactory(torch.nn.Module):
             self.num_heads = int(agtmlp_cfg.get('num_heads',8))
             self.num_experts = int(agtmlp_cfg.get('num_experts',6))
             assert all([self.indim,self.outdim1,self.outdim2,self.hidden_dim,self.depth,self.dropout]),'input_dim, output_dim1, output_dim2, hidden_dim, depth and dropout are not set'
+        elif self.model_name == 'resmlp':
+            res_cfg = self.model_setting.get('resmlp', None)
+            if not res_cfg:
+                raise ValueError('resmlp setting is not set')
+            self.indim = int(self.model_setting.get('input_dim', False))
+            self.outdim1 = int(self.model_setting.get('output_dim1', False))
+            self.outdim2 = int(self.model_setting.get('output_dim2', False))
+            self.hidden_dim = int(res_cfg.get('hidden_dim', False))
+            self.depth = int(res_cfg.get('depth', False))
+            self.dropout = float(res_cfg.get('dropout', False))
+            assert all([self.indim,self.outdim1,self.outdim2,self.hidden_dim,self.depth,self.dropout]),'input_dim, output_dim1, output_dim2, hidden_dim, depth and dropout are not set'
+
+        elif self.model_name == 'gru':
+            gru_cfg = self.model_setting.get('gru', None)
+            if not gru_cfg:
+                raise ValueError('gru setting is not set')
+            self.indim = int(self.model_setting.get('input_dim', False))
+            self.outdim1 = int(self.model_setting.get('output_dim1', False))
+            self.outdim2 = int(self.model_setting.get('output_dim2', False))
+            self.hidden_dim = int(gru_cfg.get('hidden_dim', False))
+            self.num_layers = int(gru_cfg.get('num_layers', 2))
+            self.dropout = float(gru_cfg.get('dropout', 0.1))
+            assert all([self.indim,self.outdim1,self.outdim2,self.hidden_dim,self.num_layers is not None]),'gru hyperparameters are not set'
+        elif self.model_name == 'cnn1d':
+            cnn_cfg = self.model_setting.get('cnn1d', None)
+            if not cnn_cfg:
+                raise ValueError('cnn1d setting is not set')
+            self.indim = int(self.model_setting.get('input_dim', False))
+            self.outdim1 = int(self.model_setting.get('output_dim1', False))
+            self.outdim2 = int(self.model_setting.get('output_dim2', False))
+            self.channels = int(cnn_cfg.get('channels', 64))
+            self.depth = int(cnn_cfg.get('depth', 3))
+            self.kernel_size = int(cnn_cfg.get('kernel_size', 3))
+            self.dropout = float(cnn_cfg.get('dropout', 0.1))
+
+        elif self.model_name == 'transformer':
+            tr_cfg = self.model_setting.get('transformer', None)
+            if not tr_cfg:
+                raise ValueError('transformer setting is not set')
+            self.indim = int(self.model_setting.get('input_dim', False))
+            self.outdim1 = int(self.model_setting.get('output_dim1', False))
+            self.outdim2 = int(self.model_setting.get('output_dim2', False))
+            self.hidden_dim = int(tr_cfg.get('hidden_dim', 128))
+            self.depth = int(tr_cfg.get('depth', 4))
+            self.num_heads = int(tr_cfg.get('num_heads', 4))
+            self.dropout = float(tr_cfg.get('dropout', 0.1))
+
         else:
             raise ValueError(f"Model name {self.model_name} not supported")
 
@@ -182,6 +233,90 @@ class ModelFactory(torch.nn.Module):
             else:
                 raise ValueError(f"Phase {self.phase} not supported")
         
+        elif self.model_name == 'resmlp':
+            if self.phase == 1:
+                self.model = ResMLP(
+                    indim=self.indim,
+                    outdim=self.outdim1,
+                    hidden_dim=self.hidden_dim,
+                    depth=self.depth,
+                    dropout=self.dropout,
+                )
+            elif self.phase == 2:
+                self.model = ResMLP(
+                    indim=self.indim,
+                    outdim=self.outdim2,
+                    hidden_dim=self.hidden_dim,
+                    depth=self.depth,
+                    dropout=self.dropout,
+                )
+            else:
+                raise ValueError(f"Phase {self.phase} not supported")
+
+        elif self.model_name == 'gru':
+            if self.phase == 1:
+                self.model = GRURegressor(
+                    indim=self.indim,
+                    outdim=self.outdim1,
+                    hidden_dim=self.hidden_dim,
+                    num_layers=self.num_layers,
+                    dropout=self.dropout,
+                )
+            elif self.phase == 2:
+                self.model = GRURegressor(
+                    indim=self.indim,
+                    outdim=self.outdim2,
+                    hidden_dim=self.hidden_dim,
+                    num_layers=self.num_layers,
+                    dropout=self.dropout,
+                )
+            else:
+                raise ValueError(f"Phase {self.phase} not supported")
+
+        elif self.model_name == 'cnn1d':
+            if self.phase == 1:
+                self.model = CNNRegressor1D(
+                    indim=self.indim,
+                    outdim=self.outdim1,
+                    channels=self.channels,
+                    depth=self.depth,
+                    kernel_size=self.kernel_size,
+                    dropout=self.dropout,
+                )
+            elif self.phase == 2:
+                self.model = CNNRegressor1D(
+                    indim=self.indim,
+                    outdim=self.outdim2,
+                    channels=self.channels,
+                    depth=self.depth,
+                    kernel_size=self.kernel_size,
+                    dropout=self.dropout,
+                )
+            else:
+                raise ValueError(f"Phase {self.phase} not supported")
+
+        elif self.model_name == 'transformer':
+            if self.phase == 1:
+                self.model = TransformerEncoderRegressor(
+                    indim=self.indim,
+                    outdim=self.outdim1,
+                    hidden_dim=self.hidden_dim,
+                    depth=self.depth,
+                    num_heads=self.num_heads,
+                    dropout=self.dropout,
+                )
+            elif self.phase == 2:
+                self.model = TransformerEncoderRegressor(
+                    indim=self.indim,
+                    outdim=self.outdim2,
+                    hidden_dim=self.hidden_dim,
+                    depth=self.depth,
+                    num_heads=self.num_heads,
+                    dropout=self.dropout,
+                )
+            else:
+                raise ValueError(f"Phase {self.phase} not supported")
+
         else:
             self.logger.error(f"Model name {self.model_name} not supported")
             raise ValueError(f"Model name {self.model_name} not supported")

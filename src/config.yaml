@@ -92,6 +92,10 @@ Model:
     - 'lstm'
     - 'grmlp'
     - 'agtmlp'
+    - 'resmlp'
+    - 'gru'
+    - 'cnn1d'
+    - 'transformer'
 
   input_dim: 3
   dropout: 0.2
@@ -121,3 +125,25 @@ Model:
     hidden_dim: 128
     depth: 8
     dropout: 0.2
+
+  resmlp:
+    hidden_dim: 128
+    depth: 6
+    dropout: 0.2
+
+  gru:
+    hidden_dim: 128
+    num_layers: 2
+    dropout: 0.1
+
+  cnn1d:
+    channels: 64
+    depth: 3
+    kernel_size: 3
+    dropout: 0.1
+
+  transformer:
+    hidden_dim: 128
+    depth: 4
+    num_heads: 4
+    dropout: 0.1
