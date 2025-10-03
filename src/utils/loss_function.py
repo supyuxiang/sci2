@@ -14,9 +14,9 @@ def build_loss_function(name: str):
         Loss function instance
     """
     if name == 'mse':
-        return nn.MSELoss()
+        return nn.MSELoss(reduction='mean')
     elif name == 'mae':
-        return nn.L1Loss()
+        return nn.L1Loss(reduction='mean')
     elif name == 'crossentropy':
         return nn.CrossEntropyLoss()
     else:
