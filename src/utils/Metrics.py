@@ -2,6 +2,7 @@ from sklearn.metrics import r2_score, mean_absolute_error, root_mean_squared_err
 import torch
 import torch.nn as nn
 from torch import Tensor
+import numpy as np
 
 from typing import Dict, List, Optional, Union
 from pathlib import Path
@@ -49,7 +50,7 @@ class MetricsManager(nn.Module):
         # }
         # return self.metrics_current
 
-        # 新实现：先对齐形状，再将 Tensor 转为 CPU numpy 数组供 sklearn 使用,展平成一维，适配 sklearn 指标
+        # 新实现：先对齐形状，再将 Tensor 转为 CPU numpy 数组供 sklearn 使用, 展平成一维，且对 NaN/Inf 做掩码
         assert output.shape == target.shape, 'output and target must have the same shape'
         y_pred = output.detach().cpu().numpy().reshape(-1)
         y_true = target.detach().cpu().numpy().reshape(-1)
