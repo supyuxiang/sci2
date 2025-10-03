@@ -21,6 +21,9 @@ Train:
   optimizer: 'adam'
   loss_function: 'mse'
   scheduler: 'cosine'
+  optimizer_config: {}
+  loss_function_config: {}
+  scheduler_config: {}
   save_model_path1: '/home/yxfeng/project2/sci925/outputs/model/phase1'
   save_model_path2: '/home/yxfeng/project2/sci925/outputs/model/phase2'
   save_best_model_only_path1: '/home/yxfeng/project2/sci925/outputs/model/phase1/best'
@@ -38,9 +41,6 @@ Train:
   patience: 50
   min_delta: 1e-4
   save_best_only: True
-  optimizer_config: {}
-  loss_function_config: {}
-  scheduler_config: {}
   metrics_dir: '/home/yxfeng/project2/sci925/outputs/metrics'
   phase_ls: [1,2]
 
@@ -92,12 +92,11 @@ Model:
     - 'lstm'
     - 'grmlp'
     - 'agtmlp'
-    - 'agtmlp'
 
   input_dim: 3
   dropout: 0.2
   output_dim1: 1
-  output_dim2: 5
+  output_dim2: 4
 
   model_name:
     phase1: 'grmlp'
