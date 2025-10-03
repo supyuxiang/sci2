@@ -130,6 +130,14 @@ class DataManager:
         # Phase 1 data
         phase1_input = self.data[index_start:phase1_index_end,:]
         phase1_output = self.targets1[index_start:phase1_index_end,:]
+
+        # Clean NaNs in phase 1 (features or targets). Keep only rows with all finite values
+        mask1 = np.all(np.isfinite(phase1_input), axis=1) & np.all(np.isfinite(phase1_output), axis=1)
+        removed1 = int((~mask1).sum())
+        if removed1 > 0:
+            self.logger.warning(f"Phase 1: detected and removed {removed1} rows containing NaN/Inf.")
+        phase1_input = phase1_input[mask1]
+        phase1_output = phase1_output[mask1]
         
         # Phase 2 data
         phase2_input = self.data[phase1_index_end+1:,:]

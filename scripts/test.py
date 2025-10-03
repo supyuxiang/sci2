@@ -7,7 +7,7 @@ import yaml
 import logging
 sys.path.insert(0,str(Path(__file__).parent.parent))
 print(sys.path[0])
-
+import numpy as np
 from src.utils.logger import Logger
 from src.models.models import ModelFactory
 
@@ -81,6 +81,17 @@ except Exception as e:
     sys.exit(1)'''
 
 
+
+def check_data(matrix):
+    for i in range(matrix.shape[0]):
+        for j in range(matrix.shape[1]):
+            if np.isnan(matrix[i,j]):
+                return False
+    return True
+                
+
+
+
 try:
     from main import create_dataloaders
     dataloader1_train,dataloader1_test,dataloader2_train,dataloader2_test = create_dataloaders(config)
@@ -90,11 +101,25 @@ try:
     print(f"Dataloader2_test: {dataloader2_test}")
     print('*'*1000)
     print("create_dataloaders imported successfully")
-    print('*'*1000)
-    for batch_in,batch_out in dataloader2_train:
-        print(f"Batch in: {batch_in}")
-        print(f"Batch out: {batch_out}")
+    nan_count = 0
+    for idx,(batch_in,batch_out) in enumerate(dataloader1_train):
+        print(f"Batch in_1: {batch_in}")
+        print(f"Batch out_1: {batch_out}")
+        if check_data(batch_in):
+            print("Batch in_1 is valid")
+        else:
+            print("Batch in_1 is invalid")
+            print(f"idx: {idx}")
+            break
+        if check_data(batch_out):
+            print("Batch out_1 is valid")
+        else:
+            print("Batch out_1 is invalid")
+            print(f"idx: {idx}")
+            break
         print('*'*1000)
+    print(f"nan_count: {nan_count}")
+    print('*'*1000)
 except Exception as e:
     print(f"create_dataloaders imported failed: {e}")
     sys.exit(1)
