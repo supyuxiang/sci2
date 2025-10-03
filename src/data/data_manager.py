@@ -132,8 +132,8 @@ class DataManager:
         phase1_output = self.targets1[index_start:phase1_index_end,:]
         
         # Phase 2 data
-        phase2_input = self.data[phase1_index_end:,:]
-        phase2_output = self.targets2[phase1_index_end:,:]
+        phase2_input = self.data[phase1_index_end+1:,:]
+        phase2_output = self.targets2[phase1_index_end+1:,:]
         
         # Split phase 1 into train/test
         self.phase1_input_train, self.phase1_input_test, self.phase1_output_train, self.phase1_output_test = train_test_split(

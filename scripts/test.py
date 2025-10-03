@@ -20,7 +20,7 @@ try:
 except Exception as e:
     print(f"config.yaml loaded failed: {e}")
     sys.exit(1)
-
+'''
 try:
     from src.data.data_manager import DataManager
     print("DataManager imported successfully")
@@ -78,7 +78,27 @@ try:
     print(f"Metrics: {trainer.metrics}")
 except Exception as e:
     print(f"Trainer initialized failed: {e}")
+    sys.exit(1)'''
+
+
+try:
+    from main import create_dataloaders
+    dataloader1_train,dataloader1_test,dataloader2_train,dataloader2_test = create_dataloaders(config)
+    print(f"Dataloader1_train: {dataloader1_train}")
+    print(f"Dataloader1_test: {dataloader1_test}")
+    print(f"Dataloader2_train: {dataloader2_train}")
+    print(f"Dataloader2_test: {dataloader2_test}")
+    print('*'*1000)
+    print("create_dataloaders imported successfully")
+    print('*'*1000)
+    for batch_in,batch_out in dataloader2_train:
+        print(f"Batch in: {batch_in}")
+        print(f"Batch out: {batch_out}")
+        print('*'*1000)
+except Exception as e:
+    print(f"create_dataloaders imported failed: {e}")
     sys.exit(1)
+
 
 
 

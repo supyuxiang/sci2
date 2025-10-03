@@ -5,8 +5,8 @@ Data:
   index_start: 8                  # Excel工作表索引或名称（仅excel）
   phase1_index_end: 15698         # 前382行为阶段1
   features: ["% x", "y", "z"]         # 特征列
-  phase1_targets: ["T (K)"]        # 阶段1目标
-  phase2_targets: ["T (K)", "u (m/s)", "v (m/s)", "p (Pa)"]  # 阶段2目标
+  phase1_targets: ["T (K)", "u (m/s)", "v (m/s)", "p (Pa)"]        # 阶段1目标
+  phase2_targets: ["T (K)"]       # 阶段2目标
   output_dir: "/home/yxfeng/project2/sci925/outputs"      # 结果输出目录（绝对路径）
   log_dir: "/home/yxfeng/project2/sci925/logs"      # 日志输出目录（绝对路径）
   test_ratio: 0.2               # 在各自阶段上的验证/测试占比
@@ -99,8 +99,8 @@ Model:
 
   input_dim: 3
   dropout: 0.2
-  output_dim1: 1
-  output_dim2: 4
+  output_dim1: 4
+  output_dim2: 1
 
   model_name:
     phase1: 'grmlp'
