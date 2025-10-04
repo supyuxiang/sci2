@@ -115,12 +115,12 @@ class Trainer:
             dataloader_train: DataLoader
         '''
         self.logger.info(f"Training started, epochs: {self.config.get('epochs',None)}")
+        self.model.train()
         for epoch in tqdm(range(self.config.get('epochs',None))):
             start_time = time.time()
             for idx,(batch_data,batch_target) in enumerate(tqdm(self.dataloader_train, desc=f'Epoch {epoch}')):
                 batch_data = batch_data.to(self.device)
                 batch_target = batch_target.to(self.device)
-                self.model.train()
                 self.optimizer.zero_grad()
                 output = self.model(batch_data)
                 loss = self.loss_function(output,batch_target)
@@ -135,7 +135,7 @@ class Trainer:
 
             if self.config.get('is_log',True):
                 if idx % self.config.get('log_freq',10) == 0:
-                    self.logger.info(f"Epoch {epoch}, Batch {idx}, Loss: {loss.item()}, Time: {time.time() - start_time}")
+                    self.logger.info(f"Epoch {epoch}, Batch {idx}, Loss: {loss.item()}, r2: {self.metrics_manager.metrics['r2'][-1]}, mae: {self.metrics_manager.metrics['mae'][-1]}, rmse: {self.metrics_manager.metrics['rmse'][-1]}, mse: {self.metrics_manager.metrics['mse'][-1]}, Time: {time.time() - start_time}")
 
             if self.config.get('is_save',True) and self.config.get('save_freq',False) and epoch % self.config['save_freq'] == 0:
                     if self.config.get('save_best_only',True) and self.save_model_dir is not None:
@@ -162,7 +162,7 @@ class Trainer:
                     self.logger.info(f'Early stopping triggered, epoch: {epoch}')
                     break
 
-            self.logger.info(f"Epoch {epoch} completed, loss: {loss.item()}, Time: {time.time() - start_time}")
+            self.logger.info(f"Epoch {epoch} completed, loss: {loss.item()}, r2: {self.metrics_manager.metrics['r2'][-1]}, mae: {self.metrics_manager.metrics['mae'][-1]}, rmse: {self.metrics_manager.metrics['rmse'][-1]}, mse: {self.metrics_manager.metrics['mse'][-1]}, Time: {time.time() - start_time}")
         self.logger.info(f"Training completed, epochs: {self.config.get('epochs',None)}")
         self._save_model(self.config['epochs'])
         # expose metrics snapshot for external access
@@ -192,7 +192,7 @@ class Trainer:
                 loss = self.loss_function(output,batch_out)
                 val_dict['total_pred'].append(output)
                 val_dict['total_loss'].append(loss)
-        self.logger.info(f"Validating completed, total_loss: {val_dict['total_loss']}")
+        self.logger.info(f"Validating completed, total_loss: {val_dict['total_loss']}, total_r2: {val_dict['total_r2']}, total_mae: {val_dict['total_mae']}, total_rmse: {val_dict['total_rmse']}, total_mse: {val_dict['total_mse']}")
         return val_dict
 
     # public validation API for external callers (e.g., scripts/test.py)
