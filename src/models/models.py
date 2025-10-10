@@ -9,6 +9,9 @@ import numpy as np
 from pathlib import Path
 import torch.nn as nn
 import torch.nn.functional as F
+from abc import ABC,abstractmethod
+
+from verl.verl.workers.reward_manager import abstract
 
 from .mlp import MLP
 from .GatedResMLP import GatedResMLP
@@ -21,7 +24,14 @@ from .transformer import TransformerEncoderRegressor
 from .wide_deep import WideAndDeep
 
 
-class ModelFactory(torch.nn.Module):
+class BaseModelFactory(ABC):
+    @abstractmethod
+    def build_model(self):
+        pass
+    
+
+
+class ModelFactory(torch.nn.Module,BaseModelFactory):
     '''
     Model Factory: mlp, lstm
     '''
@@ -347,6 +357,17 @@ class ModelFactory(torch.nn.Module):
 
     def parameters_count(self):
         return sum(p.numel() for p in self.model.parameters() if p.requires_grad)
+
+
+class PINN(ModelFactory):
+    pass
+
+    
+    
+
+
+    
+        
 
 
     
