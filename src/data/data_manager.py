@@ -5,6 +5,8 @@ import sys
 from pathlib import Path
 import time
 from dataclasses import dataclass
+
+from seaborn.relational import _DashType
 import torch
 from typing import Dict
 import numpy as np
@@ -32,23 +34,26 @@ class DataManager:
 
     """
 
-    def __init__(self, config: Dict):
+    def __init__(self, config: Dict,logger: Logger):
+        """
+        init data manager
+        """
         start_time = time.time()
-        self.config = config.get('Data',{})
-        self.logger = Logger("DataManager", config)
-        self.data_path = self.config.get('data_path', None)  # 先设置data_path
-        self._check_basic_config()  # 只检查基本配置
-        self._data_load()  # 加载数据
-        self._check_data_config()  # 检查数据相关的配置
-        self._split_data_based_on_phase()
-        self._data_preprocessing(scaler_name=self.config.get('scaler_name','standardscaler'))
-        self._build_dataloader()
+        self.config:Dict = config.get('Data',{})
+        self.logger:Logger = logger
+        self.data_path:str = self.config.get('data_path', None)  # 先设置data_path
+        self.check_basic_config()  # 只检查基本配置
+        self.data_load()  # 加载数据
+        self.check_data_config()  # 检查数据相关的配置
+        self.split_data_based_on_phase()
+        self.data_preprocessing(scaler_name=self.config.get('scaler_name','standardscaler'))  # 处理
+        self.build_dataloader()
         end_time = time.time()
         self.logger.info(f"DataManager initialized, config: {self.config}, time: {end_time - start_time}")
 
 
 
-    def _check_basic_config(self) -> None:
+    def check_basic_config(self) -> None:
         '''
         check basic config (before data loading)
         '''
@@ -59,7 +64,7 @@ class DataManager:
         assert self.config.get('features',None) is not None, 'features is not set'
         self.logger.info("Basic config checked completed")
 
-    def _check_data_config(self) -> None:
+    def check_data_config(self) -> None:
         '''
         check data-related config (after data loading)
         '''
@@ -74,56 +79,46 @@ class DataManager:
         self.logger.info(f"Data config checked completed, output_cols_phase1: {output_cols_phase1}, output_cols_phase2: {output_cols_phase2}")
 
 
-    def _data_load(self) -> None:
+    def data_load(self) -> None:
         '''
         laod data form data_path
         '''
         # self.data_path already set in __init__
         
-        if self.data_path.endswith('.xlsx'):
-
-            '''self.df = pd.read_excel(self.data_path)
-            self.data = self.df[self.config.get('features',None)].values.to_numpy(dtype=np.float32)
-            self.targets1 = self.df[self.config.get('phase1_targets',None)].values.to_numpy(dtype=np.float32)
-            self.targets2 = self.df[self.config.get('phase2_targets',None)].values.to_numpy(dtype=np.float32)'''
+        if self.data_path.endswith('.xlsx'):  # 读取Excel文件
             # 读取Excel文件，跳过前面的元数据行，使用第一行作为列名
             self.df = pd.read_excel(self.data_path, sheet_name='三维双热通量(2)', skiprows=7, header=0)
             # 重新设置列名（去掉第一行，使用第二行作为列名）
             self.df.columns = self.df.iloc[0]
             self.df = self.df.drop(self.df.index[0]).reset_index(drop=True)
-            self.data = self.df[self.config.get('features',None)].values.astype(np.float32)
-            self.targets1 = self.df[self.config.get('phase1_targets',None)].values.astype(np.float32)
-            self.targets2 = self.df[self.config.get('phase2_targets',None)].values.astype(np.float32)
-        elif self.data_path.endswith('.csv'):
+            self.data = torch.tensor(self.df[self.config.get('features',None)].values,dtype=torch.float32,requires_grad=True)
+            self.targets1 = torch.tensor(self.df[self.config.get('phase1_targets',None)].values,dtype=torch.float32,requires_grad=True)
+            self.targets2 = torch.tensor(self.df[self.config.get('phase2_targets',None)].values,dtype=torch.float32,requires_grad=True)
+        
+        elif self.data_path.endswith('.csv'):  # 读取CSV文件
             self.logger.warning(f"Data loaded from csv file, data_path: {self.data_path}")
             self.df = pd.read_csv(self.data_path)
 
-            '''self.data = self.df[self.config.get('features',None)].values.to_numpy(dtype=np.float32)
-            self.targets1 = self.df[self.config.get('phase1_targets',None)].values.to_numpy(dtype=np.float32)
-            self.targets2 = self.df[self.config.get('phase2_targets',None)].values.to_numpy(dtype=np.float32)'''
-            self.data = self.df[self.config.get('features',None)].values.astype(np.float32)
-            self.targets1 = self.df[self.config.get('phase1_targets',None)].values.astype(np.float32)
-            self.targets2 = self.df[self.config.get('phase2_targets',None)].values.astype(np.float32)
+            self.data = torch.tensor(self.df[self.config.get('features',None)].values,dtype=torch.float32,requires_grad=True)
+            self.targets1 = torch.tensor(self.df[self.config.get('phase1_targets',None)].values,dtype=torch.float32,requires_grad=True)
+            self.targets2 = torch.tensor(self.df[self.config.get('phase2_targets',None)].values,dtype=torch.float32,requires_grad=True)
         else:
             self.logger.error(f"Unsupported file extension: {self.data_path}")
             raise ValueError(f"Unsupported file extension: {self.data_path}")
         self.logger.info(f"Data loaded completed, data_path: {self.data_path}")
 
-    def _split_data_based_on_phase(self) -> None:
+    def split_data_based_on_phase(self) -> None:
         '''
         split data into train and test
         '''
         from sklearn.model_selection import train_test_split
         
-        index_start = self.config.get('index_start')
-        '''phase1_index_end = self.config.get('phase1_index_end')
-        self.phase1_input = self.data[index_start:phase1_index_end,:]
-        self.phase1_output = self.targets1[index_start:phase1_index_end,:]
-        self.phase2_input = self.data[phase1_index_end:,:]
-        self.phase2_output = self.targets2[phase1_index_end:,:]
-        self.logger.info(f'Data split based on phase completed, phase1_index_end: {phase1_index_end}')'''
+        index_start = self.config.get('index_start',None)
+        assert index_start is not None, "index_start is not set"
         
-        phase1_index_end = self.config.get('phase1_index_end')
+        phase1_index_end = self.config.get('phase1_index_end',None)
+        assert phase1_index_end is not None, "phase1_index_end is not set"
+        
         test_ratio = self.config.get('test_ratio', 0.2)
         random_state = self.config.get('random_state', 42)
         
@@ -132,7 +127,7 @@ class DataManager:
         phase1_output = self.targets1[index_start:phase1_index_end,:]
 
         # Clean NaNs in phase 1 (features or targets). Keep only rows with all finite values
-        mask1 = np.all(np.isfinite(phase1_input), axis=1) & np.all(np.isfinite(phase1_output), axis=1)
+        mask1 = torch.all(torch.isfinite(phase1_input), axis=1) & torch.all(torch.isfinite(phase1_output), axis=1)
         removed1 = int((~mask1).sum())
         if removed1 > 0:
             self.logger.warning(f"Phase 1: detected and removed {removed1} rows containing NaN/Inf.")
@@ -155,7 +150,7 @@ class DataManager:
         
         self.logger.info(f'Data split based on phase completed, phase1_index_end: {phase1_index_end}, test_ratio: {test_ratio}')
 
-    def _data_preprocessing(self, scaler_name : str) -> None:
+    def data_preprocessing(self, scaler_name : str) -> None:
         '''
         process data
         '''
@@ -166,7 +161,7 @@ class DataManager:
         self.phase2_input_test = scaler.transform(self.phase2_input_test)
         self.logger.info(f"Data preprocessing completed, scaler: {scaler_name}, phase1_input_train: {self.phase1_input_train.shape}, phase1_input_test: {self.phase1_input_test.shape}, phase2_input_train: {self.phase2_input_train.shape}, phase2_input_test: {self.phase2_input_test.shape}")
     
-    def _build_dataloader(self):
+    def build_dataloader(self):
         '''
         build dataloader
         '''
