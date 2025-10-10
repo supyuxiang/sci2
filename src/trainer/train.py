@@ -11,7 +11,7 @@ import time
 
 from utils.timer import Timer
 from utils.optimizer import build_optimizer
-from utils.loss_function import build_loss_function
+from utils.loss_function import build_loss_function,PhysicsLoss
 from utils.scheduler import build_scheduler
 from utils.Metrics import MetricsManager
 from utils.logger import Logger
@@ -79,6 +79,9 @@ class Trainer:
         assert self.config.get('loss_function_config',None) is not None,'loss_function_config is not set'
         assert self.config.get('scheduler_config',None) is not None,'scheduler_config is not set'
         assert self.config.get('metrics_dir',None) is not None,'metrics_dir is not set'
+        assert self.config.get('is_pinn',None) is not None,'is_pinn is not set'
+        assert self.config.get('physics_weight',None) is not None,'physics_weight is not set'
+        assert self.config.get('original_loss_weight',None) is not None,'original_loss_weight is not set'
         self.logger.info(f"Config checked, config: {self.config}")
         
 
@@ -124,6 +127,10 @@ class Trainer:
                 self.optimizer.zero_grad()
                 output = self.model(batch_data)
                 loss = self.loss_function(output,batch_target)
+                if self.config.get('is_pinn',False):
+                    physics_loss = PhysicsLoss(output,batch_target,phase=self.model.phase).physics_loss()
+                    loss = self.config.get('physics_weight',1.0) * physics_loss + self.config.get('original_loss_weight',1.0) * loss
+                    self.logger.info(f"Physics loss: {physics_loss}, Original loss: {loss},Mixed loss: {loss}")
                 loss.backward()
                 self.optimizer.step()
                 self.scheduler.step()
@@ -169,7 +176,7 @@ class Trainer:
         self.metrics = self.metrics_manager.metrics
         return self.metrics
 
-    def _validate(self,dataloader_val):
+    def validate(self,dataloader_val):
         '''
         validate
         Args:
@@ -190,6 +197,10 @@ class Trainer:
                 batch_out = batch_out.to(self.device)
                 output = self.model(batch_in)
                 loss = self.loss_function(output,batch_out)
+                if self.config.get('is_pinn',False):
+                    physics_loss = PhysicsLoss(output,batch_target,phase=self.model.phase).physics_loss()
+                    loss = self.config.get('physics_weight',1.0) * physics_loss + self.config.get('original_loss_weight',1.0) * loss
+                    self.logger.info(f"Physics loss: {physics_loss}, Original loss: {loss},Mixed loss: {loss}")
                 val_dict['total_pred'].append(output)
                 val_dict['total_loss'].append(loss)
         self.logger.info(f"Validating completed, total_loss: {val_dict['total_loss']}, total_r2: {val_dict['total_r2']}, total_mae: {val_dict['total_mae']}, total_rmse: {val_dict['total_rmse']}, total_mse: {val_dict['total_mse']}")
@@ -197,7 +208,7 @@ class Trainer:
 
     # public validation API for external callers (e.g., scripts/test.py)
     def validate(self, dataloader_val):
-        results = self._validate(dataloader_val)
+        results = self.validate(dataloader_val)
         # keep latest validation results under a common attribute
         self.metrics = results
         return self
