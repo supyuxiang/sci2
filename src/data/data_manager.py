@@ -6,7 +6,6 @@ from pathlib import Path
 import time
 from dataclasses import dataclass
 
-from seaborn.relational import _DashType
 import torch
 from typing import Dict
 import numpy as np
@@ -60,13 +59,26 @@ class DataManager:
         
         # 2. 加载数据
         if self.data_path.endswith('.xlsx'):  # 读取Excel文件
-            # 读取Excel文件，跳过前面的元数据行，使用第一行作为列名
-            self.df = pd.read_excel(self.data_path, sheet_name=self.config.get('sheet_name', '数据100mm流体域'), skiprows=7, header=0)
-            # 重新设置列名（去掉第一行，使用第二行作为列名）
-            self.df.columns = self.df.iloc[0]
-            self.df = self.df.drop(self.df.index[0]).reset_index(drop=True)
-            self.data = torch.tensor(self.df[self.config.get('features', None)].values, dtype=torch.float32, requires_grad=True)
-            self.targets = torch.tensor(self.df[self.config.get('targets', None)].values, dtype=torch.float32, requires_grad=True)
+            # 读取Excel文件，跳过前面的元数据行（8行），使用第9行作为列名
+            self.df = pd.read_excel(self.data_path, sheet_name=self.config.get('sheet_name', '数据100mm流体域'), skiprows=8, header=0)
+            
+            # 验证列名是否正确
+            expected_columns = self.config.get('features', []) + self.config.get('targets', [])
+            missing_columns = [col for col in expected_columns if col not in self.df.columns]
+            if missing_columns:
+                self.logger.error(f"Missing columns in data: {missing_columns}")
+                self.logger.error(f"Available columns: {list(self.df.columns)}")
+                raise ValueError(f"Missing columns: {missing_columns}")
+            
+            # 提取特征和目标数据
+            features = self.config.get('features', [])
+            targets = self.config.get('targets', [])
+            
+            self.data = torch.tensor(self.df[features].values, dtype=torch.float32, requires_grad=True)
+            self.targets = torch.tensor(self.df[targets].values, dtype=torch.float32, requires_grad=True)
+            
+            self.logger.info(f"Data loaded - Features: {features}, Targets: {targets}")
+            self.logger.info(f"Data shape: {self.data.shape}, Targets shape: {self.targets.shape}")
         
         elif self.data_path.endswith('.csv'):  # 读取CSV文件
             self.logger.warning(f"Data loaded from csv file, data_path: {self.data_path}")

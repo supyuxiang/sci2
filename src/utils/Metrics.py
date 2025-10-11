@@ -69,10 +69,11 @@ class MetricsManager(nn.Module):
         y_pred = output.detach().cpu().numpy().reshape(-1)
         y_true = target.detach().cpu().numpy().reshape(-1)
 
-        pred_T = y_pred[:,0]
-        pred_spfU = y_pred[:,1]
-        pred_u = y_pred[:,2]
-        pred_p = y_pred[:,3]
+        # 根据实际数据列重新映射
+        pred_T = y_pred[:,0]      # T (K)
+        pred_spfU = y_pred[:,1]   # spf. U (m/s) - 速度大小
+        pred_u = y_pred[:,2]      # u (m/s) - x方向速度分量
+        pred_p = y_pred[:,3]      # p (Pa) - 压力
         true_T = y_true[:,0]
         true_spfU = y_true[:,1]
         true_u = y_true[:,2]
