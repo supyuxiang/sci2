@@ -430,7 +430,7 @@ class Trainer:
                         w_physics = w_physics / (w_physics + w_original)
                         w_original = w_original / (w_physics + w_original)
                         self.logger.info(f"Current Physics weight: {w_physics}, Original weight: {w_original}")
-                    physics_loss = PhysicsLoss(output).compute_physics_loss()
+                    physics_loss = PhysicsLoss(output, batch_target).compute_physics_loss()
                     loss = w_physics * physics_loss + w_original * loss
                     self.logger.info(f"Physics loss: {physics_loss}, Original loss: {loss},Mixed loss: {loss}")
                 loss.backward()
