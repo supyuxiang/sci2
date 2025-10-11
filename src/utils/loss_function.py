@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 from typing import Dict,Any
-# import CoolProp as CP  # 暂时注释掉，用于测试
+import CoolProp as CP  
 
 
 def loss_base(name: str):

@@ -497,6 +497,7 @@ class Trainer:
             self.save_swanlab(return_metrics,step)
         return return_metrics
 
+    @Timer
     def validate(self, step: int = None):
         '''
         Validate the model on validation dataset

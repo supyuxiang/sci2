@@ -29,7 +29,7 @@ Train:
   log_dir: 'logs'
   log_freq: 10
   is_log: True
-  device: 'cuda'
+  device: 'cuda:2'
   save_freq: 100
   is_save: True
   early_stopping: True
