@@ -95,8 +95,7 @@ Model:
 
   input_dim: 3
   dropout: 0.2
-  output_dim1: 4
-  output_dim2: 1
+  output_dim: 4
 
   model_name: 'mlp'
 
