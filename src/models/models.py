@@ -59,81 +59,74 @@ class ModelFactory(torch.nn.Module,BaseModelFactory):
             if not mlp_cfg:
                 raise ValueError('mlp setting is not set')
             self.indim = int(self.model_setting.get('input_dim',False))
-            self.outdim1 = int(self.model_setting.get('output_dim1',False))
-            self.outdim2 = int(self.model_setting.get('output_dim2',False))
+            self.outdim = int(self.model_setting.get('output_dim',False))
             self.logger.info(f'mlp_cfg: {mlp_cfg}')
             self.hidden_dim = int(mlp_cfg.get('hidden_dim',False))
             self.num_blocks = int(mlp_cfg.get('num_blocks',False))
             self.dropout = float(mlp_cfg.get('dropout',False))
-            assert all([self.indim,self.outdim1,self.outdim2,self.hidden_dim,self.num_blocks,self.dropout]),'input_dim, output_dim1, output_dim2, hidden_dim, num_blocks and dropout are not set'
+            assert all([self.indim,self.outdim,self.hidden_dim,self.num_blocks,self.dropout]),'input_dim, output_dim, hidden_dim, num_blocks and dropout are not set'
         
         elif self.model_name == 'lstm':
             lstm_cfg = self.model_setting.get('lstm',None)
             if not lstm_cfg:
                 raise ValueError('lstm setting is not set')
             self.indim = int(self.model_setting.get('input_dim',False))
-            self.outdim1 = int(self.model_setting.get('output_dim1',False))
-            self.outdim2 = int(self.model_setting.get('output_dim2',False))
+            self.outdim = int(self.model_setting.get('output_dim',False))
             self.hidden_dim = int(lstm_cfg.get('hidden_dim',False))
             self.num_blocks = int(lstm_cfg.get('num_blocks',False))
             self.dropout = float(lstm_cfg.get('dropout',False))
-            assert all([self.indim,self.outdim1,self.outdim2,self.hidden_dim,self.num_blocks,self.dropout]),'input_dim, output_dim1, output_dim2, hidden_dim, num_blocks and dropout are not set'
+            assert all([self.indim,self.outdim,self.hidden_dim,self.num_blocks,self.dropout]),'input_dim, output_dim, hidden_dim, num_blocks and dropout are not set'
         
         elif self.model_name == 'grmlp':
             grmlp_cfg = self.model_setting.get('grmlp',None)
             if not grmlp_cfg:
                 raise ValueError('grmlp setting is not set')
             self.indim = int(self.model_setting.get('input_dim',False))
-            self.outdim1 = int(self.model_setting.get('output_dim1',False))
-            self.outdim2 = int(self.model_setting.get('output_dim2',False))
+            self.outdim = int(self.model_setting.get('output_dim',False))
             self.hidden_dim = int(grmlp_cfg.get('hidden_dim',False))
             self.depth = int(grmlp_cfg.get('depth',False))
             self.dropout = float(grmlp_cfg.get('dropout',False))
-            assert all([self.indim,self.outdim1,self.outdim2,self.hidden_dim,self.depth,self.dropout]),'input_dim, output_dim1, output_dim2, hidden_dim, depth and dropout are not set'
+            assert all([self.indim,self.outdim,self.hidden_dim,self.depth,self.dropout]),'input_dim, output_dim, hidden_dim, depth and dropout are not set'
         
         elif self.model_name == 'agtmlp':
             agtmlp_cfg = self.model_setting.get('agtmlp',None)
             if not agtmlp_cfg:
                 raise ValueError('agtmlp setting is not set')
             self.indim = int(self.model_setting.get('input_dim',False))
-            self.outdim1 = int(self.model_setting.get('output_dim1',False))
-            self.outdim2 = int(self.model_setting.get('output_dim2',False))
+            self.outdim = int(self.model_setting.get('output_dim',False))
             self.hidden_dim = int(agtmlp_cfg.get('hidden_dim',False))
             self.depth = int(agtmlp_cfg.get('depth',False))
             self.dropout = float(agtmlp_cfg.get('dropout',False))
             self.num_heads = int(agtmlp_cfg.get('num_heads',8))
             self.num_experts = int(agtmlp_cfg.get('num_experts',6))
-            assert all([self.indim,self.outdim1,self.outdim2,self.hidden_dim,self.depth,self.dropout]),'input_dim, output_dim1, output_dim2, hidden_dim, depth and dropout are not set'
+            assert all([self.indim,self.outdim,self.hidden_dim,self.depth,self.dropout]),'input_dim, output_dim, hidden_dim, depth and dropout are not set'
         elif self.model_name == 'resmlp':
             res_cfg = self.model_setting.get('resmlp', None)
             if not res_cfg:
                 raise ValueError('resmlp setting is not set')
             self.indim = int(self.model_setting.get('input_dim', False))
-            self.outdim1 = int(self.model_setting.get('output_dim1', False))
-            self.outdim2 = int(self.model_setting.get('output_dim2', False))
+            self.outdim = int(self.model_setting.get('output_dim', False))
             self.hidden_dim = int(res_cfg.get('hidden_dim', False))
             self.depth = int(res_cfg.get('depth', False))
             self.dropout = float(res_cfg.get('dropout', False))
-            assert all([self.indim,self.outdim1,self.outdim2,self.hidden_dim,self.depth,self.dropout]),'input_dim, output_dim1, output_dim2, hidden_dim, depth and dropout are not set'
+            assert all([self.indim,self.outdim,self.hidden_dim,self.depth,self.dropout]),'input_dim, output_dim, hidden_dim, depth and dropout are not set'
 
         elif self.model_name == 'gru':
             gru_cfg = self.model_setting.get('gru', None)
             if not gru_cfg:
                 raise ValueError('gru setting is not set')
             self.indim = int(self.model_setting.get('input_dim', False))
-            self.outdim1 = int(self.model_setting.get('output_dim1', False))
-            self.outdim2 = int(self.model_setting.get('output_dim2', False))
+            self.outdim = int(self.model_setting.get('output_dim', False))
             self.hidden_dim = int(gru_cfg.get('hidden_dim', False))
             self.num_layers = int(gru_cfg.get('num_layers', 2))
             self.dropout = float(gru_cfg.get('dropout', 0.1))
-            assert all([self.indim,self.outdim1,self.outdim2,self.hidden_dim,self.num_layers is not None]),'gru hyperparameters are not set'
+            assert all([self.indim,self.outdim,self.hidden_dim,self.num_layers is not None]),'gru hyperparameters are not set'
         elif self.model_name == 'cnn1d':
             cnn_cfg = self.model_setting.get('cnn1d', None)
             if not cnn_cfg:
                 raise ValueError('cnn1d setting is not set')
             self.indim = int(self.model_setting.get('input_dim', False))
-            self.outdim1 = int(self.model_setting.get('output_dim1', False))
-            self.outdim2 = int(self.model_setting.get('output_dim2', False))
+            self.outdim = int(self.model_setting.get('output_dim', False))
             self.channels = int(cnn_cfg.get('channels', 64))
             self.depth = int(cnn_cfg.get('depth', 3))
             self.kernel_size = int(cnn_cfg.get('kernel_size', 3))
@@ -144,8 +137,7 @@ class ModelFactory(torch.nn.Module,BaseModelFactory):
             if not tr_cfg:
                 raise ValueError('transformer setting is not set')
             self.indim = int(self.model_setting.get('input_dim', False))
-            self.outdim1 = int(self.model_setting.get('output_dim1', False))
-            self.outdim2 = int(self.model_setting.get('output_dim2', False))
+            self.outdim = int(self.model_setting.get('output_dim', False))
             self.hidden_dim = int(tr_cfg.get('hidden_dim', 128))
             self.depth = int(tr_cfg.get('depth', 4))
             self.num_heads = int(tr_cfg.get('num_heads', 4))
@@ -158,8 +150,7 @@ class ModelFactory(torch.nn.Module,BaseModelFactory):
             if not cfg:
                 raise ValueError('wide_deep setting is not set')
             self.indim = int(self.model_setting.get('input_dim', False))
-            self.outdim1 = int(self.model_setting.get('output_dim1', False))
-            self.outdim2 = int(self.model_setting.get('output_dim2', False))
+            self.outdim = int(self.model_setting.get('output_dim', False))
             self.deep_hidden = int(cfg.get('deep_hidden', 128))
             self.deep_layers = int(cfg.get('deep_layers', 3))
             self.dropout = float(cfg.get('dropout', 0.1))
@@ -172,7 +163,7 @@ class ModelFactory(torch.nn.Module,BaseModelFactory):
         if self.model_name == 'mlp':  
             self.model = MLP(
                 indim = self.indim,
-                outdim = self.outdim1,
+                outdim = self.outdim,
                 hidden_dim = self.hidden_dim,
                 num_blocks = self.num_blocks,
                 dropout = self.dropout
@@ -183,7 +174,7 @@ class ModelFactory(torch.nn.Module,BaseModelFactory):
         elif self.model_name == 'lstm':
             self.model = LSTM(
                 indim = self.indim,
-                outdim = self.outdim1,
+                outdim = self.outdim,
                 hidden_dim = self.hidden_dim,
                 num_blocks = self.num_blocks,
                 dropout = self.dropout
@@ -193,7 +184,7 @@ class ModelFactory(torch.nn.Module,BaseModelFactory):
         elif self.model_name == 'grmlp':
             self.model = GatedResMLP(
                 indim = self.indim,
-                outdim = self.outdim1,
+                outdim = self.outdim,
                 hidden_dim = self.hidden_dim,
                 depth = self.depth,
                 dropout = self.dropout
@@ -204,7 +195,7 @@ class ModelFactory(torch.nn.Module,BaseModelFactory):
         elif self.model_name == 'agtmlp':
             self.model = AdaptiveGatedTransformerMLP(
                     indim = self.indim,
-                    outdim = self.outdim1,
+                    outdim = self.outdim,
                     hidden_dim = self.hidden_dim,
                     depth = self.depth,
                     num_heads = self.num_heads,
@@ -216,7 +207,7 @@ class ModelFactory(torch.nn.Module,BaseModelFactory):
         elif self.model_name == 'resmlp':
             self.model = ResMLP(
                     indim=self.indim,
-                    outdim=self.outdim1,
+                    outdim=self.outdim,
                     hidden_dim=self.hidden_dim,
                     depth=self.depth,
                     dropout=self.dropout,
@@ -226,7 +217,7 @@ class ModelFactory(torch.nn.Module,BaseModelFactory):
         elif self.model_name == 'gru':
             self.model = GRURegressor(
                     indim=self.indim,
-                    outdim=self.outdim1,
+                    outdim=self.outdim,
                     hidden_dim=self.hidden_dim,
                     num_layers=self.num_layers,
                     dropout=self.dropout,
@@ -236,7 +227,7 @@ class ModelFactory(torch.nn.Module,BaseModelFactory):
         elif self.model_name == 'cnn1d':
             self.model = CNNRegressor1D(
                     indim=self.indim,
-                    outdim=self.outdim1,
+                    outdim=self.outdim,
                     channels=self.channels,
                     depth=self.depth,
                     kernel_size=self.kernel_size,
@@ -247,7 +238,7 @@ class ModelFactory(torch.nn.Module,BaseModelFactory):
         elif self.model_name == 'transformer':
             self.model = TransformerEncoderRegressor(
                     indim=self.indim,
-                    outdim=self.outdim1,
+                    outdim=self.outdim,
                     hidden_dim=self.hidden_dim,
                     depth=self.depth,
                     num_heads=self.num_heads,
@@ -255,7 +246,7 @@ class ModelFactory(torch.nn.Module,BaseModelFactory):
                 )
 
         elif self.model_name == 'wide_deep':
-            self.model = WideAndDeep(self.indim, self.outdim1, self.deep_hidden, self.deep_layers, self.dropout)
+            self.model = WideAndDeep(self.indim, self.outdim, self.deep_hidden, self.deep_layers, self.dropout)
 
         else:
             self.logger.error(f"Model name {self.model_name} not supported")
