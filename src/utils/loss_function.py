@@ -4,7 +4,7 @@ from typing import Dict,Any
 import CoolProp as CP
 
 
-def build_loss_function(name: str):
+def loss_base(name: str):
     """
     Build a loss function based on the given name.
     
@@ -64,16 +64,11 @@ def k_func(T,p):
 
 
 class PhysicsLoss:
-    def __init__(self,batch,phase):
-        if phase == 1:
-            self.x,self.y,self.z,self.T,self.p = batch
-        elif phase == 2:
-            self.x,self.y,self.z,self.T,self.p = batch
-        else:
-            raise ValueError(f"Invalid phase: {phase}. Available phases: 1, 2")
+    def __init__(self,batch):
+        self.x,self.y,self.z,self.T,self.p = batch
     
     @classmethod
-    def physics_loss(self,w_rho=0.25,w_mu=0.25,w_Cp=0.25,w_k=0.25):
+    def compute_physics_loss(self,w_rho=0.25,w_mu=0.25,w_Cp=0.25,w_k=0.25):
         if self.T and self.p is not None:
             return w_rho * rho_func(self.T,self.p) + w_mu * mu_func(self.T,self.p) + w_Cp * Cp_func(self.T,self.p) + w_k * k_func(self.T,self.p)
         else:

@@ -52,7 +52,7 @@ def create_model(logger,model_name:str,phase:int):
 
 
 
-def create_dataloaders(config: Dict[str, Any]):
+def create_dataloaders(config: Dict[str, Any],logger:Logger):
     """
     create data loaders
     
@@ -62,12 +62,10 @@ def create_dataloaders(config: Dict[str, Any]):
     Returns:
         (train loader, test loader)
     """
-    data_manager = DataManager(config)
+    data_manager = DataManager(config,logger)
     return (
-        data_manager.dataloader_phase1_train,
-        data_manager.dataloader_phase1_test,
-        data_manager.dataloader_phase2_train,
-        data_manager.dataloader_phase2_test,
+        data_manager.dataloader_train,
+        data_manager.dataloader_test,
     )
 
 
@@ -136,23 +134,14 @@ def main(cfg: DictConfig) -> None:
     phase_ls = cfg.get('Train', {}).get('phase_ls', None)
     assert phase_ls is not None, f"phase_ls is not set"
     
-    dataloader_train_phase1, dataloader_test_phase1, dataloader_train_phase2, dataloader_test_phase2 = create_dataloaders(cfg)
+    dataloader_train, dataloader_test = create_dataloaders(cfg,logger)
     
     if 1 in phase_ls:
         print(f"Training phase 1")
         model1 = create_model(logger, cfg.get('Model', {}).get('model_name', {}), 1)
-        phase1_pipline(model1, dataloader_train_phase1, dataloader_test_phase1, 
-                      cfg.get('Train', {}).get('save_model_path1', {}), cfg, logger, is_val=True)
+        phase1_pipline(model1, dataloader_train, dataloader_test, 
+                      cfg.get('Train', {}).get('save_dir', {}), cfg, logger, is_val=True)
         print(f"Training phase 1 completed")
-        
-    if 2 in phase_ls:
-        print(f"Training phase 2")
-        model2 = create_model(logger, cfg.get('Model', {}).get('model_name', {}), 2)
-        phase2_pipline(model2, dataloader_train_phase2, dataloader_test_phase2, 
-                      cfg.get('Train', {}).get('save_model_path2', {}), cfg, logger, is_val=True)
-        print(f"Training phase 2 completed")
-    else:
-        raise ValueError(f"Invalid phase: {phase_ls}")
         
     logger.info(f"Main completed, time: {time.time() - start_time:.2f}s")
     

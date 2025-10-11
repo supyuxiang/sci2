@@ -1,5 +1,6 @@
 Data:
   data_path: "/home/yxfeng/project2/sci2/data/数据100mm流体域.xlsx"  # 输入数据路径（Excel）
+  sheet_name: "数据100mm流体域"
   format: "auto"                 # auto|excel|csv （强制解析格式）
   sheet: 0   
   index_start: 8                  # Excel工作表索引或名称（仅excel）
@@ -21,8 +22,7 @@ Train:
   optimizer_config: {}
   loss_function_config: {}
   scheduler_config: {}
-  save_model_path: '/home/yxfeng/project2/sci925/outputs/model'
-  save_best_model_only_path: '/home/yxfeng/project2/sci925/outputs/model/best'
+  save_dir: '/home/yxfeng/project2/sci925/outputs'
   load_model_path: '/home/yxfeng/project2/sci925/outputs/model/model.pth'
   log_interval: 10
   log_dir: 'logs'
@@ -35,7 +35,6 @@ Train:
   patience: 50
   min_delta: 1e-4
   save_best_only: True
-  metrics_dir: '/home/yxfeng/project2/sci925/outputs/metrics'
   is_pinn: True
   physics_weight: 1.0
   original_loss_weight: 1.0
@@ -147,3 +146,9 @@ Model:
     deep_hidden: 128
     deep_layers: 3
     dropout: 0.1
+
+swanlab:
+  use_swanlab: True
+  experiment_name: "physics_informed_nn_experiment_001"
+  project_name: "sci2"
+  description: "Physics-informed neural network for fluid dynamics simulation"

@@ -31,7 +31,7 @@ class DataManager:
 
     """
 
-    def __init__(self, config: Dict,logger: Logger):
+    def __init__(self, config: Dict,logger: Logger,data_path:str):
         """
         init data manager
         """
@@ -61,7 +61,7 @@ class DataManager:
         # 2. 加载数据
         if self.data_path.endswith('.xlsx'):  # 读取Excel文件
             # 读取Excel文件，跳过前面的元数据行，使用第一行作为列名
-            self.df = pd.read_excel(self.data_path, sheet_name='三维双热通量(2)', skiprows=7, header=0)
+            self.df = pd.read_excel(self.data_path, sheet_name=self.config.get('sheet_name', '数据100mm流体域'), skiprows=7, header=0)
             # 重新设置列名（去掉第一行，使用第二行作为列名）
             self.df.columns = self.df.iloc[0]
             self.df = self.df.drop(self.df.index[0]).reset_index(drop=True)
