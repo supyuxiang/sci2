@@ -50,6 +50,11 @@ def rho_func(T,p):
         return torch.tensor([CP.PropsSI('D', 'T', t.item(), 'P', p.item(), 'n-Decane') for t, p in zip(T, p)],
                         dtype=torch.float32, device=T.device)
     except ImportError:
+        # 确保T和p是张量
+        if not isinstance(T, torch.Tensor):
+            T = torch.tensor(T, dtype=torch.float32)
+        if not isinstance(p, torch.Tensor):
+            p = torch.tensor(p, dtype=torch.float32)
         return -0.005343 * T**2 + 3.0787 * T + 283.56
 
 def mu_func(T,p):
@@ -59,6 +64,11 @@ def mu_func(T,p):
         return torch.tensor([CP.PropsSI('V', 'T', t.item(), 'P', p.item(), 'n-Decane') for t, p in zip(T, p)],
                            dtype=torch.float32, device=T.device)
     except ImportError:
+        # 确保T和p是张量
+        if not isinstance(T, torch.Tensor):
+            T = torch.tensor(T, dtype=torch.float32)
+        if not isinstance(p, torch.Tensor):
+            p = torch.tensor(p, dtype=torch.float32)
         return torch.exp(-0.0091114 * T - 4.3961)
 
 def Cp_func(T,p):
@@ -68,6 +78,11 @@ def Cp_func(T,p):
         return torch.tensor([CP.PropsSI('C', 'T', t.item(), 'P', p.item(), 'n-Decane') for t, p in zip(T, p)],
                            dtype=torch.float32, device=T.device)
     except ImportError:
+        # 确保T和p是张量
+        if not isinstance(T, torch.Tensor):
+            T = torch.tensor(T, dtype=torch.float32)
+        if not isinstance(p, torch.Tensor):
+            p = torch.tensor(p, dtype=torch.float32)
         return 4.1587 * T + 947.66
 
 def k_func(T,p):
@@ -77,6 +92,11 @@ def k_func(T,p):
         return torch.tensor([CP.PropsSI('K', 'T', t.item(), 'P', p.item(), 'n-Decane') for t, p in zip(T, p)],
                            dtype=torch.float32, device=T.device)
     except ImportError:
+        # 确保T和p是张量
+        if not isinstance(T, torch.Tensor):
+            T = torch.tensor(T, dtype=torch.float32)
+        if not isinstance(p, torch.Tensor):
+            p = torch.tensor(p, dtype=torch.float32)
         return 0.141 * T + 0.000193 * T**2 - 0.0000000657 * T**3
 
 
