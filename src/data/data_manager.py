@@ -74,8 +74,8 @@ class DataManager:
             features = self.config.get('features', [])
             targets = self.config.get('targets', [])
             
-            self.data = torch.tensor(self.df[features].values, dtype=torch.float32, requires_grad=True)
-            self.targets = torch.tensor(self.df[targets].values, dtype=torch.float32, requires_grad=True)
+            self.data = torch.tensor(self.df[features].values, dtype=torch.float32, requires_grad=False)
+            self.targets = torch.tensor(self.df[targets].values, dtype=torch.float32, requires_grad=False)
             
             self.logger.info(f"Data loaded - Features: {features}, Targets: {targets}")
             self.logger.info(f"Data shape: {self.data.shape}, Targets shape: {self.targets.shape}")
@@ -83,8 +83,8 @@ class DataManager:
         elif self.data_path.endswith('.csv'):  # 读取CSV文件
             self.logger.warning(f"Data loaded from csv file, data_path: {self.data_path}")
             self.df = pd.read_csv(self.data_path)
-            self.data = torch.tensor(self.df[self.config.get('features', None)].values, dtype=torch.float32, requires_grad=True)
-            self.targets = torch.tensor(self.df[self.config.get('targets', None)].values, dtype=torch.float32, requires_grad=True)
+            self.data = torch.tensor(self.df[self.config.get('features', None)].values, dtype=torch.float32, requires_grad=False)
+            self.targets = torch.tensor(self.df[self.config.get('targets', None)].values, dtype=torch.float32, requires_grad=False)
         else:
             self.logger.error(f"Unsupported file extension: {self.data_path}")
             raise ValueError(f"Unsupported file extension: {self.data_path}")
