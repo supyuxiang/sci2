@@ -171,10 +171,27 @@ class Dataloader:
         build datasets
         '''
         # 构建训练和测试数据集
-        inputs_train = torch.from_numpy(self.input_train).float()
-        targets_train = torch.from_numpy(self.output_train).float()
-        inputs_test = torch.from_numpy(self.input_test).float()
-        targets_test = torch.from_numpy(self.output_test).float()
+        # 处理输入数据（可能是numpy数组或tensor）
+        if isinstance(self.input_train, torch.Tensor):
+            inputs_train = self.input_train.float()
+        else:
+            inputs_train = torch.from_numpy(self.input_train).float()
+            
+        if isinstance(self.input_test, torch.Tensor):
+            inputs_test = self.input_test.float()
+        else:
+            inputs_test = torch.from_numpy(self.input_test).float()
+        
+        # 处理目标数据（可能是numpy数组或tensor）
+        if isinstance(self.output_train, torch.Tensor):
+            targets_train = self.output_train.float()
+        else:
+            targets_train = torch.from_numpy(self.output_train).float()
+            
+        if isinstance(self.output_test, torch.Tensor):
+            targets_test = self.output_test.float()
+        else:
+            targets_test = torch.from_numpy(self.output_test).float()
 
         # 保证 target 为二维形状 [N, C]
         if targets_train.dim() == 1:
