@@ -26,10 +26,11 @@ Train:
   save_dir: '/home/yxfeng/project2/sci925/outputs'
   load_model_path: '/home/yxfeng/project2/sci925/outputs/model/model.pth'
   log_dir: 'logs'
-  log_freq: 1000
+  log_freq: 10000
   is_log: True
   device: 'cuda:2'
   save_freq: 100000
+  save_model_freq: 100000
   is_save: True
   early_stopping: True
   patience: 50
@@ -38,7 +39,7 @@ Train:
   is_pinn: True
   physics_weight: 1.0
   original_loss_weight: 1.0
-  eval_freq: 1000
+  eval_freq: 10000
   val_batch_freq: 1000
 
 Optimizer:

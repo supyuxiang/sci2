@@ -133,7 +133,8 @@ class Trainer:
             steps: int
         '''
         epochs = self.config.get('epochs',None)
-        save_model_path = Path(self.save_dir) / 'model' / f"ep{epochs}_steps_{steps}_{self.model.name}_model.pth"
+        model_name = self.config.get('model_name', self.model.__class__.__name__)
+        save_model_path = Path(self.save_dir) / 'model' / f"ep{epochs}_steps_{steps}_{model_name}_model.pth"
         save_model_path.parent.mkdir(parents=True,exist_ok=True)
 
         torch.save(self.model.state_dict(),save_model_path)
@@ -448,13 +449,10 @@ class Trainer:
                     w_original = float(self.config.get('original_loss_weight',1.0))
                     #如果权重之和不为一，则强行归一化并提示
                     if w_physics + w_original != 1:
-                        self.logger.warning(f"Physics weight and original loss weight do not sum to 1, they are {w_physics} and {w_original}, they will be normalized to {w_physics / (w_physics + w_original)} and {w_original / (w_physics + w_original)}")
                         w_physics = w_physics / (w_physics + w_original)
                         w_original = w_original / (w_physics + w_original)
-                        self.logger.info(f"Current Physics weight: {w_physics}, Original weight: {w_original}")
                     physics_loss = PhysicsLoss(output).compute_physics_loss()
                     loss = w_physics * physics_loss + w_original * loss
-                    self.logger.info(f"Physics loss: {physics_loss}, Original loss: {loss},Mixed loss: {loss}")
                 loss.backward()
                 self.optimizer.step()
                 self.scheduler.step()
@@ -470,17 +468,19 @@ class Trainer:
                     if is_save_metrics:
                         save_metrics_dir = Path(self.config.get('metrics_dir',None))
                         epochs = int(self.config.get('epochs', None))
-                        save_metrics_path = save_metrics_dir / f'ep{epoch}/{epochs}_steps{step}/{total_steps}_{self.model.name}_metrics.yaml'
+                        model_name = self.config.get('model_name', self.model.__class__.__name__)
+                        save_metrics_path = save_metrics_dir / f'ep{epoch}/{epochs}_steps{step}/{total_steps}_{model_name}_metrics.yaml'
                         Path(save_metrics_path).parent.mkdir(parents=True,exist_ok=True)
                         self.metrics_manager.save_metrics(save_metrics_path,metrics_current)
                         self.logger.info(f"Metrics saved, save_path: {save_metrics_path}")
-                    log_freq = int(self.config.get('log_freq', 1000))
+                    log_freq = int(self.config.get('log_freq', 10000))
                     is_log_metrics = step % log_freq == 0
                     if is_log_metrics:
                         self.logger.info(f"Epoch {epoch}, Step {step}, total_loss: {loss.item():.6f}, LR: {current_lr:.6f}, 'metrics_current': {metrics_current}")
                     is_save_model = bool(self.config.get('is_save_model',True)) and step % int(self.config.get('save_model_freq',500)) == 0
                     if is_save_model:
-                        save_model_path = Path(self.save_dir) / 'model' / f"ep{epoch}/{epochs}_steps{step}/{total_steps}_{self.model.name}_model.pth"
+                        model_name = self.config.get('model_name', self.model.__class__.__name__)
+                        save_model_path = Path(self.save_dir) / 'model' / f"ep{epoch}/{epochs}_steps{step}/{total_steps}_{model_name}_model.pth"
                         self.save_model(step)
                         self.logger.info(f"Model saved, save_path: {save_model_path}")
                     
@@ -498,7 +498,8 @@ class Trainer:
 
                 is_early_stopping = bool(n > patience and (max(loss_history[-patience:]) - loss_history[-1]) < (-min_delta))
                 if is_early_stopping:
-                    save_model_path = Path(self.save_dir) / 'model' / f"ep{epoch}/{epochs}_steps{step}/{total_steps}_{self.model.name}_model.pth"
+                    model_name = self.config.get('model_name', self.model.__class__.__name__)
+                    save_model_path = Path(self.save_dir) / 'model' / f"ep{epoch}/{epochs}_steps{step}/{total_steps}_{model_name}_model.pth"
                     self.save_model(step)
                     self.logger.info(f"Model saved, save_path: {save_model_path}")
                     self.logger.info(f"Early stopping triggered, epoch: {epoch}")
