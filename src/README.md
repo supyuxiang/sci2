@@ -9,6 +9,8 @@ Structure:
 
 Usage:
 ```bash
-CUDA_VISIBLE_DEVICES=8 python main.py --config config.yaml --excel '/home/yxfeng/project2/sci925/data/正确的二维（无裂解,3MPa).xlsx'
+conda activate fyx_sci
+cd /home/yxfeng/project2/sci2
+CUDA_VISIBLE_DEVICES=5 python main.py
 ```
 

@@ -11,7 +11,7 @@ Data:
   test_ratio: 0.2               # 验证/测试占比
   random_state: 42
   scaler_name: "standardscaler"
-  batch_size: 64
+  batch_size: 256
 
 
 Train:
@@ -38,6 +38,8 @@ Train:
   is_pinn: True
   physics_weight: 1.0
   original_loss_weight: 1.0
+  eval_freq: 1000
+  val_batch_freq: 1000
 
 Optimizer:
   name: 'adam'

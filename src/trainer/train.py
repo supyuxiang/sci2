@@ -102,6 +102,9 @@ class Trainer:
             self.logger.info(f"CUDA not available, using device: {self.device}")
         
         self.logger.info(f"Final device: {self.device}")
+        
+        # 将模型移动到指定设备
+        self.model.to(self.device)
 
     def _build_optimizer(self):
         optimizer_name = self.config.get('optimizer', 'adam')
@@ -429,6 +432,7 @@ class Trainer:
         
         self.logger.info(f"Training started, epochs: {epochs}, total_steps: {total_steps}, dataloader_train: {self.dataloader_train}")
         self.model.train()
+        self.model.to(self.device)  # 确保模型在正确的设备上
         for epoch in tqdm(range(epochs),desc='Training'):
             self.logger.info(f"Epoch {epoch} started")
             start_time = time.time()
@@ -483,7 +487,7 @@ class Trainer:
                     if self.use_swanlab:
                         self.save_swanlab(metrics_current,step)
                     
-                    if is_eval:
+                    if is_eval and step % int(self.config.get('eval_freq',100)) == 0:
                         self.validate(step)
                     
             if self.config.get('early_stopping', True):
@@ -522,7 +526,7 @@ class Trainer:
         '''
         self.model.eval()
         self.model.to(self.device)
-        val_batch_size = int(self.config.get('val_batch_size', 50))
+        val_batch_freq = int(self.config.get('val_batch_freq', 1000))
         
         # Initialize validation tracking
         val_predictions = []
@@ -564,7 +568,7 @@ class Trainer:
                         
                         total_loss = w_physics * physics_loss + w_original * original_loss
                         
-                        if batch_idx % val_batch_size == 0:  # Log every 10 batches
+                        if batch_idx % val_batch_freq == 0:  # Log every 10 batches
                             self.logger.info(f"Val Batch {batch_idx}: Physics loss: {physics_loss.item():.6f}, "
                                            f"Original loss: {original_loss.item():.6f}, Total loss: {total_loss.item():.6f}")
                     except Exception as e:
