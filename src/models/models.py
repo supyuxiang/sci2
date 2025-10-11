@@ -11,7 +11,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 from abc import ABC,abstractmethod
 
-from verl.verl.workers.reward_manager import abstract
 
 from .mlp import MLP
 from .GatedResMLP import GatedResMLP

@@ -454,7 +454,8 @@ class Trainer:
                     self.metrics_manager.update_metrics()
                     if is_save_metrics:
                         save_metrics_dir = Path(self.config.get('metrics_dir',None))
-                        save_metrics_path = save_metrics_dir / f'ep{epoch}/{int(self.config.get('epochs',None))}_steps{step}/{total_steps}_{self.model.name}_metrics.yaml'
+                        epochs = int(self.config.get('epochs', None))
+                        save_metrics_path = save_metrics_dir / f'ep{epoch}/{epochs}_steps{step}/{total_steps}_{self.model.name}_metrics.yaml'
                         Path(save_metrics_path).parent.mkdir(parents=True,exist_ok=True)
                         self.metrics_manager.save_metrics(save_metrics_path,metrics_current)
                         self.logger.info(f"Metrics saved, save_path: {save_metrics_path}")
@@ -463,7 +464,7 @@ class Trainer:
                         self.logger.info(f"Epoch {epoch}, Step {step}, total_loss: {loss.item():.6f}, LR: {current_lr:.6f}, 'metrics_current': {metrics_current}")
                     is_save_model = bool(self.config.get('is_save_model',True)) and step % int(self.config.get('save_model_freq',500)) == 0
                     if is_save_model:
-                        save_model_path = Path(self.save_dir) / 'model' / f"ep{epoch}/{int(self.config.get('epochs',None))}_steps{step}/{total_steps}_{self.model.name}_model.pth"
+                        save_model_path = Path(self.save_dir) / 'model' / f"ep{epoch}/{epochs}_steps{step}/{total_steps}_{self.model.name}_model.pth"
                         self.save_model(step)
                         self.logger.info(f"Model saved, save_path: {save_model_path}")
                     
@@ -481,7 +482,7 @@ class Trainer:
 
                 is_early_stopping = bool(n > patience and (max(loss_history[-patience:]) - loss_history[-1]) < (-min_delta))
                 if is_early_stopping:
-                    save_model_path = Path(self.save_dir) / 'model' / f"ep{epoch}/{int(self.config.get('epochs',None))}_steps{step}/{total_steps}_{self.model.name}_model.pth"
+                    save_model_path = Path(self.save_dir) / 'model' / f"ep{epoch}/{epochs}_steps{step}/{total_steps}_{self.model.name}_model.pth"
                     self.save_model(step)
                     self.logger.info(f"Model saved, save_path: {save_model_path}")
                     self.logger.info(f"Early stopping triggered, epoch: {epoch}")
