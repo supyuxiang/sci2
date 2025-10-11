@@ -98,8 +98,7 @@ Model:
   output_dim1: 4
   output_dim2: 1
 
-  model_name:
-   'mlp'
+  model_name: 'mlp'
 
   mlp:
     hidden_dim: 128
