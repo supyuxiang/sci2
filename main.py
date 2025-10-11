@@ -248,7 +248,7 @@ def test_model(model, test_loader, config, logger):
 
 
 @Timer
-@hydra.main(version_base=None, config_path="src", config_name="config")
+@hydra.main(config_path="src", config_name="config")
 def main(cfg: DictConfig) -> None:
     """
     Main function - using Hydra configuration management
