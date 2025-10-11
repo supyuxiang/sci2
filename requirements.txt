@@ -1,32 +1,32 @@
 # Core deep learning framework
-torch>=2.0.0
-torchvision>=0.15.0
-torchaudio>=2.0.0
+torch>=2.5.0
+torchvision>=0.20.0
+torchaudio>=2.5.0
 
 # Data processing and analysis
-numpy>=1.21.0,<1.27.0
-pandas>=1.3.0
-scipy>=1.7.0,<1.12.0
-scikit-learn>=1.0.0,<1.4.0
+numpy>=2.0.0
+pandas>=2.3.0
+scipy>=1.15.0
+scikit-learn>=1.7.0
+openpyxl>=3.1.0
 
 # Configuration management
-hydra-core>=1.1.0
-omegaconf>=2.1.0
+hydra-core>=0.11.0
+omegaconf>=1.4.0
 
 # Physics and thermodynamics
 CoolProp>=6.4.0
 
 # Visualization and plotting
-matplotlib>=3.5.0
-seaborn>=0.11.0
+matplotlib>=3.10.0
+seaborn>=0.13.0
 
 # Experiment tracking
-swanlab>=0.3.0
+swanlab>=0.6.0
 
 # Utilities
-tqdm>=4.60.0
-pyyaml>=6.0
-pathlib2>=2.3.0
+tqdm>=4.67.0
+pyyaml>=6.0.0
 
 # Optional: Jupyter notebook support
 jupyter>=1.0.0

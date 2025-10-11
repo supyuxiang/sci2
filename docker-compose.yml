@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  sci2:
+    build: .
+    container_name: sci2-container
+    volumes:
+      - .:/workspace
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    environment:
+      - DISPLAY=${DISPLAY}
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    runtime: nvidia
+    stdin_open: true
+    tty: true
+    working_dir: /workspace
+    command: /bin/bash
