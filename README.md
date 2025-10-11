@@ -196,14 +196,25 @@ sci2/
 
 ## 配置说明
 
-主要配置在 `src/config.yaml` 中：
+### 主配置文件 (`src/config.yaml`)
 
-- **Data**: 数据路径和参数
-- **Model**: 模型配置
-- **Train**: 训练参数
+主要配置包括：
+
+- **Data**: 数据路径、特征列、目标列、预处理参数
+- **Model**: 模型类型、架构参数、输入输出维度
+- **Train**: 训练参数、优化器、学习率调度器
 - **SwanLab**: 实验跟踪配置
 
-## GPU使用
+### 对比学习配置 (`src/contrastive_learning/config.yaml`)
+
+对比学习模块的专用配置：
+
+- **ContrastiveModel**: 对比学习模型参数
+- **ContrastiveTrain**: 对比学习训练参数
+- **Augmentation**: 数据增强策略
+- **Loss**: 对比损失函数配置
+
+### GPU使用
 
 项目默认使用 `cuda:2` 设备。可以在配置文件中修改：
 
@@ -211,6 +222,38 @@ sci2/
 Train:
   device: 'cuda:2'  # 或 'cpu', 'cuda:0', 'cuda:1' 等
 ```
+
+## 核心功能
+
+### 1. 物理信息神经网络 (PINN)
+
+项目支持物理约束的神经网络训练：
+
+```yaml
+Train:
+  is_pinn: True
+  physics_weight: 1.0
+  original_loss_weight: 1.0
+```
+
+### 2. 对比学习增强预测器
+
+通过对比学习提升模型性能：
+
+```bash
+# 运行对比学习训练
+python main.py --config-path=src/contrastive_learning --config-name=config
+```
+
+### 3. 多模型架构支持
+
+支持多种深度学习架构：
+- **MLP**: 多层感知机
+- **LSTM**: 长短期记忆网络
+- **GRU**: 门控循环单元
+- **Transformer**: 注意力机制网络
+- **CNN**: 一维卷积网络
+- **Wide&Deep**: 宽深网络
 
 ## 实验跟踪
 
@@ -220,6 +263,28 @@ Train:
 2. 设置项目名称和描述
 3. 运行训练时会自动记录指标
 
+```yaml
+swanlab:
+  use_swanlab: True
+  experiment_name: "physics_informed_nn_experiment_001"
+  project_name: "sci2"
+  description: "Physics-informed neural network for fluid dynamics simulation"
+```
+
+## 性能优化
+
+### GPU加速
+
+- 支持多GPU训练
+- 自动混合精度训练
+- 内存优化策略
+
+### 数据并行
+
+- 支持DataParallel和DistributedDataParallel
+- 自动批处理优化
+- 数据预加载
+
 ## 故障排除
 
 ### 常见问题
@@ -227,6 +292,7 @@ Train:
 1. **CUDA不可用**: 检查CUDA驱动和PyTorch安装
 2. **依赖冲突**: 重新创建conda环境
 3. **权限问题**: 使用 `--user` 标志安装包
+4. **Docker GPU问题**: 确保安装了nvidia-docker2
 
 ### 重新安装环境
 
@@ -238,6 +304,26 @@ conda env remove -n fyx_sci -y
 bash setup_environment.sh
 ```
 
+### Docker故障排除
+
+```bash
+# 检查Docker GPU支持
+docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi
+
+# 重新构建镜像
+docker-compose down
+docker-compose build --no-cache
+docker-compose up
+```
+
+## 贡献指南
+
+1. Fork 项目
+2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 打开 Pull Request
+
 ## 版本信息
 
 - PyTorch: 2.5.1
@@ -245,7 +331,16 @@ bash setup_environment.sh
 - Python: 3.10
 - Hydra: 0.11.3
 - CoolProp: 6.4.1
+- SwanLab: 0.6.0
 
 ## 许可证
 
 本项目仅供学习和研究使用。
+
+## 致谢
+
+感谢以下开源项目的支持：
+- [PyTorch](https://pytorch.org/)
+- [Hydra](https://hydra.cc/)
+- [SwanLab](https://swanlab.cn/)
+- [CoolProp](https://coolprop.org/)
