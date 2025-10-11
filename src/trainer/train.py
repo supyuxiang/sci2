@@ -40,7 +40,7 @@ class Trainer:
         device: torch.device
     '''
 
-    def __init__(self,config:Dict,model,dataloader_train,logger:Logger,save_dir:str):
+    def __init__(self,config:Dict,model,dataloader_train,dataloader_eval,logger:Logger,save_dir:str):
         self.save_model_dir = save_dir
         self.model = model
         self.logger = logger
@@ -49,6 +49,7 @@ class Trainer:
             self.init_swanlab(full_config=config)
         self.config = config.get('Train',{})
         self.dataloader_train = dataloader_train
+        self.dataloader_eval = dataloader_eval
         self.config_check()
         self._build_optimizer()
         self._build_loss_function()
@@ -125,14 +126,141 @@ class Trainer:
         torch.save(self.model.state_dict(),save_model_path)
         self.logger.info(f"Model saved, save_path: {save_model_path}")
     
-    def save_fig(self,metrics:dict[str,Any]):
+    def save_fig(self, metrics: dict[str, Any]):
         '''
-        save fig
+        Save training metrics visualization figures
         Args:
-            metrics: dict
+            metrics: dict containing training metrics history
         '''
-        keys = ['total_loss','physics_loss','original_loss','r2','mae','rmse','mse']
-        fig,axes = plt.subplots(2,2,figsize=(10,10))
+        try:
+            # 创建保存目录
+            fig_dir = Path(self.save_model_dir) / 'figures'
+            fig_dir.mkdir(parents=True, exist_ok=True)
+            
+            # 设置中文字体支持
+            plt.rcParams['font.sans-serif'] = ['SimHei', 'DejaVu Sans']
+            plt.rcParams['axes.unicode_minus'] = False
+            
+            # 创建2x2的子图布局
+            fig, axes = plt.subplots(2, 2, figsize=(15, 12))
+            fig.suptitle('Training Metrics Visualization', fontsize=16, fontweight='bold')
+            
+            # 1. 损失函数曲线 (左上)
+            ax1 = axes[0, 0]
+            if 'total_loss' in metrics and metrics['total_loss']:
+                steps = list(range(len(metrics['total_loss'])))
+                ax1.plot(steps, metrics['total_loss'], 'b-', label='Total Loss', linewidth=2)
+                
+                if 'physics_loss' in metrics and metrics['physics_loss']:
+                    ax1.plot(steps, metrics['physics_loss'], 'r-', label='Physics Loss', linewidth=2)
+                
+                if 'original_loss' in metrics and metrics['original_loss']:
+                    ax1.plot(steps, metrics['original_loss'], 'g-', label='Original Loss', linewidth=2)
+            
+            ax1.set_title('Loss Curves', fontsize=14, fontweight='bold')
+            ax1.set_xlabel('Training Steps')
+            ax1.set_ylabel('Loss Value')
+            ax1.legend()
+            ax1.grid(True, alpha=0.3)
+            ax1.set_yscale('log')  # 使用对数坐标轴
+            
+            # 2. R² 指标曲线 (右上)
+            ax2 = axes[0, 1]
+            if 'r2' in metrics and metrics['r2']:
+                # 提取各变量的R²值
+                r2_data = metrics['r2']
+                if isinstance(r2_data, list) and len(r2_data) > 0:
+                    # 获取变量名称（除了'step'）
+                    var_names = [k for k in r2_data[0].keys() if k != 'step']
+                    
+                    for var_name in var_names:
+                        r2_values = [item[var_name] for item in r2_data if var_name in item]
+                        if r2_values:
+                            steps = list(range(len(r2_values)))
+                            ax2.plot(steps, r2_values, label=f'R² {var_name}', linewidth=2)
+            
+            ax2.set_title('R² Score Curves', fontsize=14, fontweight='bold')
+            ax2.set_xlabel('Training Steps')
+            ax2.set_ylabel('R² Score')
+            ax2.legend()
+            ax2.grid(True, alpha=0.3)
+            ax2.set_ylim(0, 1)  # R²通常在0-1之间
+            
+            # 3. MAE 指标曲线 (左下)
+            ax3 = axes[1, 0]
+            if 'mae' in metrics and metrics['mae']:
+                mae_data = metrics['mae']
+                if isinstance(mae_data, list) and len(mae_data) > 0:
+                    var_names = [k for k in mae_data[0].keys() if k != 'step']
+                    
+                    for var_name in var_names:
+                        mae_values = [item[var_name] for item in mae_data if var_name in item]
+                        if mae_values:
+                            steps = list(range(len(mae_values)))
+                            ax3.plot(steps, mae_values, label=f'MAE {var_name}', linewidth=2)
+            
+            ax3.set_title('MAE Curves', fontsize=14, fontweight='bold')
+            ax3.set_xlabel('Training Steps')
+            ax3.set_ylabel('MAE Value')
+            ax3.legend()
+            ax3.grid(True, alpha=0.3)
+            ax3.set_yscale('log')  # 使用对数坐标轴
+            
+            # 4. RMSE 指标曲线 (右下)
+            ax4 = axes[1, 1]
+            if 'rmse' in metrics and metrics['rmse']:
+                rmse_data = metrics['rmse']
+                if isinstance(rmse_data, list) and len(rmse_data) > 0:
+                    var_names = [k for k in rmse_data[0].keys() if k != 'step']
+                    
+                    for var_name in var_names:
+                        rmse_values = [item[var_name] for item in rmse_data if var_name in item]
+                        if rmse_values:
+                            steps = list(range(len(rmse_values)))
+                            ax4.plot(steps, rmse_values, label=f'RMSE {var_name}', linewidth=2)
+            
+            ax4.set_title('RMSE Curves', fontsize=14, fontweight='bold')
+            ax4.set_xlabel('Training Steps')
+            ax4.set_ylabel('RMSE Value')
+            ax4.legend()
+            ax4.grid(True, alpha=0.3)
+            ax4.set_yscale('log')  # 使用对数坐标轴
+            
+            # 调整子图间距
+            plt.tight_layout()
+            
+            # 保存图片
+            timestamp = int(time.time())
+            fig_path = fig_dir / f'training_metrics_{timestamp}.png'
+            plt.savefig(fig_path, dpi=300, bbox_inches='tight', facecolor='white')
+            
+            # 同时保存为PDF格式（矢量图）
+            pdf_path = fig_dir / f'training_metrics_{timestamp}.pdf'
+            plt.savefig(pdf_path, bbox_inches='tight', facecolor='white')
+            
+            self.logger.info(f"Training metrics figures saved:")
+            self.logger.info(f"  - PNG: {fig_path}")
+            self.logger.info(f"  - PDF: {pdf_path}")
+            
+            # 关闭图形以释放内存
+            plt.close(fig)
+            
+            # 如果启用了SwanLab，也上传图片
+            if self.use_swanlab:
+                try:
+                    import swanlab
+                    swanlab.log({"training_metrics_plot": swanlab.Image(str(fig_path))})
+                    self.logger.info("Training metrics plot uploaded to SwanLab")
+                except Exception as e:
+                    self.logger.warning(f"Failed to upload plot to SwanLab: {e}")
+            
+        except Exception as e:
+            self.logger.error(f"Failed to save training metrics figures: {e}")
+            # 确保即使出错也关闭图形
+            try:
+                plt.close('all')
+            except:
+                pass
 
     def init_swanlab(self,full_config:Dict):
         '''
@@ -283,6 +411,11 @@ class Trainer:
         epochs = int(self.config.get('epochs',None))
         total_steps = len(self.dataloader_train)*epochs
         step = 0
+        is_eval = bool(self.config.get('is_eval',True))
+        if is_eval:
+            eval_freq = int(self.config.get('eval_freq',10))
+            eval_dataloader = self.dataloader_eval
+        
         self.logger.info(f"Training started, epochs: {epochs}, total_steps: {total_steps}, dataloader_train: {self.dataloader_train}")
         self.model.train()
         for epoch in tqdm(range(epochs),desc='Training'):
@@ -337,6 +470,9 @@ class Trainer:
                     if self.use_swanlab:
                         self.save_swanlab(metrics_current,step)
                     
+                    if is_eval:
+                        self.validate(step)
+                    
             if self.config.get('early_stopping', True):
                 loss_history = self.metrics_manager.metrics['total_loss']
                 n = len(loss_history)
@@ -361,35 +497,168 @@ class Trainer:
             self.save_swanlab(return_metrics,step)
         return return_metrics
 
-    def validate(self,dataloader_val):
+    def validate(self, step: int = None):
         '''
-        validate
+        Validate the model on validation dataset
         Args:
-            dataloader_val: DataLoader
+            dataloader_val: DataLoader for validation data
+            step: int current training step (optional, for SwanLab logging)
+        Returns:
+            dict: validation results containing predictions and metrics
         '''
         self.model.eval()
-        val_dict = {
-            'total_pred':[],
-            'total_loss':[],
-            'total_r2':0,
-            'total_mae':0,
-            'total_rmse':0,
-            'total_mse':0
-        }
+        self.model.to(self.device)
+        val_batch_size = int(self.config.get('val_batch_size', 50))
+        
+        # Initialize validation tracking
+        val_predictions = []
+        val_targets = []
+        val_losses = []
+        val_physics_losses = []
+        val_original_losses = []
+        
+        self.logger.info("Starting validation...")
+        
         with torch.no_grad():
-            for batch_idx,(batch_in,batch_out) in enumerate(tqdm(dataloader_val, desc='Validating')):
+            for batch_idx, (batch_in, batch_out) in enumerate(tqdm(self.dataloader_eval, desc='Validating')):
+                # Move data to device
                 batch_in = batch_in.to(self.device)
                 batch_out = batch_out.to(self.device)
+                
+                # Forward pass
                 output = self.model(batch_in)
-                loss = self.loss_function(output,batch_out)
-                if self.config.get('is_pinn',False):
-                    physics_loss = PhysicsLoss(output,batch_target,phase=self.model.phase).physics_loss()
-                    loss = self.config.get('physics_weight',1.0) * physics_loss + self.config.get('original_loss_weight',1.0) * loss
-                    self.logger.info(f"Physics loss: {physics_loss}, Original loss: {loss},Mixed loss: {loss}")
-                val_dict['total_pred'].append(output)
-                val_dict['total_loss'].append(loss)
-        self.logger.info(f"Validating completed, total_loss: {val_dict['total_loss']}, total_r2: {val_dict['total_r2']}, total_mae: {val_dict['total_mae']}, total_rmse: {val_dict['total_rmse']}, total_mse: {val_dict['total_mse']}")
-        return val_dict
+                
+                # Calculate original loss
+                original_loss = self.loss_function(output, batch_out)
+                
+                # Calculate physics loss if PINN is enabled
+                physics_loss = None
+                total_loss = original_loss
+                
+                if bool(self.config.get('is_pinn', False)):
+                    try:
+                        physics_loss = PhysicsLoss(output, batch_out, phase=getattr(self.model, 'phase', None)).compute_physics_loss()
+                        
+                        # Get loss weights
+                        w_physics = float(self.config.get('physics_weight', 1.0))
+                        w_original = float(self.config.get('original_loss_weight', 1.0))
+
+                        # Normalize weights if needed
+                        if w_physics + w_original != 1:
+                            w_physics = w_physics / (w_physics + w_original)
+                            w_original = w_original / (w_physics + w_original)
+                        
+                        total_loss = w_physics * physics_loss + w_original * original_loss
+                        
+                        if batch_idx % val_batch_size == 0:  # Log every 10 batches
+                            self.logger.info(f"Val Batch {batch_idx}: Physics loss: {physics_loss.item():.6f}, "
+                                           f"Original loss: {original_loss.item():.6f}, Total loss: {total_loss.item():.6f}")
+                    except Exception as e:
+                        self.logger.warning(f"Physics loss calculation failed: {e}")
+                        physics_loss = torch.tensor(0.0, device=self.device)
+                
+                # Store results
+                val_predictions.append(output.detach().cpu())
+                val_targets.append(batch_out.detach().cpu())
+                val_losses.append(total_loss.detach().cpu().item())
+                val_original_losses.append(original_loss.detach().cpu().item())
+                if physics_loss is not None:
+                    val_physics_losses.append(physics_loss.detach().cpu().item())
+        
+        # Concatenate all predictions and targets
+        all_predictions = torch.cat(val_predictions, dim=0)
+        all_targets = torch.cat(val_targets, dim=0)
+        
+        # Calculate comprehensive metrics using MetricsManager
+        val_metrics = self.metrics_manager.calculate_metrics(
+            all_predictions, all_targets, 
+            torch.tensor(np.mean(val_losses)),  # total_loss
+            torch.tensor(np.mean(val_physics_losses)) if val_physics_losses else torch.tensor(0.0),  # physics_loss
+            torch.tensor(np.mean(val_original_losses)),  # original_loss
+            step=step if step is not None else 0
+        )
+        
+        # Prepare validation results
+        val_results = {
+            'predictions': all_predictions,
+            'targets': all_targets,
+            'total_loss': np.mean(val_losses),
+            'physics_loss': np.mean(val_physics_losses) if val_physics_losses else 0.0,
+            'original_loss': np.mean(val_original_losses),
+            'metrics': val_metrics,
+            'num_samples': len(all_predictions)
+        }
+        
+        # Log validation results
+        self.logger.info(f"Validation completed:")
+        self.logger.info(f"  - Total loss: {val_results['total_loss']:.6f}")
+        self.logger.info(f"  - Physics loss: {val_results['physics_loss']:.6f}")
+        self.logger.info(f"  - Original loss: {val_results['original_loss']:.6f}")
+        self.logger.info(f"  - Number of samples: {val_results['num_samples']}")
+        
+        # Log detailed metrics
+        if 'r2' in val_metrics and isinstance(val_metrics['r2'], dict):
+            r2_info = ", ".join([f"{k}: {v:.4f}" for k, v in val_metrics['r2'].items() if k != 'step'])
+            self.logger.info(f"  - R² scores: {r2_info}")
+        
+        if 'mae' in val_metrics and isinstance(val_metrics['mae'], dict):
+            mae_info = ", ".join([f"{k}: {v:.6f}" for k, v in val_metrics['mae'].items() if k != 'step'])
+            self.logger.info(f"  - MAE scores: {mae_info}")
+        
+        # Log to SwanLab if enabled
+        if self.use_swanlab and step is not None:
+            try:
+                # Prepare validation metrics for SwanLab
+                val_log_data = {
+                    'val/total_loss': val_results['total_loss'],
+                    'val/physics_loss': val_results['physics_loss'],
+                    'val/original_loss': val_results['original_loss'],
+                    'val/num_samples': val_results['num_samples']
+                }
+                
+                # Add detailed metrics
+                if 'r2' in val_metrics and isinstance(val_metrics['r2'], dict):
+                    for var_name, r2_value in val_metrics['r2'].items():
+                        if var_name != 'step' and isinstance(r2_value, (int, float)):
+                            val_log_data[f'val/r2/{var_name}'] = r2_value
+                    
+                    # Add mean R²
+                    r2_values = [v for k, v in val_metrics['r2'].items() 
+                               if k != 'step' and isinstance(v, (int, float))]
+                    if r2_values:
+                        val_log_data['val/r2/mean'] = np.mean(r2_values)
+                
+                if 'mae' in val_metrics and isinstance(val_metrics['mae'], dict):
+                    for var_name, mae_value in val_metrics['mae'].items():
+                        if var_name != 'step' and isinstance(mae_value, (int, float)):
+                            val_log_data[f'val/mae/{var_name}'] = mae_value
+                    
+                    # Add mean MAE
+                    mae_values = [v for k, v in val_metrics['mae'].items() 
+                                if k != 'step' and isinstance(v, (int, float))]
+                    if mae_values:
+                        val_log_data['val/mae/mean'] = np.mean(mae_values)
+                
+                if 'rmse' in val_metrics and isinstance(val_metrics['rmse'], dict):
+                    for var_name, rmse_value in val_metrics['rmse'].items():
+                        if var_name != 'step' and isinstance(rmse_value, (int, float)):
+                            val_log_data[f'val/rmse/{var_name}'] = rmse_value
+                    
+                    # Add mean RMSE
+                    rmse_values = [v for k, v in val_metrics['rmse'].items() 
+                                 if k != 'step' and isinstance(v, (int, float))]
+                    if rmse_values:
+                        val_log_data['val/rmse/mean'] = np.mean(rmse_values)
+                
+                # Log to SwanLab
+                import swanlab
+                swanlab.log(val_log_data, step=step)
+                self.logger.info(f"Validation metrics logged to SwanLab at step {step}")
+                
+            except Exception as e:
+                self.logger.error(f"Failed to log validation metrics to SwanLab: {e}")
+        
+        return val_results
  
 
     

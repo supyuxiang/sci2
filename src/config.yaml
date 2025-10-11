@@ -16,6 +16,7 @@ Data:
 
 Train:
   epochs: 1000
+  is_eval: True
   optimizer: 'adam'
   loss_function: 'mse'
   scheduler: 'cosine'
@@ -98,7 +99,7 @@ Model:
   output_dim2: 1
 
   model_name:
-   'grmlp'
+   'mlp'
 
   mlp:
     hidden_dim: 128

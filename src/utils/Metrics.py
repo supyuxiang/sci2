@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 from torch import Tensor
 import numpy as np
-from typing import Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 from pathlib import Path
 import os
 import yaml
@@ -63,16 +63,6 @@ class MetricsManager(nn.Module):
 
 
     def calculate_metrics(self,output,target,loss,physics_loss,original_loss,step:int):
-        # 旧实现：直接把 GPU Tensor 传给 sklearn，会触发 cuda Tensor 转 numpy 的错误
-        # assert output.shape == target.shape,'output and target must have the same shape'
-        # self.metrics_current = {
-        # 'loss': loss,
-        # 'r2': self.cal_r2(output,target),
-        # 'mae': self.cal_mae(output,target),
-        # 'rmse':self.cal_rmse(output,target),
-        # 'mse': self.cal_mse(output,target)
-        # }
-        # return self.metrics_current
 
         # 新实现：先对齐形状，再将 Tensor 转为 CPU numpy 数组供 sklearn 使用, 展平成一维，且对 NaN/Inf 做掩码
         assert output.shape == target.shape, 'output and target must have the same shape'
@@ -89,18 +79,9 @@ class MetricsManager(nn.Module):
         true_p = y_true[:,3]
 
         self.metrics_current = {
-            'total_loss': {
-                'value': float(loss.detach().cpu().item()),
-                'step':step,
-            },
-            'physics_loss': {
-                'value': float(physics_loss.detach().cpu().item()),
-                'step':step,
-            },
-            'original_loss': {
-                'value': float(original_loss.detach().cpu().item()),
-                'step':step,
-            },
+            'total_loss':float(loss.detach().cpu().item()),
+            'physics_loss':float(physics_loss.detach().cpu().item()),
+            'original_loss':float(original_loss.detach().cpu().item()),
             'mae':{
                 'T':self.cal_mae(pred_T,true_T),
                 'spfU':self.cal_mae(pred_spfU,true_spfU),
@@ -136,8 +117,8 @@ class MetricsManager(nn.Module):
         for key,value in self.metrics_current.items():
             self.metrics[key].append(value)
 
-    def save_metrics(self,save_dir:str):
-        save_path = Path(save_dir) / 'metrics.yaml'
+    def save_metrics(self,save_path:str,metrics:dict[str,Any]):
+        save_path = Path(save_path)
         with open(save_path,'w') as f:
-            f.write(yaml.dump(self.metrics))
+            f.write(yaml.dump(metrics))
         
