@@ -25,12 +25,11 @@ Train:
   scheduler_config: {}
   save_dir: '/home/yxfeng/project2/sci925/outputs'
   load_model_path: '/home/yxfeng/project2/sci925/outputs/model/model.pth'
-  log_interval: 10
   log_dir: 'logs'
-  log_freq: 100
+  log_freq: 1000
   is_log: True
   device: 'cuda:2'
-  save_freq: 1000
+  save_freq: 100000
   is_save: True
   early_stopping: True
   patience: 50

@@ -83,8 +83,26 @@ class Trainer:
         
 
     def _set_device(self,config:Dict):
-        self.device = config.get('device', 'cpu')
-        self.logger.info(f"Device set, device: {self.device}")
+        import os
+        import torch
+        
+        # 检查CUDA_VISIBLE_DEVICES环境变量
+        cuda_visible_devices = os.environ.get('CUDA_VISIBLE_DEVICES', None)
+        
+        if cuda_visible_devices is not None and torch.cuda.is_available():
+            # 如果设置了CUDA_VISIBLE_DEVICES，使用cuda:0（因为环境变量会重新映射GPU索引）
+            self.device = 'cuda:0'
+            self.logger.info(f"CUDA_VISIBLE_DEVICES set to {cuda_visible_devices}, using device: {self.device}")
+        elif torch.cuda.is_available():
+            # 如果没有设置环境变量，使用配置文件中的设备
+            self.device = config.get('device', 'cuda:0')
+            self.logger.info(f"Device set from config, device: {self.device}")
+        else:
+            # 如果没有CUDA可用，使用CPU
+            self.device = 'cpu'
+            self.logger.info(f"CUDA not available, using device: {self.device}")
+        
+        self.logger.info(f"Final device: {self.device}")
 
     def _build_optimizer(self):
         optimizer_name = self.config.get('optimizer', 'adam')
@@ -385,7 +403,8 @@ class Trainer:
                 swanlab.log(log_data, step=step)
                 
                 # 只在特定步数记录详细信息
-                if step % 100 == 0:
+                log_freq = self.config.get('log_freq', 1000)
+                if step % log_freq == 0:
                     self.logger.info(f"SwanLab logged {len(log_data)} metrics at step {step}")
                     
         except ImportError:
@@ -452,7 +471,8 @@ class Trainer:
                         Path(save_metrics_path).parent.mkdir(parents=True,exist_ok=True)
                         self.metrics_manager.save_metrics(save_metrics_path,metrics_current)
                         self.logger.info(f"Metrics saved, save_path: {save_metrics_path}")
-                    is_log_metrics = step % 10 ==0
+                    log_freq = int(self.config.get('log_freq', 1000))
+                    is_log_metrics = step % log_freq == 0
                     if is_log_metrics:
                         self.logger.info(f"Epoch {epoch}, Step {step}, total_loss: {loss.item():.6f}, LR: {current_lr:.6f}, 'metrics_current': {metrics_current}")
                     is_save_model = bool(self.config.get('is_save_model',True)) and step % int(self.config.get('save_model_freq',500)) == 0

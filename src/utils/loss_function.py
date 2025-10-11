@@ -109,11 +109,6 @@ class PhysicsLoss:
         Args:
             batch: 预测结果张量 [batch_size, 4] - [T, spf.U, u, p]
         """
-        print(f"PhysicsLoss init - batch shape: {batch.shape if batch is not None else None}")
-        print(f"PhysicsLoss init - batch type: {type(batch)}")
-        if batch is not None:
-            print(f"PhysicsLoss init - batch dims: {batch.dim()}")
-            print(f"PhysicsLoss init - batch content: {batch}")
         
         if batch is not None and batch.dim() >= 2 and batch.shape[1] >= 4:
             self.T = batch[:, 0]      # 温度 T (K)

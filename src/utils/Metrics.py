@@ -66,8 +66,14 @@ class MetricsManager(nn.Module):
 
         # 新实现：先对齐形状，再将 Tensor 转为 CPU numpy 数组供 sklearn 使用, 展平成一维，且对 NaN/Inf 做掩码
         assert output.shape == target.shape, 'output and target must have the same shape'
-        y_pred = output.detach().cpu().numpy().reshape(-1)
-        y_true = target.detach().cpu().numpy().reshape(-1)
+        y_pred = output.detach().cpu().numpy()
+        y_true = target.detach().cpu().numpy()
+
+        # 确保数据是二维的 [batch_size, features]
+        if y_pred.ndim == 1:
+            y_pred = y_pred.reshape(-1, 1)
+        if y_true.ndim == 1:
+            y_true = y_true.reshape(-1, 1)
 
         # 根据实际数据列重新映射
         pred_T = y_pred[:,0]      # T (K)
