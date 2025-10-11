@@ -66,7 +66,6 @@ class Trainer:
         assert self.config.get('optimizer',None) is not None,'optimizer is not set'
         assert self.config.get('loss_function',None) is not None,'loss_function is not set'
         assert self.config.get('scheduler',None) is not None,'scheduler is not set'
-        assert self.config.get('log_interval',None) is not None,'log_interval is not set'
         assert self.config.get('is_log',None) is not None,'is_log is not set'
         assert self.config.get('is_save',None) is not None,'is_save is not set'
         assert self.config.get('save_freq',None) is not None,'save_freq is not set'
