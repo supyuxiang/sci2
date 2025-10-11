@@ -1,0 +1,224 @@
+# 对抗学习增强预测器配置
+Data:
+  data_path: "/home/yxfeng/project2/sci2/data/数据100mm流体域.xlsx"
+  sheet_name: "数据100mm流体域"
+  format: "auto"
+  sheet: 0
+  index_start: 8
+  features: ["% x", "y", "z"]
+  targets: ["T (K)", "spf.U (m/s)", "u (m/s)", "p (Pa)"]
+  output_dir: "/home/yxfeng/project2/sci2/outputs/adversarial"
+  log_dir: "/home/yxfeng/project2/sci2/logs/adversarial"
+  test_ratio: 0.2
+  random_state: 42
+  scaler_name: "standardscaler"
+  batch_size: 64
+
+# 对抗学习模型配置
+AdversarialModel:
+  name: "adversarial_enhanced_predictor"
+  base_model: "mlp"  # 基础模型类型: mlp, lstm, gru, transformer
+  input_dim: 3
+  output_dim: 4
+  hidden_dim: 128
+  num_blocks: 8
+  dropout: 0.2
+  
+  # 生成器配置
+  generator:
+    type: "mlp"  # mlp, lstm, gru, transformer
+    hidden_dim: 128
+    num_layers: 6
+    dropout: 0.1
+    noise_dim: 32  # 噪声维度
+    output_activation: "tanh"  # tanh, sigmoid, none
+    
+  # 判别器配置
+  discriminator:
+    type: "mlp"  # mlp, lstm, gru, transformer
+    hidden_dim: 128
+    num_layers: 4
+    dropout: 0.1
+    output_activation: "sigmoid"  # sigmoid, none
+    
+  # 预测器配置
+  predictor:
+    type: "mlp"  # mlp, lstm, gru, transformer
+    hidden_dim: 128
+    num_layers: 6
+    dropout: 0.1
+    output_activation: "none"
+    
+  # 对抗训练参数
+  adversarial:
+    epsilon: 0.1  # 对抗扰动强度
+    num_adv_steps: 10  # 对抗训练步数
+    adv_lr: 0.01  # 对抗训练学习率
+    pgd_steps: 7  # PGD攻击步数
+    fgsm_alpha: 0.01  # FGSM攻击强度
+
+# 对抗学习训练配置
+AdversarialTrain:
+  epochs: 1000
+  is_eval: True
+  optimizer: 'adam'
+  loss_function: 'adversarial_mse'
+  scheduler: 'cosine'
+  optimizer_config:
+    lr: 1e-3
+    weight_decay: 1e-5
+    betas: [0.9, 0.999]
+  scheduler_config:
+    lr_min: 1e-6
+    lr_max: 1e-3
+    T_max: 100
+    eta_min: 1e-6
+  save_dir: '/home/yxfeng/project2/sci2/outputs/adversarial'
+  load_model_path: null
+  log_interval: 10
+  log_dir: 'logs/adversarial'
+  log_freq: 10
+  is_log: True
+  device: 'cuda:2'
+  save_freq: 100
+  is_save: True
+  early_stopping: True
+  patience: 50
+  min_delta: 1e-4
+  save_best_only: True
+  
+  # 对抗学习特定训练参数
+  generator_weight: 0.3      # 生成器损失权重
+  discriminator_weight: 0.3  # 判别器损失权重
+  predictor_weight: 0.4      # 预测器损失权重
+  physics_weight: 0.2        # 物理约束损失权重
+  is_pinn: True              # 是否启用物理信息神经网络
+  
+  # 训练阶段配置
+  pretrain_epochs: 200       # 预训练轮数
+  adversarial_epochs: 600    # 对抗训练轮数
+  finetune_epochs: 200       # 微调轮数
+  pretrain_lr: 1e-3          # 预训练学习率
+  adversarial_lr: 1e-4       # 对抗训练学习率
+  finetune_lr: 1e-5          # 微调学习率
+  
+  # GAN训练参数
+  gan_training:
+    d_steps: 1               # 判别器训练步数
+    g_steps: 1               # 生成器训练步数
+    d_lr: 1e-4               # 判别器学习率
+    g_lr: 1e-4               # 生成器学习率
+    label_smoothing: 0.1     # 标签平滑
+    gradient_penalty: 10.0   # 梯度惩罚权重
+
+# 对抗攻击配置
+AdversarialAttack:
+  enabled: True
+  attack_types: ["fgsm", "pgd", "cw"]  # 攻击类型
+  epsilon_range: [0.01, 0.1, 0.2]     # 扰动强度范围
+  num_attacks: 10                      # 攻击次数
+  
+  # FGSM攻击
+  fgsm:
+    epsilon: 0.1
+    targeted: False
+    
+  # PGD攻击
+  pgd:
+    epsilon: 0.1
+    alpha: 0.01
+    num_iter: 7
+    targeted: False
+    
+  # CW攻击
+  cw:
+    c: 1.0
+    kappa: 0.0
+    num_iter: 1000
+    lr: 0.01
+
+# 数据增强配置
+Augmentation:
+  enabled: True
+  noise_std: 0.01              # 噪声标准差
+  spatial_scale: 0.05          # 空间变换尺度
+  dropout_rate: 0.1            # 随机丢弃率
+  
+  # 对抗增强
+  adversarial_augmentation:
+    enabled: True
+    epsilon: 0.05              # 对抗扰动强度
+    num_adv_samples: 1000      # 对抗样本数量
+    mix_ratio: 0.3             # 对抗样本混合比例
+    
+  # 物理约束增强
+  physics_augmentation:
+    enabled: True
+    temperature_scale: 0.1     # 温度变化尺度
+    velocity_scale: 0.05       # 速度变化尺度
+    pressure_scale: 0.1        # 压力变化尺度
+    
+  # 生成式增强
+  generative_augmentation:
+    enabled: True
+    num_generated_samples: 2000  # 生成样本数量
+    mix_ratio: 0.4               # 生成样本混合比例
+
+# 对抗学习损失配置
+AdversarialLoss:
+  # GAN损失
+  gan_loss:
+    type: "bce"                # bce, wgan, lsgan
+    label_smoothing: 0.1       # 标签平滑
+    gradient_penalty: 10.0     # 梯度惩罚
+    
+  # 对抗损失
+  adversarial_loss:
+    type: "fgsm"               # fgsm, pgd, cw
+    epsilon: 0.1               # 扰动强度
+    targeted: False            # 是否目标攻击
+    
+  # 物理约束损失
+  physics_loss:
+    enabled: True
+    weight: 0.2
+    constraint_types: ["conservation", "boundary"]  # 守恒定律, 边界条件
+    
+  # 正则化损失
+  regularization:
+    l1_weight: 0.01            # L1正则化权重
+    l2_weight: 0.01            # L2正则化权重
+    gradient_penalty_weight: 10.0  # 梯度惩罚权重
+
+# 评估配置
+Evaluation:
+  metrics: ["mse", "mae", "rmse", "r2"]
+  save_predictions: True
+  save_embeddings: True
+  visualization: True
+  
+  # 对抗学习特定评估
+  adversarial_evaluation:
+    robustness_test: True      # 鲁棒性测试
+    attack_success_rate: True  # 攻击成功率
+    adversarial_accuracy: True # 对抗准确率
+    clean_accuracy: True       # 干净样本准确率
+
+# SwanLab实验跟踪
+swanlab:
+  use_swanlab: True
+  experiment_name: "adversarial_learning_enhanced_predictor"
+  project_name: "sci2_adversarial"
+  description: "Adversarial learning enhanced predictor for fluid dynamics simulation"
+
+# 日志配置
+logger:
+  name: 'adversarial_logger'
+  level: 'INFO'
+  format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+  datefmt: '%Y-%m-%d %H:%M:%S'
+  handlers:
+    - name: 'file_handler'
+      level: 'INFO'
+      formatter: 'simple'
+      filename: 'logs/adversarial/adversarial.log'

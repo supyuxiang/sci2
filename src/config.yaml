@@ -15,7 +15,7 @@ Data:
 
 
 Train:
-  epochs: 1000
+  epochs: 2000
   is_eval: True
   optimizer: 'adam'
   loss_function: 'mse'
@@ -26,7 +26,7 @@ Train:
   save_dir: '/home/yxfeng/project2/sci925/outputs'
   load_model_path: '/home/yxfeng/project2/sci925/outputs/model/model.pth'
   log_dir: 'logs'
-  log_freq: 10000
+  log_freq: 1000
   is_log: True
   device: 'cuda:2'
   save_freq: 100000
