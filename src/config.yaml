@@ -11,11 +11,11 @@ Data:
   test_ratio: 0.2               # 验证/测试占比
   random_state: 42
   scaler_name: "standardscaler"
-  batch_size: 256
+  batch_size: 1024
 
 
 Train:
-  epochs: 2000
+  epochs: 5000
   is_eval: True
   optimizer: 'adam'
   loss_function: 'mse'
@@ -29,8 +29,8 @@ Train:
   log_freq: 1000
   is_log: True
   device: 'cuda:2'
-  save_freq: 100000
-  save_model_freq: 100000
+  save_freq: 1000000
+  save_model_freq: 1000000
   is_save: True
   early_stopping: True
   patience: 50
