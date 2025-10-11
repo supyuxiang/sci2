@@ -4,8 +4,8 @@ Data:
   format: "auto"                 # auto|excel|csv （强制解析格式）
   sheet: 0   
   index_start: 8                  # Excel工作表索引或名称（仅excel）
-  features: ["x", "y", "z"]         # 特征列
-  targets: ["T (K)", "spf. U (m/s)", "u (m/s)", "p (Pa)"]        # 目标
+  features: ["% x", "y", "z"]         # 特征列
+  targets: ["T (K)", "spf.U (m/s)", "u (m/s)", "p (Pa)"]        # 目标
   output_dir: "/home/yxfeng/project2/sci925/outputs"      # 结果输出目录（绝对路径）
   log_dir: "/home/yxfeng/project2/sci925/logs"      # 日志输出目录（绝对路径）
   test_ratio: 0.2               # 验证/测试占比
