@@ -135,6 +135,9 @@ class Trainer:
                 self.optimizer.step()
                 self.scheduler.step()
                 
+                # 获取当前学习率（避免警告）
+                current_lr = self.scheduler.get_last_lr()[0]
+                
                 # Calculate metrics for this batch, 要改
                 with torch.no_grad():
                     self.metrics_current = self.metrics_manager.calculate_metrics(output,batch_target,loss)
@@ -142,7 +145,7 @@ class Trainer:
 
             if self.config.get('is_log',True):
                 if idx % self.config.get('log_freq',10) == 0:
-                    self.logger.info(f"Epoch {epoch}, Batch {idx}, Loss: {loss.item()}, r2: {self.metrics_manager.metrics['r2'][-1]}, mae: {self.metrics_manager.metrics['mae'][-1]}, rmse: {self.metrics_manager.metrics['rmse'][-1]}, mse: {self.metrics_manager.metrics['mse'][-1]}, Time: {time.time() - start_time}")
+                    self.logger.info(f"Epoch {epoch}, Batch {idx}, Loss: {loss.item():.6f}, LR: {current_lr:.6f}, r2: {self.metrics_manager.metrics['r2'][-1]:.4f}, mae: {self.metrics_manager.metrics['mae'][-1]:.4f}, rmse: {self.metrics_manager.metrics['rmse'][-1]:.4f}, mse: {self.metrics_manager.metrics['mse'][-1]:.4f}, Time: {time.time() - start_time:.2f}s")
 
             if self.config.get('is_save',True) and self.config.get('save_freq',False) and epoch % self.config['save_freq'] == 0:
                     if self.config.get('save_best_only',True) and self.save_model_dir is not None:
@@ -169,7 +172,7 @@ class Trainer:
                     self.logger.info(f'Early stopping triggered, epoch: {epoch}')
                     break
 
-            self.logger.info(f"Epoch {epoch} completed, loss: {loss.item()}, r2: {self.metrics_manager.metrics['r2'][-1]}, mae: {self.metrics_manager.metrics['mae'][-1]}, rmse: {self.metrics_manager.metrics['rmse'][-1]}, mse: {self.metrics_manager.metrics['mse'][-1]}, Time: {time.time() - start_time}")
+            self.logger.info(f"Epoch {epoch} completed, loss: {loss.item():.6f}, LR: {current_lr:.6f}, r2: {self.metrics_manager.metrics['r2'][-1]:.4f}, mae: {self.metrics_manager.metrics['mae'][-1]:.4f}, rmse: {self.metrics_manager.metrics['rmse'][-1]:.4f}, mse: {self.metrics_manager.metrics['mse'][-1]:.4f}, Time: {time.time() - start_time:.2f}s")
         self.logger.info(f"Training completed, epochs: {self.config.get('epochs',None)}")
         self._save_model(self.config['epochs'])
         # expose metrics snapshot for external access

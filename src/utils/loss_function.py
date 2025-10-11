@@ -25,6 +25,44 @@ def build_loss_function(name: str):
 
 
 
+
+
+
+
+def rho_func(T,p):
+    assert T is not None and p is not None, "T and p are required"
+    if CP is not None:
+        return torch.tensor([CP.PropsSI('D', 'T', t.item(), 'P', p.item(), 'n-Decane') for t, p in zip(T, p)],
+                        dtype=torch.float32, device=T.device)
+    else:
+        return -0.005343 * T**2 + 3.0787 * T + 283.56
+
+def mu_func(T,p):
+    assert T is not None and p is not None, "T and p are required"
+    if CP is not None:
+        return torch.tensor([CP.PropsSI('V', 'T', t.item(), 'P', p.item(), 'n-Decane') for t, p in zip(T, p)],
+                           dtype=torch.float32, device=T.device)
+    else:
+        return torch.exp(-0.0091114 * T - 4.3961)
+
+def Cp_func(T,p):
+    assert T is not None and p is not None, "T and p are required"
+    if CP is not None:
+        return torch.tensor([CP.PropsSI('C', 'T', t.item(), 'P', p.item(), 'n-Decane') for t, p in zip(T, p)],
+                           dtype=torch.float32, device=T.device)
+    else:
+        return 4.1587 * T + 947.66
+
+def k_func(T,p):
+    assert T is not None and p is not None, "T and p are required"
+    if CP is not None:
+        return torch.tensor([CP.PropsSI('K', 'T', t.item(), 'P', p.item(), 'n-Decane') for t, p in zip(T, p)],
+                           dtype=torch.float32, device=T.device)
+    else:
+        return 0.141 * T + 0.000193 * T**2 - 0.0000000657 * T**3
+
+
+
 class PhysicsLoss:
     def __init__(self,batch,phase):
         if phase == 1:
@@ -35,45 +73,9 @@ class PhysicsLoss:
             raise ValueError(f"Invalid phase: {phase}. Available phases: 1, 2")
     
     @classmethod
-    def rho_func(self,T,p):
-        assert self.T is not None and self.p is not None, "T and p are required"
-        if CP is not None:
-            return torch.tensor([CP.PropsSI('D', 'T', t.item(), 'P', p.item(), 'n-Decane') for t, p in zip(self.T, self.p)],
-                           dtype=torch.float32, device=self.T.device)
-        else:
-            return -0.005343 * self.T**2 + 3.0787 * self.T + 283.56
-        
-    @classmethod
-    def mu_func(self,T,p):
-        assert self.T is not None and self.p is not None, "T and p are required"
-        if CP is not None:
-            return torch.tensor([CP.PropsSI('V', 'T', t.item(), 'P', p.item(), 'n-Decane') for t, p in zip(self.T, self.p)],
-                           dtype=torch.float32, device=self.T.device)
-        else:
-            return torch.exp(-0.0091114 * self.T - 4.3961)
-
-    @classmethod
-    def Cp_func(self):
-        assert self.T is not None and self.p is not None, "T and p are required"
-        if CP is not None:
-            return torch.tensor([CP.PropsSI('C', 'T', t.item(), 'P', p.item(), 'n-Decane') for t, p in zip(self.T, self.p)],
-                           dtype=torch.float32, device=self.T.device)
-        else:
-            return 4.1587 * self.T + 947.66
-        
-    @classmethod
-    def k_func(self):
-        assert self.T is not None and self.p is not None, "T and p are required"
-        if CP is not None:
-            return torch.tensor([CP.PropsSI('K', 'T', t.item(), 'P', p.item(), 'n-Decane') for t, p in zip(self.T, self.p)],
-                           dtype=torch.float32, device=self.T.device)
-        else:
-            return 0.141 * self.T + 0.000193 * self.T**2 - 0.0000000657 * self.T**3
-    
-    @classmethod
     def physics_loss(self,w_rho=0.25,w_mu=0.25,w_Cp=0.25,w_k=0.25):
         if self.T and self.p is not None:
-            return w_rho * self.rho_func() + w_mu * self.mu_func() + w_Cp * self.Cp_func() + w_k * self.k_func()
+            return w_rho * rho_func(self.T,self.p) + w_mu * mu_func(self.T,self.p) + w_Cp * Cp_func(self.T,self.p) + w_k * k_func(self.T,self.p)
         else:
             return 0
 

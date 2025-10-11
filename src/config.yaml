@@ -1,19 +1,16 @@
 Data:
-  data_path: "/home/yxfeng/project2/sci925/data/三维双热通量.xlsx"  # 输入数据路径（Excel）
+  data_path: "/home/yxfeng/project2/sci2/data/数据100mm流体域.xlsx"  # 输入数据路径（Excel）
   format: "auto"                 # auto|excel|csv （强制解析格式）
   sheet: 0   
   index_start: 8                  # Excel工作表索引或名称（仅excel）
-  phase1_index_end: 15698         # 前382行为阶段1
   features: ["% x", "y", "z"]         # 特征列
-  phase1_targets: ["T (K)", "u (m/s)", "v (m/s)", "p (Pa)"]        # 阶段1目标
-  phase2_targets: ["T (K)"]       # 阶段2目标
+  targets: ["T (K)", "u (m/s)", "v (m/s)", "p (Pa)"]        # 目标
   output_dir: "/home/yxfeng/project2/sci925/outputs"      # 结果输出目录（绝对路径）
   log_dir: "/home/yxfeng/project2/sci925/logs"      # 日志输出目录（绝对路径）
-  test_ratio: 0.2               # 在各自阶段上的验证/测试占比
+  test_ratio: 0.2               # 验证/测试占比
   random_state: 42
   scaler_name: "standardscaler"
-  batch_size1: 64
-  batch_size2: 64
+  batch_size: 64
 
 
 Train:
@@ -24,12 +21,9 @@ Train:
   optimizer_config: {}
   loss_function_config: {}
   scheduler_config: {}
-  save_model_path1: '/home/yxfeng/project2/sci925/outputs/model/phase1'
-  save_model_path2: '/home/yxfeng/project2/sci925/outputs/model/phase2'
-  save_best_model_only_path1: '/home/yxfeng/project2/sci925/outputs/model/phase1/best'
-  save_best_model_only_path2: '/home/yxfeng/project2/sci925/outputs/model/phase2/best'
-  load_model_path1: '/home/yxfeng/project2/sci925/outputs/model/phase1/model.pth'
-  load_model_path2: '/home/yxfeng/project2/sci925/outputs/model/phase2/model.pth'
+  save_model_path: '/home/yxfeng/project2/sci925/outputs/model'
+  save_best_model_only_path: '/home/yxfeng/project2/sci925/outputs/model/best'
+  load_model_path: '/home/yxfeng/project2/sci925/outputs/model/model.pth'
   log_interval: 10
   log_dir: 'logs'
   log_freq: 10
@@ -42,8 +36,9 @@ Train:
   min_delta: 1e-4
   save_best_only: True
   metrics_dir: '/home/yxfeng/project2/sci925/outputs/metrics'
-  phase_ls: [1,2]
-
+  is_pinn: True
+  physics_weight: 1.0
+  original_loss_weight: 1.0
 
 Optimizer:
   name: 'adam'
@@ -104,8 +99,7 @@ Model:
   output_dim2: 1
 
   model_name:
-    phase1: 'grmlp'
-    phase2: 'grmlp'
+   'grmlp'
 
   mlp:
     hidden_dim: 128

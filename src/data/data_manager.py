@@ -20,17 +20,14 @@ from utils.logger import Logger
 
 
 class DataManager:
-    """Load excel and produce phase-specific datasets.
-
-    - Phase 1: rows [0:index_phase1_end) => predict T
-    - Phase 2: rows [index_phase1_end: ) => predict T,u,v,p
+    """Load excel and produce single-phase dataset.
 
     input:
     config: DataConfig
 
     output:
-    phase1_dataloader: Dataloader
-    phase2_dataloader: Dataloader
+    dataloader_train: Dataloader
+    dataloader_test: Dataloader
 
     """
 
@@ -42,10 +39,8 @@ class DataManager:
         self.config:Dict = config.get('Data',{})
         self.logger:Logger = logger
         self.data_path:str = self.config.get('data_path', None)  # 先设置data_path
-        self.check_basic_config()  # 只检查基本配置
-        self.data_load()  # 加载数据
-        self.check_data_config()  # 检查数据相关的配置
-        self.split_data_based_on_phase()
+        self.data_load()  # 检查配置并加载数据
+        self.split_data()
         self.data_preprocessing(scaler_name=self.config.get('scaler_name','standardscaler'))  # 处理
         self.build_dataloader()
         end_time = time.time()
@@ -53,141 +48,89 @@ class DataManager:
 
 
 
-    def check_basic_config(self) -> None:
-        '''
-        check basic config (before data loading)
-        '''
-        assert self.data_path is not None, "data_path is not set"
-        assert self.config.get('index_start',None) is not None, "index_start is not set"
-        assert Path(self.data_path).exists(),'data_path is not exists'
-        assert self.config.get('phase1_index_end',None) is not None, "phase1_index_end is not set"
-        assert self.config.get('features',None) is not None, 'features is not set'
-        self.logger.info("Basic config checked completed")
-
-    def check_data_config(self) -> None:
-        '''
-        check data-related config (after data loading)
-        '''
-        output_cols_phase1 = self.config.get('phase1_targets',None)
-        output_cols_phase2 = self.config.get('phase2_targets',None)
-        assert output_cols_phase1 is not None, "phase1_targets is not set"
-        assert output_cols_phase2 is not None, 'phase2_targets is not set'
-        error_cols1 = [col for col in output_cols_phase1 if col not in self.df.columns]
-        error_cols2 = [col for col in output_cols_phase2 if col not in self.df.columns]
-        assert len(error_cols1) == 0, f"error_cols1: {error_cols1}"
-        assert len(error_cols2) == 0, f"error_cols2: {error_cols2}"
-        self.logger.info(f"Data config checked completed, output_cols_phase1: {output_cols_phase1}, output_cols_phase2: {output_cols_phase2}")
-
-
     def data_load(self) -> None:
         '''
-        laod data form data_path
+        check config and load data from data_path
         '''
-        # self.data_path already set in __init__
+        # 1. 检查基本配置
+        assert self.data_path is not None, "data_path is not set"
+        assert Path(self.data_path).exists(), 'data_path is not exists'
+        assert self.config.get('features', None) is not None, 'features is not set'
+        self.logger.info("Basic config checked completed")
         
+        # 2. 加载数据
         if self.data_path.endswith('.xlsx'):  # 读取Excel文件
             # 读取Excel文件，跳过前面的元数据行，使用第一行作为列名
             self.df = pd.read_excel(self.data_path, sheet_name='三维双热通量(2)', skiprows=7, header=0)
             # 重新设置列名（去掉第一行，使用第二行作为列名）
             self.df.columns = self.df.iloc[0]
             self.df = self.df.drop(self.df.index[0]).reset_index(drop=True)
-            self.data = torch.tensor(self.df[self.config.get('features',None)].values,dtype=torch.float32,requires_grad=True)
-            self.targets1 = torch.tensor(self.df[self.config.get('phase1_targets',None)].values,dtype=torch.float32,requires_grad=True)
-            self.targets2 = torch.tensor(self.df[self.config.get('phase2_targets',None)].values,dtype=torch.float32,requires_grad=True)
+            self.data = torch.tensor(self.df[self.config.get('features', None)].values, dtype=torch.float32, requires_grad=True)
+            self.targets = torch.tensor(self.df[self.config.get('targets', None)].values, dtype=torch.float32, requires_grad=True)
         
         elif self.data_path.endswith('.csv'):  # 读取CSV文件
             self.logger.warning(f"Data loaded from csv file, data_path: {self.data_path}")
             self.df = pd.read_csv(self.data_path)
-
-            self.data = torch.tensor(self.df[self.config.get('features',None)].values,dtype=torch.float32,requires_grad=True)
-            self.targets1 = torch.tensor(self.df[self.config.get('phase1_targets',None)].values,dtype=torch.float32,requires_grad=True)
-            self.targets2 = torch.tensor(self.df[self.config.get('phase2_targets',None)].values,dtype=torch.float32,requires_grad=True)
+            self.data = torch.tensor(self.df[self.config.get('features', None)].values, dtype=torch.float32, requires_grad=True)
+            self.targets = torch.tensor(self.df[self.config.get('targets', None)].values, dtype=torch.float32, requires_grad=True)
         else:
             self.logger.error(f"Unsupported file extension: {self.data_path}")
             raise ValueError(f"Unsupported file extension: {self.data_path}")
+        
+        # 3. 检查数据相关配置
+        output_cols = self.config.get('targets', None)
+        assert output_cols is not None, "targets is not set"
+        self.logger.info(f"Data config checked completed, output_cols: {output_cols}")
         self.logger.info(f"Data loaded completed, data_path: {self.data_path}")
 
-    def split_data_based_on_phase(self) -> None:
+    def split_data(self) -> None:
         '''
         split data into train and test
         '''
         from sklearn.model_selection import train_test_split
         
-        index_start = self.config.get('index_start',None)
-        assert index_start is not None, "index_start is not set"
-        
-        phase1_index_end = self.config.get('phase1_index_end',None)
-        assert phase1_index_end is not None, "phase1_index_end is not set"
-        
         test_ratio = self.config.get('test_ratio', 0.2)
         random_state = self.config.get('random_state', 42)
         
-        # Phase 1 data
-        phase1_input = self.data[index_start:phase1_index_end,:]
-        phase1_output = self.targets1[index_start:phase1_index_end,:]
-
-        # Clean NaNs in phase 1 (features or targets). Keep only rows with all finite values
-        mask1 = torch.all(torch.isfinite(phase1_input), axis=1) & torch.all(torch.isfinite(phase1_output), axis=1)
-        removed1 = int((~mask1).sum())
-        if removed1 > 0:
-            self.logger.warning(f"Phase 1: detected and removed {removed1} rows containing NaN/Inf.")
-        phase1_input = phase1_input[mask1]
-        phase1_output = phase1_output[mask1]
+        # Clean NaNs in data (features or targets). Keep only rows with all finite values
+        mask = torch.all(torch.isfinite(self.data), axis=1) & torch.all(torch.isfinite(self.targets), axis=1)
+        removed = int((~mask).sum())
+        if removed > 0:
+            self.logger.warning(f"Detected and removed {removed} rows containing NaN/Inf.")
         
-        # Phase 2 data
-        phase2_input = self.data[phase1_index_end+1:,:]
-        phase2_output = self.targets2[phase1_index_end+1:,:]
+        clean_data = self.data[mask]
+        clean_targets = self.targets[mask]
         
-        # Split phase 1 into train/test
-        self.phase1_input_train, self.phase1_input_test, self.phase1_output_train, self.phase1_output_test = train_test_split(
-            phase1_input, phase1_output, test_size=test_ratio, random_state=random_state
+        # Split into train/test
+        self.input_train, self.input_test, self.output_train, self.output_test = train_test_split(
+            clean_data, clean_targets, test_size=test_ratio, random_state=random_state
         )
         
-        # Split phase 2 into train/test
-        self.phase2_input_train, self.phase2_input_test, self.phase2_output_train, self.phase2_output_test = train_test_split(
-            phase2_input, phase2_output, test_size=test_ratio, random_state=random_state
-        )
-        
-        self.logger.info(f'Data split based on phase completed, phase1_index_end: {phase1_index_end}, test_ratio: {test_ratio}')
+        self.logger.info(f'Data split completed, test_ratio: {test_ratio}, train_size: {len(self.input_train)}, test_size: {len(self.input_test)}')
 
     def data_preprocessing(self, scaler_name : str) -> None:
         '''
         process data
         '''
         scaler = build_scaler(scaler_name)
-        self.phase1_input_train = scaler.fit_transform(self.phase1_input_train)
-        self.phase1_input_test = scaler.transform(self.phase1_input_test)
-        self.phase2_input_train = scaler.fit_transform(self.phase2_input_train)
-        self.phase2_input_test = scaler.transform(self.phase2_input_test)
-        self.logger.info(f"Data preprocessing completed, scaler: {scaler_name}, phase1_input_train: {self.phase1_input_train.shape}, phase1_input_test: {self.phase1_input_test.shape}, phase2_input_train: {self.phase2_input_train.shape}, phase2_input_test: {self.phase2_input_test.shape}")
+        self.input_train = scaler.fit_transform(self.input_train)
+        self.input_test = scaler.transform(self.input_test)
+        self.logger.info(f"Data preprocessing completed, scaler: {scaler_name}, input_train: {self.input_train.shape}, input_test: {self.input_test.shape}")
     
     def build_dataloader(self):
         '''
         build dataloader
         '''
-        # 原实现：直接将 (inputs, targets) 二元组交给 DataLoader，导致后续取 batch 解包时报错
-        # self.dataloader_phase1, self.dataloader_phase2 = Dataloader(self.phase1_input_train, self.phase1_output_train, self.phase2_input_train, self.phase2_output_train, self.config.get('batch_size1',64), self.logger).build_dataloader()
-        
-        # 新实现：先包装为逐样本返回 (x_i, y_i) 的 TensorDataset，再交给 DataLoader
-        self.dataloader_phase1_train, self.dataloader_phase1_test = Dataloader(
-            self.phase1_input_train,
-            self.phase1_output_train,
-            self.phase1_input_test,
-            self.phase1_output_test,
-            self.config.get('batch_size1', 64),
-            self.logger
-        ).build_dataloader()
-
-        self.dataloader_phase2_train,self.dataloader_phase2_test = Dataloader(
-            self.phase2_input_train,
-            self.phase2_output_train,
-            self.phase2_input_test,
-            self.phase2_output_test,
-            self.config.get('batch_size2', 64),
+        self.dataloader_train, self.dataloader_test = Dataloader(
+            self.input_train,
+            self.output_train,
+            self.input_test,
+            self.output_test,
+            self.config.get('batch_size', 64),
             self.logger
         ).build_dataloader()
         
-        self.logger.info(f"Dataloader built, dataloader_phase1_train: {self.dataloader_phase1_train}, dataloader_phase1_test: {self.dataloader_phase1_test}, dataloader_phase2_train: {self.dataloader_phase2_train}, dataloader_phase2_test: {self.dataloader_phase2_test}")
+        self.logger.info(f"Dataloader built, train_size: {len(self.dataloader_train.dataset)}, test_size: {len(self.dataloader_test.dataset)}")
 
 
 
@@ -195,19 +138,18 @@ class Dataloader:
     '''
     build dataloader
     input:
-    - phase1_datasets
-    - phase2_datasets
+    - input_train, output_train
+    - input_test, output_test
     output:
-    - dataloader_phase1
-    - dataloader_phase2
+    - dataloader_train, dataloader_test
     '''
 
-    def __init__(self,phase1_input,phase1_output,phase2_input,phase2_output,batch_size,logger):
+    def __init__(self, input_train, output_train, input_test, output_test, batch_size, logger):
         self.batch_size = batch_size
-        self.phase1_input = phase1_input
-        self.phase1_output = phase1_output
-        self.phase2_input = phase2_input
-        self.phase2_output = phase2_output
+        self.input_train = input_train
+        self.output_train = output_train
+        self.input_test = input_test
+        self.output_test = output_test
         self.logger = logger
         self.build_datasets()
         self.build_sampler()
@@ -216,57 +158,48 @@ class Dataloader:
         '''
         build datasets
         '''
-        # 旧实现：使用 numpy 二元组 (X, y)
-        # self.datasets1 = (self.phase1_input, self.phase1_output)
-        # self.datasets2 = (self.phase2_input, self.phase2_output)
-
-        # 新实现：显式构建 TensorDataset，逐样本返回 (x_i, y_i)
-        inputs1 = torch.from_numpy(self.phase1_input).float()
-        targets1 = torch.from_numpy(self.phase1_output).float()
-        inputs2 = torch.from_numpy(self.phase2_input).float()
-        targets2 = torch.from_numpy(self.phase2_output).float()
+        # 构建训练和测试数据集
+        inputs_train = torch.from_numpy(self.input_train).float()
+        targets_train = torch.from_numpy(self.output_train).float()
+        inputs_test = torch.from_numpy(self.input_test).float()
+        targets_test = torch.from_numpy(self.output_test).float()
 
         # 保证 target 为二维形状 [N, C]
-        if targets1.dim() == 1:
-            targets1 = targets1.unsqueeze(1)
-        if targets2.dim() == 1:
-            targets2 = targets2.unsqueeze(1)
+        if targets_train.dim() == 1:
+            targets_train = targets_train.unsqueeze(1)
+        if targets_test.dim() == 1:
+            targets_test = targets_test.unsqueeze(1)
 
-        self.datasets1 = TensorDataset(inputs1, targets1)
-        self.datasets2 = TensorDataset(inputs2, targets2)
-        self.logger.info(f"Build datasets, datasets1: {self.datasets1}, datasets2: {self.datasets2}")
+        self.dataset_train = TensorDataset(inputs_train, targets_train)
+        self.dataset_test = TensorDataset(inputs_test, targets_test)
+        self.logger.info(f"Build datasets, train_size: {len(self.dataset_train)}, test_size: {len(self.dataset_test)}")
     
     def build_sampler(self):
         '''
         build sampler
         '''
-        # 旧实现：基于二元组计算长度
-        # n = len(self.datasets1[0])
-        # n2 = len(self.datasets2[0])
-
-        # 新实现：直接使用 Dataset 的长度
-        n = len(self.datasets1)
-        n2 = len(self.datasets2)
-        self.logger.info(f"Build sampler, datasets1: {self.datasets1}, datasets2: {self.datasets2}")
-        indices1 = list(range(n))
-        indices2 = list(range(n2))
-        self.sampler1 = SubsetRandomSampler(indices1)
-        self.sampler2 = SubsetRandomSampler(indices2)
-        self.logger.info(f"Build sampler, sampler1: {self.sampler1}, sampler2: {self.sampler2}")
+        # 构建训练和测试的采样器
+        n_train = len(self.dataset_train)
+        n_test = len(self.dataset_test)
+        
+        indices_train = list(range(n_train))
+        indices_test = list(range(n_test))
+        
+        self.sampler_train = SubsetRandomSampler(indices_train)
+        self.sampler_test = SubsetRandomSampler(indices_test)
+        
+        self.logger.info(f"Build sampler, train_size: {n_train}, test_size: {n_test}")
 
     def build_dataloader(self):
         '''
         build dataloader
         '''
-        # 旧实现：直接把 (X, y) 二元组交给 DataLoader
-        # dataloader1 = torch.utils.data.DataLoader(self.datasets1, sampler=self.sampler1, batch_size=self.batch_size, shuffle=False)
-        # dataloader2 = torch.utils.data.DataLoader(self.datasets2, sampler=self.sampler2, batch_size=self.batch_size, shuffle=False)
-
-        # 新实现：对 TensorDataset 构建 DataLoader
-        dataloader1 = DataLoader(self.datasets1, sampler=self.sampler1, batch_size=self.batch_size, shuffle=False)
-        dataloader2 = DataLoader(self.datasets2, sampler=self.sampler2, batch_size=self.batch_size, shuffle=False)
-        self.logger.info(f"Build dataloader, dataloader1: {dataloader1}, dataloader2: {dataloader2}")
-        return dataloader1,dataloader2
+        # 构建训练和测试的DataLoader
+        dataloader_train = DataLoader(self.dataset_train, sampler=self.sampler_train, batch_size=self.batch_size, shuffle=False)
+        dataloader_test = DataLoader(self.dataset_test, sampler=self.sampler_test, batch_size=self.batch_size, shuffle=False)
+        
+        self.logger.info(f"Build dataloader, train_batches: {len(dataloader_train)}, test_batches: {len(dataloader_test)}")
+        return dataloader_train, dataloader_test
 
 
 
