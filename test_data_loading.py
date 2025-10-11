@@ -26,8 +26,8 @@ def create_test_config() -> Dict[str, Any]:
         'Data': {
             'data_path': "/home/yxfeng/project2/sci2/data/数据100mm流体域.xlsx",
             'sheet_name': "数据100mm流体域",
-            'features': ["x", "y", "z"],
-            'targets': ["T (K)", "spf. U (m/s)", "u (m/s)", "p (Pa)"],
+            'features': ["% x", "y", "z"],
+            'targets': ["T (K)", "spf.U (m/s)", "u (m/s)", "p (Pa)"],
             'test_ratio': 0.2,
             'random_state': 42,
             'scaler_name': 'standardscaler',
@@ -106,7 +106,8 @@ def test_data_manager_creation(config: Dict[str, Any]) -> bool:
         
         # 创建DataManager
         print("🔧 创建DataManager...")
-        data_manager = DataManager(config, logger)
+        data_path = config['Data']['data_path']
+        data_manager = DataManager(config, logger, data_path)
         
         print("✅ DataManager创建成功")
         print(f"📊 训练数据形状: {data_manager.data.shape}")
