@@ -10,7 +10,7 @@ import torch
 from pathlib import Path
 
 # 添加项目路径
-sys.path.insert(0, str(Path(__file__).parent))
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 def test_cuda_availability():
     """测试CUDA可用性"""
