@@ -34,11 +34,10 @@ class ModelFactory(torch.nn.Module,BaseModelFactory):
     '''
     Model Factory: mlp, lstm
     '''
-    def __init__(self,logger,phase:int,model_name:str='mlp'):
+    def __init__(self,logger,model_name:str='mlp'):
         super(ModelFactory,self).__init__()
         self.model_name = model_name
         self.logger = logger
-        self.phase = phase
         self._load_config()
         self._check_config()
         self.build_model()
@@ -170,71 +169,40 @@ class ModelFactory(torch.nn.Module,BaseModelFactory):
 
 
     def build_model(self):
-        if self.model_name == 'mlp':
-            if self.phase == 1:
-                self.model = MLP(
-                    indim = self.indim,
-                    outdim = self.outdim1,
-                    hidden_dim = self.hidden_dim,
-                    num_blocks = self.num_blocks,
-                    dropout = self.dropout
-                )
-            elif self.phase == 2:
-                self.model = MLP(
-                    indim = self.indim,
-                    outdim = self.outdim2,
-                    hidden_dim = self.hidden_dim,
-                    num_blocks = self.num_blocks,
-                    dropout = self.dropout
-                )
-            else:
-                raise ValueError(f"Phase {self.phase} not supported")
+        if self.model_name == 'mlp':  
+            self.model = MLP(
+                indim = self.indim,
+                outdim = self.outdim1,
+                hidden_dim = self.hidden_dim,
+                num_blocks = self.num_blocks,
+                dropout = self.dropout
+            )
+    
         
         
         elif self.model_name == 'lstm':
-            if self.phase == 1:
-                self.model = LSTM(
-                    indim = self.indim,
-                    outdim = self.outdim1,
-                    hidden_dim = self.hidden_dim,
-                    num_blocks = self.num_blocks,
-                    dropout = self.dropout
-                )
-            elif self.phase == 2:
-                self.model = LSTM(
-                    indim = self.indim,
-                    outdim = self.outdim2,
-                    hidden_dim = self.hidden_dim,
-                    num_blocks = self.num_blocks,
-                    dropout = self.dropout
-                )
-            else:
-                raise ValueError(f"Phase {self.phase} not supported")
+            self.model = LSTM(
+                indim = self.indim,
+                outdim = self.outdim1,
+                hidden_dim = self.hidden_dim,
+                num_blocks = self.num_blocks,
+                dropout = self.dropout
+            )
+            
             
         elif self.model_name == 'grmlp':
-            if self.phase == 1:
-                self.model = GatedResMLP(
-                    indim = self.indim,
-                    outdim = self.outdim1,
-                    hidden_dim = self.hidden_dim,
-                    depth = self.depth,
-                    dropout = self.dropout
-                )
+            self.model = GatedResMLP(
+                indim = self.indim,
+                outdim = self.outdim1,
+                hidden_dim = self.hidden_dim,
+                depth = self.depth,
+                dropout = self.dropout
+            )
 
-            elif self.phase == 2:
-                self.model = GatedResMLP(
-                    indim = self.indim,
-                    outdim = self.outdim2,
-                    hidden_dim = self.hidden_dim,
-                    depth = self.depth,
-                    dropout = self.dropout
-                )
-            else:
-                raise ValueError(f"Phase {self.phase} not supported")
+            
         
         elif self.model_name == 'agtmlp':
-            if self.phase == 1:
-                self.model = AdaptiveGatedTransformerMLP(
+            self.model = AdaptiveGatedTransformerMLP(
                     indim = self.indim,
                     outdim = self.outdim1,
                     hidden_dim = self.hidden_dim,
@@ -243,62 +211,30 @@ class ModelFactory(torch.nn.Module,BaseModelFactory):
                     num_experts = self.num_experts,
                     dropout = self.dropout
                 )
-            elif self.phase == 2:
-                self.model = AdaptiveGatedTransformerMLP(
-                    indim = self.indim,
-                    outdim = self.outdim2,
-                    hidden_dim = self.hidden_dim,
-                    depth = self.depth,
-                    num_heads = self.num_heads,
-                    num_experts = self.num_experts,
-                    dropout = self.dropout
-                )
-            else:
-                raise ValueError(f"Phase {self.phase} not supported")
+
         
         elif self.model_name == 'resmlp':
-            if self.phase == 1:
-                self.model = ResMLP(
+            self.model = ResMLP(
                     indim=self.indim,
                     outdim=self.outdim1,
                     hidden_dim=self.hidden_dim,
                     depth=self.depth,
                     dropout=self.dropout,
                 )
-            elif self.phase == 2:
-                self.model = ResMLP(
-                    indim=self.indim,
-                    outdim=self.outdim2,
-                    hidden_dim=self.hidden_dim,
-                    depth=self.depth,
-                    dropout=self.dropout,
-                )
-            else:
-                raise ValueError(f"Phase {self.phase} not supported")
+
 
         elif self.model_name == 'gru':
-            if self.phase == 1:
-                self.model = GRURegressor(
+            self.model = GRURegressor(
                     indim=self.indim,
                     outdim=self.outdim1,
                     hidden_dim=self.hidden_dim,
                     num_layers=self.num_layers,
                     dropout=self.dropout,
                 )
-            elif self.phase == 2:
-                self.model = GRURegressor(
-                    indim=self.indim,
-                    outdim=self.outdim2,
-                    hidden_dim=self.hidden_dim,
-                    num_layers=self.num_layers,
-                    dropout=self.dropout,
-                )
-            else:
-                raise ValueError(f"Phase {self.phase} not supported")
+        
 
         elif self.model_name == 'cnn1d':
-            if self.phase == 1:
-                self.model = CNNRegressor1D(
+            self.model = CNNRegressor1D(
                     indim=self.indim,
                     outdim=self.outdim1,
                     channels=self.channels,
@@ -306,21 +242,10 @@ class ModelFactory(torch.nn.Module,BaseModelFactory):
                     kernel_size=self.kernel_size,
                     dropout=self.dropout,
                 )
-            elif self.phase == 2:
-                self.model = CNNRegressor1D(
-                    indim=self.indim,
-                    outdim=self.outdim2,
-                    channels=self.channels,
-                    depth=self.depth,
-                    kernel_size=self.kernel_size,
-                    dropout=self.dropout,
-                )
-            else:
-                raise ValueError(f"Phase {self.phase} not supported")
+
 
         elif self.model_name == 'transformer':
-            if self.phase == 1:
-                self.model = TransformerEncoderRegressor(
+            self.model = TransformerEncoderRegressor(
                     indim=self.indim,
                     outdim=self.outdim1,
                     hidden_dim=self.hidden_dim,
@@ -328,26 +253,9 @@ class ModelFactory(torch.nn.Module,BaseModelFactory):
                     num_heads=self.num_heads,
                     dropout=self.dropout,
                 )
-            elif self.phase == 2:
-                self.model = TransformerEncoderRegressor(
-                    indim=self.indim,
-                    outdim=self.outdim2,
-                    hidden_dim=self.hidden_dim,
-                    depth=self.depth,
-                    num_heads=self.num_heads,
-                    dropout=self.dropout,
-                )
-            else:
-                raise ValueError(f"Phase {self.phase} not supported")
-
 
         elif self.model_name == 'wide_deep':
-            if self.phase == 1:
-                self.model = WideAndDeep(self.indim, self.outdim1, self.deep_hidden, self.deep_layers, self.dropout)
-            elif self.phase == 2:
-                self.model = WideAndDeep(self.indim, self.outdim2, self.deep_hidden, self.deep_layers, self.dropout)
-            else:
-                raise ValueError(f"Phase {self.phase} not supported")
+            self.model = WideAndDeep(self.indim, self.outdim1, self.deep_hidden, self.deep_layers, self.dropout)
 
         else:
             self.logger.error(f"Model name {self.model_name} not supported")

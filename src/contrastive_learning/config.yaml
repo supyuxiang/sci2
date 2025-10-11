@@ -1,0 +1,165 @@
+# 对比学习增强预测器配置
+Data:
+  data_path: "/home/yxfeng/project2/sci2/data/数据100mm流体域.xlsx"
+  sheet_name: "数据100mm流体域"
+  format: "auto"
+  sheet: 0
+  index_start: 8
+  features: ["% x", "y", "z"]
+  targets: ["T (K)", "spf.U (m/s)", "u (m/s)", "p (Pa)"]
+  output_dir: "/home/yxfeng/project2/sci2/outputs/contrastive"
+  log_dir: "/home/yxfeng/project2/sci2/logs/contrastive"
+  test_ratio: 0.2
+  random_state: 42
+  scaler_name: "standardscaler"
+  batch_size: 64
+
+# 对比学习模型配置
+ContrastiveModel:
+  name: "contrastive_enhanced_predictor"
+  base_model: "mlp"  # 基础模型类型: mlp, lstm, gru, transformer
+  input_dim: 3
+  output_dim: 4
+  hidden_dim: 128
+  num_blocks: 8
+  dropout: 0.2
+  
+  # 对比学习特定参数
+  projection_dim: 64  # 投影头维度
+  temperature: 0.07   # 温度参数
+  embedding_dim: 128  # 特征嵌入维度
+  
+  # 编码器配置
+  encoder:
+    type: "mlp"  # mlp, lstm, gru, transformer
+    hidden_dim: 128
+    num_layers: 4
+    dropout: 0.1
+    
+  # 投影头配置
+  projection_head:
+    input_dim: 128
+    hidden_dim: 64
+    output_dim: 64
+    num_layers: 2
+    dropout: 0.1
+    
+  # 预测头配置
+  prediction_head:
+    input_dim: 128
+    hidden_dim: 64
+    output_dim: 4
+    num_layers: 2
+    dropout: 0.1
+
+# 对比学习训练配置
+ContrastiveTrain:
+  epochs: 1000
+  is_eval: True
+  optimizer: 'adam'
+  loss_function: 'contrastive_mse'
+  scheduler: 'cosine'
+  optimizer_config:
+    lr: 1e-3
+    weight_decay: 1e-5
+    betas: [0.9, 0.999]
+  scheduler_config:
+    lr_min: 1e-6
+    lr_max: 1e-3
+    T_max: 100
+    eta_min: 1e-6
+  save_dir: '/home/yxfeng/project2/sci2/outputs/contrastive'
+  load_model_path: null
+  log_interval: 10
+  log_dir: 'logs/contrastive'
+  log_freq: 10
+  is_log: True
+  device: 'cuda:2'
+  save_freq: 100
+  is_save: True
+  early_stopping: True
+  patience: 50
+  min_delta: 1e-4
+  save_best_only: True
+  
+  # 对比学习特定训练参数
+  contrastive_weight: 0.5      # 对比学习损失权重
+  prediction_weight: 0.5       # 预测损失权重
+  physics_weight: 0.3          # 物理约束损失权重
+  is_pinn: True                # 是否启用物理信息神经网络
+  
+  # 预训练配置
+  pretrain_epochs: 200         # 对比学习预训练轮数
+  finetune_epochs: 800         # 微调轮数
+  pretrain_lr: 1e-3            # 预训练学习率
+  finetune_lr: 1e-4            # 微调学习率
+
+# 数据增强配置
+Augmentation:
+  enabled: True
+  noise_std: 0.01              # 噪声标准差
+  spatial_scale: 0.05          # 空间变换尺度
+  dropout_rate: 0.1            # 随机丢弃率
+  
+  # 物理约束增强
+  physics_augmentation:
+    enabled: True
+    temperature_scale: 0.1     # 温度变化尺度
+    velocity_scale: 0.05       # 速度变化尺度
+    pressure_scale: 0.1        # 压力变化尺度
+    
+  # 时间序列增强（如果适用）
+  temporal_augmentation:
+    enabled: False
+    time_shift: 0.1            # 时间偏移
+    time_scale: 0.05           # 时间缩放
+
+# 对比学习损失配置
+ContrastiveLoss:
+  type: "infonce"              # infonce, simclr, moco
+  temperature: 0.07            # 温度参数
+  negative_samples: 64         # 负样本数量
+  
+  # 物理约束对比损失
+  physics_contrastive:
+    enabled: True
+    weight: 0.3
+    constraint_types: ["conservation", "boundary"]  # 守恒定律, 边界条件
+    
+  # 多尺度对比学习
+  multi_scale:
+    enabled: True
+    scales: [1.0, 0.5, 2.0]    # 多尺度因子
+    weights: [0.5, 0.3, 0.2]   # 各尺度权重
+
+# 评估配置
+Evaluation:
+  metrics: ["mse", "mae", "rmse", "r2"]
+  save_predictions: True
+  save_embeddings: True
+  visualization: True
+  
+  # 对比学习特定评估
+  contrastive_evaluation:
+    embedding_analysis: True   # 嵌入分析
+    similarity_analysis: True  # 相似性分析
+    clustering_analysis: True  # 聚类分析
+
+# SwanLab实验跟踪
+swanlab:
+  use_swanlab: True
+  experiment_name: "contrastive_learning_enhanced_predictor"
+  project_name: "sci2_contrastive"
+  description: "Contrastive learning enhanced predictor for fluid dynamics simulation"
+
+# 日志配置
+logger:
+  name: 'contrastive_logger'
+  level: 'INFO'
+  format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+  datefmt: '%Y-%m-%d %H:%M:%S'
+  handlers:
+    - name: 'file_handler'
+      level: 'INFO'
+      formatter: 'simple'
+      filename: 'logs/contrastive/contrastive.log'

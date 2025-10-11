@@ -31,22 +31,21 @@ def set_logger(config):
     return logger
     
 
-def create_model(logger: Logger, model_name: str, phase: int):
+def create_model(logger: Logger, model_name: str):
     """
     Create model using ModelFactory
     
     Args:
         logger: logger instance
         model_name: model name from config
-        phase: training phase (currently only phase 1 is supported)
         
     Returns:
         model object
     """
     try:
-        model_factory = ModelFactory(logger=logger, phase=phase, model_name=model_name)
+        model_factory = ModelFactory(logger=logger, model_name=model_name)
         model = model_factory.model
-        logger.info(f"Model created successfully: {model_name}, phase: {phase}")
+        logger.info(f"Model created successfully: {model_name}")
         return model
     except Exception as e:
         logger.error(f"Failed to create model {model_name}: {e}")
@@ -182,14 +181,13 @@ def load_checkpoint(checkpoint_path: str, logger: Logger):
         raise e
 
 
-def load_model_from_checkpoint(checkpoint_path: str, logger: Logger, phase: int = 1):
+def load_model_from_checkpoint(checkpoint_path: str, logger: Logger):
     """
     Load a complete model from checkpoint
     
     Args:
         checkpoint_path: path to the checkpoint file
         logger: logger instance
-        phase: model phase (default: 1)
         
     Returns:
         tuple: (model, model_name, epoch, step, total_steps)
@@ -199,7 +197,7 @@ def load_model_from_checkpoint(checkpoint_path: str, logger: Logger, phase: int 
         model_state_dict, model_name, epoch, step, total_steps = load_checkpoint(checkpoint_path, logger)
         
         # Create model using ModelFactory
-        model = create_model(logger, model_name, phase)
+        model = create_model(logger, model_name)
         
         # Load state dict
         model.load_state_dict(model_state_dict)
@@ -248,7 +246,7 @@ def test_model(model, test_loader, config, logger):
 
 
 @Timer
-@hydra.main(config_path="src")
+@hydra.main(config_path="src", config_name="config", version_base="1.1")
 def main(cfg: DictConfig) -> None:
     """
     Main function - using Hydra configuration management
@@ -286,7 +284,7 @@ def main(cfg: DictConfig) -> None:
         if load_model_path and Path(load_model_path).exists():
             logger.info(f"Loading model from checkpoint: {load_model_path}")
             model, model_name, epoch, step, total_steps = load_model_from_checkpoint(
-                load_model_path, logger, phase=1
+                load_model_path, logger
             )
             logger.info(f"Model loaded - Name: {model_name}, Epoch: {epoch}, Step: {step}")
         else:
@@ -296,7 +294,7 @@ def main(cfg: DictConfig) -> None:
             
             # Create new model
             logger.info(f"Creating new model: {model_name}")
-            model = create_model(logger, model_name, phase=1)
+            model = create_model(logger, model_name)
         
         # Train the model
         logger.info("Starting model training...")
@@ -329,8 +327,6 @@ def main(cfg: DictConfig) -> None:
 
     
     
-    
-
 
 if __name__ == '__main__':
     main()

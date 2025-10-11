@@ -27,10 +27,10 @@ Train:
   load_model_path: '/home/yxfeng/project2/sci925/outputs/model/model.pth'
   log_interval: 10
   log_dir: 'logs'
-  log_freq: 10
+  log_freq: 100
   is_log: True
   device: 'cuda:2'
-  save_freq: 100
+  save_freq: 1000
   is_save: True
   early_stopping: True
   patience: 50

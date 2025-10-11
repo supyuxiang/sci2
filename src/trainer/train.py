@@ -41,11 +41,11 @@ class Trainer:
     '''
 
     def __init__(self,config:Dict,model,dataloader_train,dataloader_eval,logger:Logger,save_dir:str):
-        self.save_model_dir = save_dir
+        self.save_dir = save_dir
         self.model = model
         self.logger = logger
         self._set_device(config)
-        if bool(self.config.get('swanlab',{}).get('use_swanlab',True)):
+        if bool(config.get('swanlab',{}).get('use_swanlab',True)):
             self.init_swanlab(full_config=config)
         self.config = config.get('Train',{})
         self.dataloader_train = dataloader_train
@@ -66,23 +66,16 @@ class Trainer:
         assert self.config.get('optimizer',None) is not None,'optimizer is not set'
         assert self.config.get('loss_function',None) is not None,'loss_function is not set'
         assert self.config.get('scheduler',None) is not None,'scheduler is not set'
-        assert self.save_dir is not None,'save_dir is not set'
         assert self.config.get('log_interval',None) is not None,'log_interval is not set'
         assert self.config.get('is_log',None) is not None,'is_log is not set'
         assert self.config.get('is_save',None) is not None,'is_save is not set'
         assert self.config.get('save_freq',None) is not None,'save_freq is not set'
-        assert self.config.get('log_dir',None) is not None,'log_dir is not set'
         assert self.config.get('device',None) is not None,'device is not set'
-        assert self.config.get('metrics_dir',None) is not None,'metrics_dir is not set'
         assert self.config.get('early_stopping',None) is not None,'early_stopping is not set'
         assert self.config.get('patience',None) is not None,'patience is not set'
         assert self.config.get('min_delta',None) is not None,'min_delta is not set'
         assert self.config.get('save_best_only',None) is not None,'save_best_only is not set'
         assert self.config.get('log_freq',None) is not None,'log_freq is not set'
-        assert self.config.get('optimizer_config',None) is not None,'optimizer_config is not set'
-        assert self.config.get('loss_function_config',None) is not None,'loss_function_config is not set'
-        assert self.config.get('scheduler_config',None) is not None,'scheduler_config is not set'
-        assert self.config.get('metrics_dir',None) is not None,'metrics_dir is not set'
         assert self.config.get('is_pinn',None) is not None,'is_pinn is not set'
         assert self.config.get('physics_weight',None) is not None,'physics_weight is not set'
         assert self.config.get('original_loss_weight',None) is not None,'original_loss_weight is not set'
@@ -134,7 +127,7 @@ class Trainer:
         '''
         try:
             # 创建保存目录
-            fig_dir = Path(self.save_model_dir) / 'figures'
+            fig_dir = Path(self.save_dir) / 'figures'
             fig_dir.mkdir(parents=True, exist_ok=True)
             
             # 设置中文字体支持
@@ -437,7 +430,7 @@ class Trainer:
                         w_physics = w_physics / (w_physics + w_original)
                         w_original = w_original / (w_physics + w_original)
                         self.logger.info(f"Current Physics weight: {w_physics}, Original weight: {w_original}")
-                    physics_loss = PhysicsLoss(output,batch_target).compute_physics_loss()
+                    physics_loss = PhysicsLoss(output).compute_physics_loss()
                     loss = w_physics * physics_loss + w_original * loss
                     self.logger.info(f"Physics loss: {physics_loss}, Original loss: {loss},Mixed loss: {loss}")
                 loss.backward()

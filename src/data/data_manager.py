@@ -30,7 +30,7 @@ class DataManager:
 
     """
 
-    def __init__(self, config: Dict,logger: Logger,data_path:str):
+    def __init__(self, config: Dict,logger: Logger):
         """
         init data manager
         """

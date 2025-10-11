@@ -83,11 +83,11 @@ def k_func(T,p):
 
 class PhysicsLoss:
     def __init__(self,batch):
-        self.x,self.y,self.z,self.T,self.p = batch
+        self.T,self.spfu,self.u,self.p = batch  #["T (K)", "spf.U (m/s)", "u (m/s)", "p (Pa)"] 
     
     @classmethod
     def compute_physics_loss(self,w_rho=0.25,w_mu=0.25,w_Cp=0.25,w_k=0.25):
-        if self.T and self.p is not None:
+        if self.T and self.spfu and self.u and self.p is not None:
             return w_rho * rho_func(self.T,self.p) + w_mu * mu_func(self.T,self.p) + w_Cp * Cp_func(self.T,self.p) + w_k * k_func(self.T,self.p)
         else:
             return 0
