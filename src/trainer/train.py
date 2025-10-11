@@ -390,71 +390,8 @@ class Trainer:
                 val_dict['total_loss'].append(loss)
         self.logger.info(f"Validating completed, total_loss: {val_dict['total_loss']}, total_r2: {val_dict['total_r2']}, total_mae: {val_dict['total_mae']}, total_rmse: {val_dict['total_rmse']}, total_mse: {val_dict['total_mse']}")
         return val_dict
+ 
 
-    # public validation API for external callers (e.g., scripts/test.py)
-    def validate(self, dataloader_val):
-        results = self.validate(dataloader_val)
-        # keep latest validation results under a common attribute
-        self.metrics = results
-        return self
-
-                
-    def load_checkpoint(self, checkpoint_path: str):
-        """
-        加载检查点
-        
-        Args:
-            checkpoint_path: 检查点路径
-        """
-        pass
-    
-
-    def _save_metrics(self,epoch:int):
-        '''
-        save metrics
-        Args:
-            epoch: int
-        '''
-        metrics_dir = Path(self.config.get('metrics_dir', 'metrics'))
-        metrics_dir.mkdir(parents=True, exist_ok=True)
-        metrics_path = metrics_dir / f"{self.model.phase}_{self.model.name}_metrics_{epoch}.yaml"
-        with open(metrics_path, 'w') as f:
-            yaml.dump(self.metrics_manager.metrics, f)
-        self.logger.info(f"Metrics saved, metrics_path: {metrics_path}")
-    
-
-    def _save_model(self,epoch:int,save_best_only:bool=True):
-        '''
-        save model
-        Args:
-            epoch: int
-            save_best_only: bool
-        '''
-        # 旧实现：对目录使用 .parent.mkdir，导致目录本身未创建而保存失败
-        # save_model_dir = self.config.get('save_model_path',None)
-        # save_best_model_only_dir = self.config.get('save_best_model_only_path',None)
-        # if not save_best_only:
-        #     Path(save_model_dir).parent.mkdir(parents=True,exist_ok=True)
-        #     torch.save(self.model.state_dict(),save_model_dir + f"/model_{epoch}.pth")
-        #     self.logger.info(f"Model saved, save_path: {save_model_dir + f'/model_{epoch}.pth'}")
-        # else:
-        #     Path(save_best_model_only_dir).parent.mkdir(parents=True,exist_ok=True)
-        #     torch.save(self.model.state_dict(),save_best_model_only_dir + f"/model_{epoch}.pth")
-        #     self.logger.info(f"Model saved, save_path: {save_best_model_only_dir + f'/model_{epoch}.pth'}")
-
-        # 新实现：显式创建目标目录本身，再保存
-        save_model_dir = Path(self.save_dir)
-        save_best_model_only_dir = Path(self.save_dir + '/best')
-        if not save_best_only:
-            save_model_dir.mkdir(parents=True, exist_ok=True)
-            save_path = save_model_dir / f"{self.model.name}_model_{epoch}.pth"
-            torch.save(self.model.state_dict(), save_path)
-            self.logger.info(f"Model saved, save_path: {save_path}")
-        else:
-            save_best_model_only_dir.mkdir(parents=True, exist_ok=True)
-            save_path = save_best_model_only_dir / f"model_{epoch}.pth"
-            torch.save(self.model.state_dict(), save_path)
-            self.logger.info(f"Model saved, save_path: {save_path}")
     
     
 
